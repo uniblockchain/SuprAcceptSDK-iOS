@@ -11,16 +11,11 @@
 #import "SaleHelper.h"
 #import "UserHelper.h"
 #import "DDLog.h"
+#import "BaseTests.h"
 
-@interface CatalogueTestsObjC : XCTestCase <AcceptSDKDelegate>
+@interface CatalogueTestsObjC : BaseTestsObcj
 {
-    __block NSError *returnedErr;
-    __weak XCTestExpectation *expectation;
-    AcceptSDK *sdk;
-    UserHelper *userHelper;
     __block BOOL successfulDownload;
-    __block WDAcceptMerchantUser *loggedUser;
-    __block AcceptResultStatus resultStatus;
     dispatch_group_t _serviceGroup;
 }
 @end
@@ -31,22 +26,6 @@
 - (void)setUp
 {
     [super setUp];
-    self.continueAfterFailure = NO;
-    sdk = [AcceptSDK sharedInstance];
-    userHelper = [UserHelper sharedInstance];
-    expectation = [self expectationWithDescription:@"Setup"];
-    [sdk setupWithEnvironment:AcceptEnvironmentPublicTest username:KUSERNAME password:KPASSWORD completion:^(WDAcceptMerchantUser * _Nullable currentUser, WDAcceptMerchantCashier * _Nullable cashier, NSError * _Nullable error) {
-        [sdk addDelegate:self];
-        [sdk setDevMode:YES]; //Setting dev mode as enabled will write logs in your app's document folder and fill the console log with debug messages - do not forget to disable it
-                              //before releasing your app to the public!!
-        [AcceptSDK ddSetLogLevel:DDLogLevelInfo];
-        [expectation fulfill];
-        
-    }];
-    
-    [self waitForExpectationsWithTimeout:25 handler:nil];
-    
-    XCTAssert(true,@"Setup success");
 }
 
 -(void)testCatalogue
@@ -71,18 +50,6 @@
         XCTFail(@"Error while downloading catalogue data. Chances are there was a timeout on backend or your connection got interrupted. In any case, you may retry.");
     }
     
-}
-
--(void)loginAndGetUserData
-{
-    MerchantDetailCompletion completion = ^(WDAcceptMerchantUser *merchantUser, NSError *err)
-    {
-        loggedUser = merchantUser;
-        returnedErr = err;
-        [expectation fulfill];
-    };
-    loggedUser = nil;
-    [[sdk userManager] currentUser:completion];
 }
 
 -(void)requestCatalogueData
@@ -119,7 +86,8 @@
 
     dispatch_group_enter(_serviceGroup);
     
-    [sdk.inventoryManager productCatalogues:loggedUser.merchant.merchantId completion:completionProductCatalogue];
+    [sdk.inventoryManager productCatalogues:loggedUser.merchant.merchantId
+                                 completion:completionProductCatalogue];
     
     
     dispatch_group_notify(_serviceGroup,dispatch_get_main_queue(),
@@ -144,7 +112,9 @@
             }
             else
             {
-                [self loadContentForProducts:result inCatalogueId:catalogue.productCatalogueId andCategory:nil];
+                [self loadContentForProducts:result
+                               inCatalogueId:catalogue.productCatalogueId
+                                 andCategory:nil];
             }
             dispatch_group_leave(_serviceGroup);
         };
@@ -153,13 +123,17 @@
         query.productCatalogueId = catalogue.productCatalogueId;
         query.productCategoryId = catalogue.productCatalogueId;
         dispatch_group_enter(_serviceGroup);
-        [sdk.inventoryManager products:query uncategorized:YES completion:completionProductContent];//This is used for getting uncategorized products
+        [sdk.inventoryManager products:query
+                         uncategorized:YES
+                            completion:completionProductContent];//This is used for getting uncategorized products
         
         //Then we request categorized products
         for (WDAcceptProductCatalogueCategory *category in result)
         {
             [category setParentCategoryId:catalogue.productCatalogueId];
-            [self loadContentForCategory:category inCatalogueId:catalogue.productCatalogueId andVersion:[NSDecimalNumber decimalNumberWithString:@"0"]];
+            [self loadContentForCategory:category
+                           inCatalogueId:catalogue.productCatalogueId
+                              andVersion:[NSDecimalNumber decimalNumberWithString:@"0"]];
             //Note: you may want to keep track of versions to compare to existing data in backend and do proper upsert in your app
         }
         
@@ -168,7 +142,8 @@
     
 
     dispatch_group_enter(_serviceGroup);
-    [sdk.inventoryManager productCategoriesTree:catalogue.productCatalogueId completion:completionCatalogue];
+    [sdk.inventoryManager productCategoriesTree:catalogue.productCatalogueId
+                                     completion:completionCatalogue];
 }
 
 -(void)loadContentForProducts:(NSArray <WDAcceptProductCatalogueProduct*>*)products inCatalogueId:(NSString*)catalogueId andCategory:(NSString*)categoryId
@@ -199,7 +174,8 @@
         
         if (queries.count && successfulDownload)
         {
-            [sdk.inventoryManager productsImage:queries completion:completionImage];
+            [sdk.inventoryManager productsImage:queries
+                                     completion:completionImage];
         }
         else
         {
@@ -231,7 +207,9 @@
             }
             else
             {
-                [self loadContentForProducts:result inCatalogueId:catalogueIdCopy andCategory:categoryId];
+                [self loadContentForProducts:result
+                               inCatalogueId:catalogueIdCopy
+                                 andCategory:categoryId];
             }
             dispatch_group_leave(_serviceGroup);
         };
@@ -248,12 +226,16 @@
                 {
                     [(WDAcceptProductCatalogueCategory*)subcategory setParentCategoryId:category.categoryId];
                 }
-                [self loadContentForCategory:subcategory inCatalogueId:catalogueIdCopy andVersion:dbVersion];
+                [self loadContentForCategory:subcategory
+                               inCatalogueId:catalogueIdCopy
+                                  andVersion:dbVersion];
             }
         }
         
         dispatch_group_enter(_serviceGroup);
-        [sdk.inventoryManager products:query uncategorized:NO completion:completionGetProducts];
+        [sdk.inventoryManager products:query
+                         uncategorized:NO
+                            completion:completionGetProducts];
     }
     else
     {

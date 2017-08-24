@@ -10,12 +10,8 @@ import Foundation
 import XCTest
 import Accept
 
-class ERPTestsSwift: XCTestCase, AcceptSDKDelegate
+class ERPTestsSwift: BaseTestsSwift
 {
-    var returnedErr : Error!
-    var expectation : XCTestExpectation!
-    var sdk : AcceptSDK!
-    var loggedUser : WDAcceptMerchantUser?
     var member : WDAcceptMember?
     var discountsReceived : Bool?
     var stocksReceived : Bool?
@@ -23,25 +19,6 @@ class ERPTestsSwift: XCTestCase, AcceptSDKDelegate
     override func setUp()
     {
         super.setUp()
-        self.continueAfterFailure = false
-        sdk = AcceptSDK.sharedInstance()
-        expectation = self.expectation(description: "Setup")
-        weak var welf = self
-        
-        sdk.setup(with: .development, username: KUSERNAME, password: KPASSWORD, completion:{( currentUser:WDAcceptMerchantUser? , cashier:WDAcceptMerchantCashier?, error:Error?) in
-            
-            welf?.sdk.add(self)
-            welf?.sdk.setDevMode(true) //Setting dev mode as enabled will write logs in your app's document folder and fill the console log with debug messages - Do not forget to disable it before releasing your app to the public!!
-            AcceptSDK.ddSetLogLevel(DDLogLevel.info.rawValue)
-            welf?.expectation.fulfill()
-        })
-        
-        self.waitForExpectations(timeout: 25, handler: nil)
-    }
-    
-    override func tearDown()
-    {
-        super.tearDown()
     }
  
     /*
@@ -109,52 +86,68 @@ class ERPTestsSwift: XCTestCase, AcceptSDKDelegate
         //else nothing to test, your merchant is not properly configured in backend. Please ask support for enabling ERP/SAP in your account
     }
     
-    func loginAndGetUserData()
-    {
-        loggedUser = nil
-        weak var welf = self
-        sdk.userManager.currentUser({(merchantUser : WDAcceptMerchantUser?, error: Error?) in
-            NSLog("err:%@",[error])
-            welf?.loggedUser = merchantUser
-            welf?.returnedErr = error
-            welf?.expectation.fulfill()
-        })
-    }
-    
     func searchMembersMatching(searchString :  String?)
     {
-        weak var welf = self
-        let completion : MembersCompletion = {(members : [WDAcceptMember]?, error : Error?) in
-            welf?.member = members?.first
-            welf?.returnedErr = error
-            welf?.expectation.fulfill()
+        let completion : MembersCompletion = {[weak self](members : [WDAcceptMember]?, error : Error?) in
+            self?.member = members?.first
+            self?.returnedErr = error
+            self?.expectation.fulfill()
         }
-        sdk.customerManager.memberInformation(nil, surname: nil, firstName: searchString, exactMatch: false, completion: completion)
+        sdk.customerManager.memberInformation(nil,
+                                              surname: nil,
+                                              firstName: searchString,
+                                              exactMatch: false,
+                                              completion: completion)
     }
     
     func fetchDiscountPrices()
     {
-        weak var welf = self
+        guard let memberId = self.member?.memberId else
+        {
+            XCTFail("Something went really wrong - fetchDiscountPrices")
+            self.expectation.fulfill()
+            return
+        }
+        
         let productsIDs = ["productA", "productB"] //Don't forget to put actual productsIds from your catalogue here
-        sdk.inventoryManager.productPrice(forMember: (self.member?.memberId)!, externalIDs: productsIDs, currency: "EUR", grossPrice: true, completion: {(productPrices : [WDAcceptProductPrice]?, error : Error?) in
-            welf?.discountsReceived = (productPrices?.count)! > 0
-            welf?.returnedErr = error
-            welf?.expectation.fulfill()
+        sdk.inventoryManager.productPrice(forMember: memberId,
+                                          externalIDs: productsIDs,
+                                          currency: "EUR",
+                                          grossPrice: true,
+                                          completion: {[weak self](productPrices : [WDAcceptProductPrice]?, error : Error?) in
+            if let productPrices = productPrices
+            {
+                self?.discountsReceived = productPrices.count > 0
+            }
+            else
+            {
+                self?.discountsReceived = false
+            }
+            
+            self?.returnedErr = error
+            self?.expectation.fulfill()
         })
     }
     
     func fetchProductsStocks()
     {
-        weak var welf = self
-        let completion : ProductStocksCompletion = {(stocks : [WDAcceptProductStock]?, error : Error?) in
-            welf?.stocksReceived = (stocks?.count)! > 0
-            welf?.returnedErr = error
-            welf?.expectation.fulfill()
+        let completion : ProductStocksCompletion = {[weak self](stocks : [WDAcceptProductStock]?, error : Error?) in
+            if let stocks = stocks
+            {
+                self?.stocksReceived = stocks.count > 0
+            }
+            else
+            {
+                self?.stocksReceived = false
+            }
+            self?.returnedErr = error
+            self?.expectation.fulfill()
         }
         
         let aProduct : WDAcceptProductCatalogueProduct = WDAcceptProductCatalogueProduct.init()
         aProduct.externalId = "product external (SAP) ID"
-        sdk.inventoryManager.productStock(inAllShops: aProduct, completion: completion)
+        sdk.inventoryManager.productStock(inAllShops: aProduct,
+                                          completion: completion)
         
         //Alternatively you can ask stock for a series of products in a single shop, instead of a single product in all shops as above.
         //But please note that your ERP SAP may be limited to around 10 products per stock query, so make sure you use this request responsibly

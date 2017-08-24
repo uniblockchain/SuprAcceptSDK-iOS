@@ -10,16 +10,9 @@ import Foundation
 import XCTest
 import Accept
 
-class SpireTestsSwift: XCTestCase, AcceptSDKDelegate, WDAcceptManagerDelegate
+class SpireTestsSwift: BaseTestsSwift, WDAcceptManagerDelegate
 {
-    var returnedErr : Error!
-    var expectation : XCTestExpectation!
-    var sdk : AcceptSDK!
-    var loggedUser : WDAcceptMerchantUser?
     var configCompletionStatus : AcceptUpdateConfigurationStatus!
-    var saleResponse : WDAcceptSaleResponse?
-    var aSale : WDAcceptSaleRequest!
-    var selectedDevice : WDAcceptTerminal?
 
     /*
      
@@ -33,28 +26,7 @@ class SpireTestsSwift: XCTestCase, AcceptSDKDelegate, WDAcceptManagerDelegate
     override func setUp()
     {
         super.setUp()
-        self.continueAfterFailure = false
-        sdk = AcceptSDK.sharedInstance()
-        expectation = self.expectation(description: "Setup")
-        weak var welf = self
-        
-        sdk.setup(with: .development, username: KUSERNAME, password: KPASSWORD, completion:{( currentUser:WDAcceptMerchantUser? , cashier:WDAcceptMerchantCashier?, error:Error?) in
-            
-            welf?.sdk.add(self)
-            welf?.sdk.setDevMode(true) //Setting dev mode as enabled will write logs in your app's document folder and fill the console log with debug messages - Do not forget to disable it before releasing your app to the public!!
-            AcceptSDK.ddSetLogLevel(DDLogLevel.info.rawValue)
-            //Under StarIO or StarMicronics you can select two types of hardware, the mPOP (WDAMPOPExtensionUUID) and the regular Star Micronics CB2002 (WDAStarMicronicsExtensionUUID). Both operate in the same way, with the second not having barcode reader built-in.
-            welf?.expectation.fulfill()
-        })
-
-        self.waitForExpectations(timeout: 25, handler: nil)
     }
-    
-    override func tearDown()
-    {
-        super.tearDown()
-    }
-  
     
     func testSpire()
     {
@@ -79,7 +51,7 @@ class SpireTestsSwift: XCTestCase, AcceptSDKDelegate, WDAcceptManagerDelegate
         //paired to your iOS device.
         //--------------------------------------
         expectation = self.expectation(description: "Discovering devices")
-        self.discoverDevices()
+        self.discoverDevices(.WDAPosMateExtensionUUID)
         self.waitForExpectations(timeout: 100, handler: nil)
         if (self.selectedDevice == nil)
         {
@@ -127,37 +99,16 @@ class SpireTestsSwift: XCTestCase, AcceptSDKDelegate, WDAcceptManagerDelegate
         }
     }
     
-    func loginAndGetUserData()
-    {
-        loggedUser = nil
-        weak var welf = self
-        sdk.userManager.currentUser({(merchantUser : WDAcceptMerchantUser?, error: Error?) in
-            welf?.loggedUser = merchantUser
-            welf?.returnedErr = error
-            welf?.expectation.fulfill()
-        })
-    }
-    
-    func discoverDevices()
-    {
-        weak var welf = self
-        sdk.terminalManager.discoverDevices(.WDAPosMateExtensionUUID, completion: {(arr : [WDAcceptTerminal]?, error : Error?) in
-            welf?.selectedDevice = arr?.first
-            welf?.returnedErr = error
-            welf?.expectation.fulfill()
-        })
-    }
     
     func checkingForTerminalConfigUpdates()
     {
-        weak var welf = self
-        let completionUpdate : UpdateTerminalCompletion = {(updStatus : AcceptUpdateConfigurationStatus?, updError : Error?) in
+        let completionUpdate : UpdateTerminalCompletion = {[weak self](updStatus : AcceptUpdateConfigurationStatus?, updError : Error?) in
             //Note that completion here will happen when:
             // 1- The update has been completed, but also the terminal has fully restarted and entered stand-by (this may take a couple of minutes in the case of firmware)
             // 2- There was no response from terminal (something went wrong) for several seconds, meaning update failed.
-            welf?.returnedErr = updError
-            welf?.configCompletionStatus = updStatus
-            welf?.expectation.fulfill()
+            self?.returnedErr = updError
+            self?.configCompletionStatus = updStatus
+            self?.expectation.fulfill()
         }
         
         let progress : UpdateConfigurationProgress = {(progressUpdate : AcceptUpdateConfigurationProgressUpdate) in
@@ -169,34 +120,56 @@ class SpireTestsSwift: XCTestCase, AcceptSDKDelegate, WDAcceptManagerDelegate
         //This means, the first time you run this test, the configuration will be updated on the terminal. A second time will tell you "AcceptUpdateConfigurationStatusUnnecessary"
         //To force the actual update again you will have to remove the demo app from your iOS device and re-run the test.
         
-        sdk.terminalManager.update(selectedDevice!, updateType:AcceptTerminalUpdateTypeMaskConfiguration, progress:progress, completion:completionUpdate)
+        sdk.terminalManager.update(selectedDevice!,
+                                   updateType:AcceptTerminalUpdateTypeMaskConfiguration,
+                                   progress:progress,
+                                   completion:completionUpdate)
     }
     
     func doCardPayment()
     {
         
         let paymentConfiguration : WDAcceptPaymentConfig = WDAcceptPaymentConfig.init()
-        self.aSale = SaleHelper.sharedInstance().newSale()
-        self.aSale.addSaleItem(NSDecimalNumber(value: 3.4), quantity:5, taxRate:UserHelper.sharedInstance().preferredSaleItemTax(), itemDescription:"Red Apple", productId:"Dummy ID 1")
-        self.aSale.addSaleItem(NSDecimalNumber(value: 2.25), quantity:3, taxRate:UserHelper.sharedInstance().preferredSaleItemTax(), itemDescription:"Orange", productId:"Dummy ID 2")
+        guard let sale = SaleHelper.sharedInstance().newSale() else
+        {
+            XCTFail("Something went really wrong - doCardPayment")
+            self.expectation.fulfill()
+            return
+        }
+        self.aSale = sale
+        self.aSale.addSaleItem(NSDecimalNumber(value: 3.4),
+                               itemRate:nil,
+                               quantity:5,
+                               taxRate:UserHelper.sharedInstance().preferredSaleItemTax(),
+                               itemDescription:"Red Apple",
+                               productId:"Dummy ID 1")
+        self.aSale.addSaleItem(NSDecimalNumber(value: 2.25),
+                               itemRate:nil,
+                               quantity:3,
+                               taxRate:UserHelper.sharedInstance().preferredSaleItemTax(),
+                               itemDescription:"Orange",
+                               productId:"Dummy ID 2")
         //You can add a service charge to the whole basket -- but this is optional
-        self.aSale.addServiceCharge(UserHelper.sharedInstance().serviceChargeRate(), taxRate:UserHelper.sharedInstance().serviceChargeTax())
+        self.aSale.addServiceCharge(UserHelper.sharedInstance().serviceChargeRate(),
+                                    taxRate:UserHelper.sharedInstance().serviceChargeTax())
         //You can add a tip of any value you want. Notice that backend validate taxes, so their values should match the ones your merchant has defined in setup.
-        self.aSale.addGratuity(NSDecimalNumber(value: 1.0), taxRate:UserHelper.sharedInstance().tipTax())
+        self.aSale.addGratuity(NSDecimalNumber(value: 1.0),
+                               taxRate:UserHelper.sharedInstance().tipTax())
         //You can add a discount for the whole basket when productId is nil, or per productId otherwise. Below, a discount of 6%
-        self.aSale.addDiscount(NSDecimalNumber(value: 6.0), productId:nil)
+        self.aSale.addDiscount(NSDecimalNumber(value: 6.0),
+                               productId:nil)
         paymentConfiguration.sale = self.aSale
         paymentConfiguration.sale.cashRegisterId = UserHelper.sharedInstance().selectedCashRegisterId() //Note: if your backend settings have cash mgmt enabled in backend, you will need to run cash tests first to get this value as well as shiftId below
         paymentConfiguration.sale.shiftId = UserHelper.sharedInstance().lastShiftId()
         paymentConfiguration.sale.resetPayments()
-        paymentConfiguration.sale.addCardPayment((paymentConfiguration.sale.totalToPay())!, terminal:self.selectedDevice!)
+        paymentConfiguration.sale.addCardPayment(paymentConfiguration.sale.totalToPay() ?? NSDecimalNumber.init(value:0),
+                                                 terminal:self.selectedDevice!)
 
-        weak var welf = self
-        let paymentCompletion : SaleCompletion = {(transaction : WDAcceptSaleResponse?, error : Error?) in
+        let paymentCompletion : SaleCompletion = {[weak self](transaction : WDAcceptSaleResponse?, error : Error?) in
             print("Payment completed")
-            welf?.returnedErr = error
-            welf?.saleResponse = transaction
-            welf?.expectation.fulfill()
+            self?.returnedErr = error
+            self?.saleResponse = transaction
+            self?.expectation.fulfill()
         }
         
         let progressUpdate : PaymentProgress = {(update : AcceptStateUpdate) in
@@ -215,32 +188,41 @@ class SpireTestsSwift: XCTestCase, AcceptSDKDelegate, WDAcceptManagerDelegate
         }
 
         let cardAppSelection : PaymentCardApplicationSelectionRequest = {(appSelectionRequest : WDAcceptAppSelectionRequest?) in
-            if (appSelectionRequest?.appsArray?.count)! > 0
+            if let appsArray = appSelectionRequest?.appsArray, appsArray.count > 0
             {
                 appSelectionRequest?.selectCardApplication(0) //In a real case scenario, your UI will have to list the name of the applications in appsArray, and allow to select one of them (for example, through a picker). This is needed for some cards that includes more than one cad within -- some cards allows the user to select between Mastercard or Maestro, or between Visa Credit and Electron, for example.
             }
         }
         
-        sdk.terminalManager.setActive(self.selectedDevice, completion:{() in
-            welf?.sdk.saleManager.pay(paymentConfiguration, progress:progressUpdate, collectSignature:signatureRequiredRequest, verifySignature:verifySignature, cardApplication:cardAppSelection, completion:paymentCompletion)
+        sdk.terminalManager.setActive(self.selectedDevice, completion:{[weak self]() in
+            self?.sdk.saleManager.pay(paymentConfiguration,
+                                      progress:progressUpdate,
+                                      collectSignature:signatureRequiredRequest,
+                                      verifySignature:verifySignature,
+                                      cardApplication:cardAppSelection,
+                                      completion:paymentCompletion)
         })
     }
     
     func refundTransaction()
     {
-        let saleToBeRefunded : WDAcceptSaleRequest = self.saleResponse!.saleReturn()!
+        guard let saleToBeRefunded = self.saleResponse!.saleReturn(), let totalToPay = saleToBeRefunded.totalToPay() else
+        {
+            XCTFail("Something went really wrong - refundTransaction")
+            self.expectation.fulfill()
+            return
+        }
         saleToBeRefunded.cashRegisterId = UserHelper.sharedInstance().selectedCashRegisterId()
         saleToBeRefunded.cashierId = self.aSale.cashierId
         saleToBeRefunded.customerId = self.aSale.customerId
         //This is an example of full refund: all items are refunded
         //For partial refund, see CashTests example
-        saleToBeRefunded.addCardPayment(saleToBeRefunded.totalToPay()!, terminal:WDAcceptTerminal.init()) //terminal is unnecessary here
+        saleToBeRefunded.addCardPayment(totalToPay, terminal:WDAcceptTerminal.init()) //terminal is unnecessary here
         self.saleResponse = nil
-        weak var welf = self
-        sdk.saleManager.refundSale(saleToBeRefunded, message:"Refunded in demo app for testing reasons", completion:{(acceptSale : WDAcceptSaleResponse?, error : Error?) in
-            welf?.returnedErr = error
-            welf?.saleResponse = acceptSale
-            welf?.expectation.fulfill()
+        sdk.saleManager.refundSale(saleToBeRefunded, message:"Refunded in demo app for testing reasons", completion:{[weak self](acceptSale : WDAcceptSaleResponse?, error : Error?) in
+            self?.returnedErr = error
+            self?.saleResponse = acceptSale
+            self?.expectation.fulfill()
         })
     }
 

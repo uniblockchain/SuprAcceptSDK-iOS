@@ -13,16 +13,10 @@
 #import "UserHelper.h"
 #import "DDLog.h"
 #import <Accept/NSString+AcceptExtras.h>
+#import "BaseTests.h"
 
-@interface StarIOTestsObjC : XCTestCase <AcceptSDKDelegate, WDAcceptScanning, WDAcceptPrinting, WDAcceptManagerDelegate>
+@interface StarIOTestsObjC : BaseTestsObcj <WDAcceptScanning, WDAcceptPrinting, WDAcceptManagerDelegate>
 {
-    __block NSError *returnedErr;
-    __weak XCTestExpectation *expectation;
-    AcceptSDK *sdk;
-    UserHelper *userHelper;
-    __block WDAcceptMerchantUser *loggedUser;
-    __block AcceptResultStatus resultStatus;
-    __block WDAcceptTerminal *selectedDevice;
     __block BOOL printingSuccess;
     __block BOOL openingDrawerSuccess;
     WDAExtensionTypeUUID deviceModel;
@@ -35,22 +29,6 @@
 - (void)setUp
 {
     [super setUp];
-    self.continueAfterFailure = NO;
-    sdk = [AcceptSDK sharedInstance];
-    userHelper = [UserHelper sharedInstance];
-    expectation = [self expectationWithDescription:@"Setup"];
-    [sdk setupWithEnvironment:AcceptEnvironmentPublicTest username:KUSERNAME password:KPASSWORD completion:^(WDAcceptMerchantUser * _Nullable currentUser, WDAcceptMerchantCashier * _Nullable cashier, NSError * _Nullable error) {
-        [sdk addDelegate:self];
-        [sdk setDevMode:YES]; //Setting dev mode as enabled will write logs in your app's document folder and fill the console log with debug messages - do not forget to disable it
-                              //before releasing your app to the public!!
-        [AcceptSDK ddSetLogLevel:DDLogLevelInfo];
-        deviceModel = WDAMPOPExtensionUUID;//Under StarIO or StarMicronics you can select two types of hardware, the mPOP (WDAMPOPExtensionUUID) and the regular Star Micronics (WDAStarMicronicsExtensionUUID). Both operate in the same way, with the second not having barcode reader built-in.
-        [expectation fulfill];
-    }];
-    
-    [self waitForExpectationsWithTimeout:25 handler:nil];
-    
-    XCTAssert(true,@"Setup success");
 }
 
 -(void)testStarMicronics
@@ -64,7 +42,7 @@
     //PART 1: We detect paired devices
     //--------------------------------------
     expectation = [self expectationWithDescription:@"We detect paired devices"];
-    [self detectDevice];
+    [self discoverDevices:deviceModel];
     [self waitForExpectationsWithTimeout:100 handler:nil];
     if (!selectedDevice)
     {
@@ -72,9 +50,12 @@
     }
     else
     {
-        [sdk.scannerManager addScannerManagerDelegate:self forScanner:selectedDevice];
-        [sdk.printerManager addPrinterManagerDelegate:self forPrinter:selectedDevice];
-        [sdk.cashDrawerManager addManagerDelegate:self forDevice:selectedDevice];
+        [sdk.scannerManager addScannerManagerDelegate:self
+                                           forScanner:selectedDevice];
+        [sdk.printerManager addPrinterManagerDelegate:self
+                                           forPrinter:selectedDevice];
+        [sdk.cashDrawerManager addManagerDelegate:self
+                                        forDevice:selectedDevice];
     }
     
     //PART 2: We open the cash drawer
@@ -104,18 +85,6 @@
         expectation = [self expectationWithDescription:@"Read barcode"];
         [self waitForExpectationsWithTimeout:100 handler:nil];
     }
-}
-
--(void)detectDevice
-{
-    DeviceDiscoveryCompletion completionTerminals = ^(NSArray *arr, NSError *err)
-    {
-        returnedErr = err;
-        selectedDevice = arr.firstObject;
-        [expectation fulfill];
-    };
-    
-    [sdk.cashDrawerManager discoverDevices:deviceModel completion:completionTerminals];
 }
 
 -(void)openCashDrawer
@@ -166,7 +135,7 @@
     //query Sales
     [[sdk saleManager] querySales:query completion:^(NSArray<WDAcceptSaleResponse *> * arr, NSError * error)
      {
-         WDAcceptSaleResponse *saleResponse = [arr firstObject]; //Use the first returned sale
+         saleResponse = [arr firstObject]; //Use the first returned sale
          if (saleResponse){
          
              //alternatively use the Default Designed receipt for Datecs
@@ -178,7 +147,9 @@
                             //Receipt as per format specified HTML | PDF | UIImage | AcceptReceipt object
                             returnedErr = error;
                             printerConfig.printJobs = @[receipt];
-                            [sdk.printerManager print:printerConfig progress:progress completion:completion];
+                            [sdk.printerManager print:printerConfig
+                                             progress:progress
+                                           completion:completion];
                             
                         }];
          }
@@ -189,8 +160,6 @@
          
      }];
 }
-
-
 
 - (void)device:(WDAcceptTerminal*)device dataReceived:(NSData *)dataReceived
 {

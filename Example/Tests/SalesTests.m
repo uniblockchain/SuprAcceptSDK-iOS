@@ -11,14 +11,11 @@
 #import "UserHelper.h"
 #import "SaleHelper.h"
 #import "DDLog.h"
+#import "BaseTests.h"
 
-@interface SalesTestsObjC : XCTestCase <AcceptSDKDelegate>
+@interface SalesTestsObjC : BaseTestsObcj
 {
-    __block NSError *returnedErr;
-    __weak XCTestExpectation *expectation;
-    AcceptSDK *sdk;
-    __block WDAcceptMerchantUser *loggedUser;
-    __block WDAcceptSaleResponse *saleResponse;
+
 }
 
 @end
@@ -30,27 +27,7 @@
 - (void)setUp
 {
     [super setUp];
-    self.continueAfterFailure = NO;
-    sdk = [AcceptSDK sharedInstance];
-    expectation = [self expectationWithDescription:@"Setup"];
-    [sdk setupWithEnvironment:AcceptEnvironmentPublicTest username:KUSERNAME password:KPASSWORD completion:^(WDAcceptMerchantUser * _Nullable currentUser, WDAcceptMerchantCashier * _Nullable cashier, NSError * _Nullable error) {
-        [sdk addDelegate:self];
-        [sdk setDevMode:YES]; //Setting dev mode as enabled will write logs in your app's document folder and fill the console log with debug messages - do not forget to disable it
-                              //before releasing your app to the public!!
-        [AcceptSDK ddSetLogLevel:DDLogLevelInfo];
-        [expectation fulfill];
-    }];
-    
-    [self waitForExpectationsWithTimeout:25 handler:nil];
-    
-    XCTAssert(true,@"Setup success");
 }
-
-- (void)tearDown
-{
-    [super tearDown];
-}
-
 
 -(void)testSales
 {
@@ -82,18 +59,6 @@
 
 }
 
--(void)loginAndGetUserData
-{
-    MerchantDetailCompletion completion = ^(WDAcceptMerchantUser *merchantUser, NSError *err)
-    {
-        loggedUser = merchantUser;
-        returnedErr = err;
-        [expectation fulfill];
-    };
-    loggedUser = nil;
-    [[sdk userManager] currentUser:completion];
-}
-
 -(void)getSales
 {
     WDAcceptSalesQuery *query = [[WDAcceptSalesQuery alloc] init];
@@ -101,9 +66,13 @@
     query.pageSize = 20; //Each sale includes a lot of data, so paging with small pageSizes is recommended
     query.orderBy = AcceptSaleQueryOrderByCreatedAt; //You can also sort by amount using AcceptTransactionsQueryOrderByAmount
     query.orderSort = AcceptQuerySortDescending;//Can be AcceptTransactionsQuerySortAscending
-    query.statuses = @[@(AcceptSaleStateCompleted), @(AcceptSaleStateFailed), @(AcceptSaleStateReturned), @(AcceptSaleStateCanceled)];//You can define more or less statuses for the query, depending on your needs.
+    query.statuses = @[@(AcceptSaleStateCompleted),
+                       @(AcceptSaleStateFailed),
+                       @(AcceptSaleStateReturned),
+                       @(AcceptSaleStateCanceled)];//You can define more or less statuses for the query, depending on your needs.
     //You can use a receiptId provided by backend in query.receiptId if you have one
-    [[sdk saleManager] querySales:query completion:^(NSArray<WDAcceptSaleResponse *> * arr, NSError * error)
+    [[sdk saleManager] querySales:query
+                       completion:^(NSArray<WDAcceptSaleResponse *> * arr, NSError * error)
     {
         saleResponse = [arr firstObject];
         returnedErr = error;

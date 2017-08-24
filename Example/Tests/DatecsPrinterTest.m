@@ -12,18 +12,12 @@
 #import "SaleHelper.h"
 #import "UserHelper.h"
 #import "DDLog.h"
+#import "BaseTests.h"
 
-@interface DatecsPrinterTestsObjC : XCTestCase <AcceptSDKDelegate>
+@interface DatecsPrinterTestsObjC : BaseTestsObcj
 {
-    __block NSError *returnedErr;
-    __weak XCTestExpectation *expectation;
-    AcceptSDK *sdk;
-    UserHelper *userHelper;
-    __block WDAcceptMerchantUser *loggedUser;
-    __block AcceptResultStatus resultStatus;
     __block WDAcceptReceiptData *receiptData;
     __block WDAcceptReceipt *datecsReceipt;
-    __block WDAcceptTerminal *selectedPrinter;
     __block BOOL printingSuccess;
 }
 
@@ -34,21 +28,6 @@
 - (void)setUp
 {
     [super setUp];
-    self.continueAfterFailure = NO;
-    sdk = [AcceptSDK sharedInstance];
-    userHelper = [UserHelper sharedInstance];
-    expectation = [self expectationWithDescription:@"Setup"];
-    [sdk setupWithEnvironment:AcceptEnvironmentPublicTest username:KUSERNAME password:KPASSWORD completion:^(WDAcceptMerchantUser * _Nullable currentUser, WDAcceptMerchantCashier * _Nullable cashier, NSError * _Nullable error) {
-        [sdk addDelegate:self];
-        [sdk setDevMode:YES]; //Setting dev mode as enabled will write logs in your app's document folder and fill the console log with debug messages - do not forget to disable it
-                              //before releasing your app to the public!!
-        [AcceptSDK ddSetLogLevel:DDLogLevelInfo];
-        [expectation fulfill];
-    }];
-    
-    [self waitForExpectationsWithTimeout:25 handler:nil];
-    
-    XCTAssert(true,@"Setup success");
 }
 
 -(void)testDatecsPrinter
@@ -79,13 +58,12 @@
         XCTFail(@"Error getting a complete sale. Please create some test (ie. run CashTest). Otherwise, debug and check the returned error");
     }
     
-    
     //PART 3: We detect the printer
     //---------------------------------
     expectation = [self expectationWithDescription:@"Detecting printer"];
-    [self detectPrinter];
+    [self discoverDevices:WDADatecsPrinterExtensionUUID];
     [self waitForExpectationsWithTimeout:100 handler:nil];
-    if (!selectedPrinter)
+    if (!selectedDevice)
     {
         XCTFail(@"Error detecting printer. Make sure is charger, switched on and properly paired in your iOS device settings");
     }
@@ -102,18 +80,6 @@
 
 }
 
--(void)loginAndGetUserData
-{
-    MerchantDetailCompletion completion = ^(WDAcceptMerchantUser *merchantUser, NSError *err)
-    {
-        loggedUser = merchantUser;
-        returnedErr = err;
-        [expectation fulfill];
-    };
-    loggedUser = nil;
-    [[sdk userManager] currentUser:completion];
-}
-
 -(void)getSaleReceipt
 {
     WDAcceptSalesQuery *query = [[WDAcceptSalesQuery alloc] init];
@@ -121,7 +87,7 @@
 
     [[sdk saleManager] querySales:query completion:^(NSArray<WDAcceptSaleResponse *> * arr, NSError * error)
      {
-         WDAcceptSaleResponse *saleResponse = [arr firstObject];
+         saleResponse = [arr firstObject];
          if (saleResponse)
          {
              receiptData = [saleResponse getAcceptReceiptData];
@@ -144,18 +110,6 @@
      }];
 }
 
--(void)detectPrinter
-{
-    DeviceDiscoveryCompletion completionTerminals = ^(NSArray *arr, NSError *err)
-    {
-        returnedErr = err;
-        selectedPrinter = arr.firstObject;
-        [expectation fulfill];
-    };
-    
-    [sdk.printerManager discoverDevices:WDADatecsPrinterExtensionUUID completion:completionTerminals];
-}
-
 -(void)printReceipt
 {
     
@@ -174,7 +128,7 @@
     };
     
     
-    WDAcceptPrinterConfig *printerConfig = [[WDAcceptPrinterConfig alloc] initWithPrinter:selectedPrinter printJobs:@[datecsReceipt]];
+    WDAcceptPrinterConfig *printerConfig = [[WDAcceptPrinterConfig alloc] initWithPrinter:selectedDevice printJobs:@[datecsReceipt]];
     //You can just send an image to the printer using printerConfig, but due to paper size and capabilities of Datecs printer, is always faster and more efficient to send receipt data and let the SDK build a text receipt. Image receipt are slow and even consume resources for the blank areas.
 
     //Alternatively, you can print a sales report, with catalogue categories, category items, and statistics on discounts, taxes and more, filling the parameters you need in:

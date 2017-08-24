@@ -51,7 +51,7 @@ Find more information about [Switch mPOS backend](./docs/SWITCH-Overview.pdf)
 ##Whitelabel solution
 Wirecard Technologies is using the SuprAcceptSDK in their Whitelabel application which is fully integrated professional mPOS solution. The **Whitelabel** app is **VISA and Mastercard certified** and utilises the Wirecard infrastructure for card payment processing.
 
-[<img src="https://raw.githubusercontent.com/WirecardMobileServices/SuprAcceptSDK-iOS/master/docs/sdkarchv09.png" alt="Whitelabel architecture" width=274 height=515>](./docs/sdkarchv09.png "Whitelabel Architecture")
+[<img src="https://raw.githubusercontent.com/WirecardMobileServices/SuprAcceptSDK-iOS/master/docs/sdkarchv09.png" alt="Whitelabel architecture" width=400 height=422>](./docs/sdkarchv09.png "Whitelabel Architecture")
 
 ## Installation
 

@@ -949,6 +949,19 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
                   productId:(NSString *)productId;
 
 /**
+ *  @brief Product Query attributes used to query specific Product
+ *  @param page Page to obtain from sorted results
+ *  @param pageSize Size of the Page from sorted results
+ *  @param catalogueId Product Catalogue Id to be queried
+ *  @param categoryId Category Id to be queried
+ *  @return new Product Query attributes
+ **/
+-(instancetype)initWithPage:(NSUInteger)page
+                   pageSize:(NSUInteger)pageSize
+                catalogueId:(NSString *)catalogueId
+                  categoryId:(NSString *)categoryId;
+
+/**
  *  @brief Product Query attributes used for Product Changes query request
  *  @param catalogueId Product Catalogue Id to be queried
  *  @param date get Product Changes since this date

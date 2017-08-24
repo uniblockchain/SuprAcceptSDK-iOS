@@ -27,6 +27,8 @@
 		5D53A4EF1E797D870054D794 /* StarIOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D53A4EC1E797D870054D794 /* StarIOTests.m */; };
 		5D53A4F01E797D870054D794 /* DatecsPrinterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D53A4ED1E797D870054D794 /* DatecsPrinterTest.m */; };
 		5D53A4F11E797D870054D794 /* SocketScannerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D53A4EE1E797D870054D794 /* SocketScannerTests.m */; };
+		5D5FCD6B1F5407280006EA11 /* BaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5FCD6A1F5407280006EA11 /* BaseTests.swift */; };
+		5D5FCD6D1F540F290006EA11 /* BaseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D5FCD6C1F540F290006EA11 /* BaseTests.m */; };
 		5DA131011F349C8F0087F212 /* CashTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA131001F349C8F0087F212 /* CashTests.swift */; };
 		5DA855F51ED83E6900D602BC /* ERPTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DA855F41ED83E6900D602BC /* ERPTests.m */; };
 		5DC08B271F345B02008B1F07 /* CatalogueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC08B261F345B02008B1F07 /* CatalogueTests.swift */; };
@@ -90,6 +92,9 @@
 		5D53A4EC1E797D870054D794 /* StarIOTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StarIOTests.m; sourceTree = "<group>"; };
 		5D53A4ED1E797D870054D794 /* DatecsPrinterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatecsPrinterTest.m; sourceTree = "<group>"; };
 		5D53A4EE1E797D870054D794 /* SocketScannerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketScannerTests.m; sourceTree = "<group>"; };
+		5D5FCD6A1F5407280006EA11 /* BaseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTests.swift; sourceTree = "<group>"; };
+		5D5FCD6C1F540F290006EA11 /* BaseTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTests.m; sourceTree = "<group>"; };
+		5D5FCD6E1F540F8E0006EA11 /* BaseTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTests.h; sourceTree = "<group>"; };
 		5D63357D1E704D870008810F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		5D63357F1E704D8C0008810F /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		5D6335811E704D920008810F /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
@@ -237,6 +242,9 @@
 		6003F5B5195388D20070C39A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				5D5FCD6E1F540F8E0006EA11 /* BaseTests.h */,
+				5D5FCD6C1F540F290006EA11 /* BaseTests.m */,
+				5D5FCD6A1F5407280006EA11 /* BaseTests.swift */,
 				5DA131001F349C8F0087F212 /* CashTests.swift */,
 				5DC08B261F345B02008B1F07 /* CatalogueTests.swift */,
 				5DCFDA1C1F335F1D00C6E1D3 /* DatecsPrinterTests.swift */,
@@ -454,7 +462,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		72733EDAF7D277E5A9B283A9 /* [CP] Check Pods Manifest.lock */ = {
@@ -469,7 +477,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		9666BF3F7196442BE4E613BF /* [CP] Embed Pods Frameworks */ = {
@@ -530,11 +538,13 @@
 				5DCB4BA01E72E7CF008ED498 /* StatsTests.m in Sources */,
 				5DA131011F349C8F0087F212 /* CashTests.swift in Sources */,
 				5DCB4BA41E72E84A008ED498 /* CatalogueTests.m in Sources */,
+				5D5FCD6B1F5407280006EA11 /* BaseTests.swift in Sources */,
 				5DCFDA1B1F3353D600C6E1D3 /* ERPTests.swift in Sources */,
 				5DA855F51ED83E6900D602BC /* ERPTests.m in Sources */,
 				5DD2B44E1F0139E000E0B75A /* StatsTests.swift in Sources */,
 				5DE468131E70397100ECB7FE /* SalesTests.m in Sources */,
 				5D53A4F01E797D870054D794 /* DatecsPrinterTest.m in Sources */,
+				5D5FCD6D1F540F290006EA11 /* BaseTests.m in Sources */,
 				5DCB4B9F1E72E7CF008ED498 /* UserTests.m in Sources */,
 				5DCB4BA31E72E84A008ED498 /* SpireTests.m in Sources */,
 				5D185BF21E71550B005430DA /* SaleHelper.m in Sources */,

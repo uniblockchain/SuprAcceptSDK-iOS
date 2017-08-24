@@ -13,8 +13,8 @@
 #define KTAX_INCLUSIVE_ENABLED 1 //0 for tax exclusive
 #define KSERVICE_CHARGE_ENABLED 1
 #define KGRATUITY_ENABLED 1
-#define KUSERNAME @"integrationTest"
-#define KPASSWORD @"Wirecard1234!"
+#define KUSERNAME @"integrationDemo"
+#define KPASSWORD @"W1r3c4rd123!"
 
 
 

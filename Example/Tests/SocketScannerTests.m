@@ -13,12 +13,10 @@
 #import "UserHelper.h"
 #import "DDLog.h"
 #import <Accept/NSString+AcceptExtras.h>
+#import "BaseTests.h"
 
-@interface SocketScannerTestsObjC : XCTestCase <AcceptSDKDelegate, WDAcceptScanning>
+@interface SocketScannerTestsObjC : BaseTestsObcj <WDAcceptScanning>
 {
-    __block NSError *returnedErr;
-    __weak XCTestExpectation *expectation;
-    AcceptSDK *sdk;
     __block NSArray *scannersArray;
 }
 
@@ -36,20 +34,6 @@
 - (void)setUp
 {
     [super setUp];
-    self.continueAfterFailure = NO;
-    sdk = [AcceptSDK sharedInstance];
-    expectation = [self expectationWithDescription:@"Setup"];
-    [sdk setupWithEnvironment:AcceptEnvironmentPublicTest username:KUSERNAME password:KPASSWORD completion:^(WDAcceptMerchantUser * _Nullable currentUser, WDAcceptMerchantCashier * _Nullable cashier, NSError * _Nullable error) {
-        [sdk addDelegate:self];
-        [sdk setDevMode:YES]; //Setting dev mode as enabled will write logs in your app's document folder and fill the console log with debug messages - do not forget to disable it
-                              //before releasing your app to the public!!
-        [AcceptSDK ddSetLogLevel:DDLogLevelInfo];
-        [expectation fulfill];
-    }];
-    
-    [self waitForExpectationsWithTimeout:25 handler:nil];
-    
-    XCTAssert(true,@"Setup success");
 }
 
 -(void)testSocketScanner
@@ -64,7 +48,7 @@
     //paired to your iOS device.
     //--------------------------------------
     expectation = [self expectationWithDescription:@"Discovering devices"];
-    [self discoverDevices];
+    [self discoverDevices:WDASocketExtensionUUID];
     [self waitForExpectationsWithTimeout:100 handler:nil];
     if (![scannersArray firstObject] || ![[scannersArray firstObject] isKindOfClass:[WDAcceptTerminal class]])
     {
@@ -77,18 +61,6 @@
     expectation = [self expectationWithDescription:@"Setting active scanner to listen to"];
     [self setDelegateAndActiveScanner];
     [self waitForExpectationsWithTimeout:100 handler:nil];
-}
-
--(void)discoverDevices
-{
-    DeviceDiscoveryCompletion completionTerminals = ^(NSArray *arr, NSError *err)
-    {
-        returnedErr = err;
-        scannersArray = arr;
-        [expectation fulfill];
-    };
-    
-    [sdk.scannerManager discoverDevices:WDASocketExtensionUUID completion:completionTerminals];
 }
 
 -(void)setDelegateAndActiveScanner

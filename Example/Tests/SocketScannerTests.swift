@@ -10,39 +10,13 @@ import Foundation
 import XCTest
 import Accept
 
-class SocketScannerTestsSwift: XCTestCase, AcceptSDKDelegate, WDAcceptManagerDelegate
+class SocketScannerTestsSwift: BaseTestsSwift, WDAcceptManagerDelegate
 {
-    var returnedErr : Error!
-    var expectation : XCTestExpectation!
-    var sdk : AcceptSDK!
-    var selectedDevice : WDAcceptTerminal?
-
     override func setUp()
     {
         super.setUp()
-        self.continueAfterFailure = false
-        sdk = AcceptSDK.sharedInstance()
-        expectation = self.expectation(description: "Setup")
-        weak var welf = self
-        
-        sdk.setup(with: .development, username: KUSERNAME, password: KPASSWORD, completion:{( currentUser:WDAcceptMerchantUser? , cashier:WDAcceptMerchantCashier?, error:Error?) in
-            
-            welf?.sdk.add(self)
-            welf?.sdk.setDevMode(true) //Setting dev mode as enabled will write logs in your app's document folder and fill the console log with debug messages - Do not forget to disable it before releasing your app to the public!!
-            AcceptSDK.ddSetLogLevel(DDLogLevel.info.rawValue)
-            //Under StarIO or StarMicronics you can select two types of hardware, the mPOP (WDAMPOPExtensionUUID) and the regular Star Micronics CB2002 (WDAStarMicronicsExtensionUUID). Both operate in the same way, with the second not having barcode reader built-in.
-            welf?.expectation.fulfill()
-        })
-
-        self.waitForExpectations(timeout: 25, handler: nil)
-    }
-    
-    override func tearDown()
-    {
-        super.tearDown()
     }
   
-    
     func testSocketScanner()
     {
         #if arch(i386) || arch(x86_64)
@@ -55,7 +29,7 @@ class SocketScannerTestsSwift: XCTestCase, AcceptSDKDelegate, WDAcceptManagerDel
         //PART 1: We discover Socket scanners paired to your iOS device.
         //--------------------------------------
         expectation = self.expectation(description: "Discovering devices")
-        self.discoverDevices()
+        self.discoverDevices(.WDASocketExtensionUUID)
         self.waitForExpectations(timeout: 100, handler: nil)
         if (self.selectedDevice == nil)
         {
@@ -67,16 +41,6 @@ class SocketScannerTestsSwift: XCTestCase, AcceptSDKDelegate, WDAcceptManagerDel
         expectation = self.expectation(description: "Setting active scanner to listen to")
         self.setDelegateAndActiveScanner()
         self.waitForExpectations(timeout: 100, handler: nil)
-    }
-    
-    func discoverDevices()
-    {
-        weak var welf = self
-        sdk.scannerManager.discoverDevices(.WDASocketExtensionUUID, completion: {(arr : [WDAcceptTerminal]?, error : Error?) in
-            welf?.selectedDevice = arr?.first
-            welf?.returnedErr = error
-            welf?.expectation.fulfill()
-        })
     }
     
     func setDelegateAndActiveScanner()
@@ -101,8 +65,12 @@ class SocketScannerTestsSwift: XCTestCase, AcceptSDKDelegate, WDAcceptManagerDel
     func device(_ device: WDAcceptTerminal, dataReceived: Data) //Data received through barcode scanner
     {
         //It is a good practice to remove control characters as scanners have the bad tendency to add garbage at the end
-        let barcodeAsText = self.removeSpecialCharsFromString(text: String.init(data: dataReceived, encoding: String.Encoding.utf8)!)
-        print("Barcode read with value as string: \(barcodeAsText)")
+        if let dataReceivedAsText = String.init(data: dataReceived,
+                                                encoding: String.Encoding.utf8)
+        {
+            let barcodeAsText = self.removeSpecialCharsFromString(text: dataReceivedAsText)
+            print("Barcode read with value as string: \(barcodeAsText)")
+        }
         self.expectation.fulfill()
     }
     

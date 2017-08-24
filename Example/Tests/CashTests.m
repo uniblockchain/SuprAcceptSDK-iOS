@@ -11,19 +11,10 @@
 #import "SaleHelper.h"
 #import "UserHelper.h"
 #import "DDLog.h"
+#import "BaseTests.h"
 
-@interface CashTestsObcj : XCTestCase <AcceptSDKDelegate>
+@interface CashTestsObcj : BaseTestsObcj
 {
-    __block NSError *returnedErr;
-    __weak XCTestExpectation *expectation;
-    AcceptSDK *sdk;
-    SaleHelper *saleHelper;
-    UserHelper *userHelper;
-    __block WDAcceptMerchantUser *loggedUser;
-    __block WDAcceptCashRegister *cashRegister;
-    __block WDAcceptCashShift *lastShift;
-    __block WDAcceptSaleRequest *aSale;
-    __block WDAcceptSaleResponse *saleResponse;
     __block BOOL cashOperationSucceed;
 }
 @end
@@ -34,28 +25,6 @@
 - (void)setUp
 {
     [super setUp];
-    self.continueAfterFailure = NO;
-    sdk = [AcceptSDK sharedInstance];
-    saleHelper = [SaleHelper sharedInstance];
-    userHelper = [UserHelper sharedInstance];
-    expectation = [self expectationWithDescription:@"Setup"];
-    
-    [sdk setupWithEnvironment:AcceptEnvironmentPublicTest username:KUSERNAME password:KPASSWORD completion:^(WDAcceptMerchantUser * _Nullable currentUser, WDAcceptMerchantCashier * _Nullable cashier, NSError * _Nullable error) {
-        [sdk addDelegate:self];
-        [sdk setDevMode:YES]; //Setting dev mode as enabled will write logs in your app's document folder and fill the console log with debug messages - do not forget to disable it
-                              //before releasing your app to the public!!
-        [AcceptSDK ddSetLogLevel:DDLogLevelInfo];
-        [expectation fulfill];
-    }];
-    
-    [self waitForExpectationsWithTimeout:25 handler:nil];
-    
-    XCTAssert(true,@"Setup success");
-}
-
-- (void)tearDown
-{
-    [super tearDown];
 }
 
 /*
@@ -65,8 +34,6 @@
  and opening of shifts, and pay In or Out operations.
  Keep track of the errors though, as the status of the last shift will determine the
  approval of some requests run out of the following sequence of events.
- 
- For readability, test definition has been presented first, and SDK usage comes afterwards.
  
  */
 
@@ -150,7 +117,7 @@
             [[UserHelper sharedInstance] storeOpenShiftId:lastShift.internalId];
         }
         
-        
+    
         //PART 5: We request activities of a shift
         //--------------------------------------
         expectation = [self expectationWithDescription:@"Gettig Activities of a Shift"];
@@ -199,19 +166,6 @@
     }
 }
 
--(void)loginAndGetUserData
-{
-    MerchantDetailCompletion completion = ^(WDAcceptMerchantUser *merchantUser, NSError *err)
-    {
-        loggedUser = merchantUser;
-        returnedErr = err;
-        [expectation fulfill];
-    };
-    loggedUser = nil;
-    [[sdk userManager] currentUser:completion];
-}
-
-
 -(void)getCashRegisters
 {
      [[sdk cashManager] cashRegisters:loggedUser.merchant.merchantId
@@ -219,9 +173,14 @@
                      cashDrawerVendor:nil
                            completion:^(NSArray<WDAcceptCashRegister *> * arrCashiers, NSError * cashiersErr)
      {
-         //Note: you may have several cash registers in the arrCashiers, and you can select any of them if marked as active.
-         //Only for testing purposes, we select the first one here by default
-         cashRegister = [arrCashiers firstObject];
+         //Note: you may have several cash registers in the arrCashiers, and you can select any of them if marked as enabled. You can allow the user to do the selection through some picker for example
+         for (WDAcceptCashRegister *cashReg in arrCashiers)
+         {
+             if ([cashReg.drawerStatus isEqualToString:@"ENABLED"]) {
+                 cashRegister = cashReg;
+                 break;
+             }
+         }
          returnedErr = cashiersErr;
         [expectation fulfill];
      }];
@@ -235,7 +194,9 @@
     query.orderBy = AcceptShiftQueryOrderByOpenTime;
     query.orderSort = AcceptQuerySortDescending;
     
-    [[sdk cashManager] shifts:cashRegister.internalId query:query completion:^(NSArray<WDAcceptCashShift *> * arrShifts, NSError * cashiersErr)
+    [[sdk cashManager] shifts:cashRegister.internalId
+                        query:query
+                   completion:^(NSArray<WDAcceptCashShift *> * arrShifts, NSError * cashiersErr)
      {
          returnedErr = cashiersErr;
          //if shifts founds, with a openTime descending sorting, the first will always be the oldest shift. We will check the status and open date, and close it or use it if it is still valid. If no shifts found for given cash register, We will create a new one further in the test
@@ -247,7 +208,9 @@
 -(void)getCloseShiftDetailsThenOpen //Used as a Z-Report example
 {
      @weakify(self);
-    [[sdk cashManager] shiftDetails:lastShift.internalId cashRegister:cashRegister.internalId completion:^(WDAcceptCashShift * _Nullable cashShift, NSError * _Nullable err )
+    [[sdk cashManager] shiftDetails:lastShift.internalId
+                       cashRegister:cashRegister.internalId
+                         completion:^(WDAcceptCashShift * _Nullable cashShift, NSError * _Nullable err )
      {
          @strongify(self);
          if (!err && cashShift && cashShift.shiftReport && cashShift.shiftReport.reportCategories.count)
@@ -267,7 +230,10 @@
 -(void)openShift
 {
      @weakify(self);
-    [[sdk cashManager] openShift:cashRegister.internalId  note:@"Here you can include a text note" amount:[NSDecimalNumber decimalNumberWithString:@"100"] completion:^(BOOL success, NSError *error)
+    [[sdk cashManager] openShift:cashRegister.internalId
+                            note:@"Here you can include a text note"
+                          amount:[NSDecimalNumber decimalNumberWithString:@"100"]
+                      completion:^(BOOL success, NSError *error)
      {
          @strongify(self);
          returnedErr = error;
@@ -286,7 +252,10 @@
 -(void)closeShift
 {
      @weakify(self);
-    [[sdk cashManager] closeShift:cashRegister.internalId  note:@"Here you can include a text note" amount:[NSDecimalNumber decimalNumberWithString:@"100"] completion:^(BOOL success, NSError *error)
+    [[sdk cashManager] closeShift:cashRegister.internalId
+                             note:@"Here you can include a text note"
+                           amount:[NSDecimalNumber decimalNumberWithString:@"100"]
+                       completion:^(BOOL success, NSError *error)
      {
          @strongify(self);
          returnedErr = error;
@@ -308,7 +277,10 @@
     query.page = 0;
     query.pageSize = 10;
     
-    [[sdk cashManager] getOperationsForShift:lastShift.internalId query:query belongingToCashRegister:cashRegister.internalId completion:^(NSArray<WDAcceptCashActivity *> * arrActivities, NSError * cashiersErr)
+    [[sdk cashManager] getOperationsForShift:lastShift.internalId
+                                       query:query
+                     belongingToCashRegister:cashRegister.internalId
+                                  completion:^(NSArray<WDAcceptCashActivity *> * arrActivities, NSError * cashiersErr)
      {
          //Cash activities are used for statistics.
          [expectation fulfill];
@@ -318,7 +290,11 @@
 -(void)doingCashOperation
 {
     //Note: The operation of paying cash In or Out of a register is determined by the sign of the amount. In the "Pay In" below, the amount -100 would do a "Pay Out".
-    [[sdk cashManager] cashOperation:cashRegister.internalId note:@"Here you can add a text note" amount:[NSDecimalNumber decimalNumberWithString:@"100"] currency:cashRegister.currency.code completion:^(BOOL success, NSError *error)
+    [[sdk cashManager] cashOperation:cashRegister.internalId
+                                note:@"Here you can add a text note"
+                              amount:[NSDecimalNumber decimalNumberWithString:@"100"]
+                            currency:cashRegister.currency.code
+                          completion:^(BOOL success, NSError *error)
      {
          cashOperationSucceed = (!error && success);
          [expectation fulfill];
@@ -358,20 +334,39 @@
     //We will define a dummy payment configuration as an example. Feel free to modify and add content; the sale complexity is up to you.
     WDAcceptPaymentConfig *paymentConfiguration = [WDAcceptPaymentConfig new];
     aSale = [[SaleHelper sharedInstance] newSale];
-    [aSale addSaleItem:[NSDecimalNumber decimalNumberWithString:@"2.5"] quantity:5 taxRate:[[UserHelper sharedInstance] preferredSaleItemTax] itemDescription:@"Red Apple" productId:@"dummyId1"];
-    [aSale addSaleItem:[NSDecimalNumber decimalNumberWithString:@"1.34"] quantity:2 taxRate:[[UserHelper sharedInstance] preferredSaleItemTax] itemDescription:@"Pineapple" productId:@"dummyId2"];
+    [aSale addSaleItem:[NSDecimalNumber decimalNumberWithString:@"2.5"]
+              itemRate:nil
+              quantity:5
+               taxRate:[[UserHelper sharedInstance] preferredSaleItemTax]
+       itemDescription:@"Red Apple"
+             productId:@"dummyId1"];
+    [aSale addSaleItem:[NSDecimalNumber decimalNumberWithString:@"1.34"]
+              itemRate:nil
+              quantity:2
+               taxRate:[[UserHelper sharedInstance] preferredSaleItemTax]
+       itemDescription:@"Pineapple"
+             productId:@"dummyId2"];
     //You can add a service charge to the whole basket
-    [aSale addServiceCharge:[[UserHelper sharedInstance] serviceChargeRate] taxRate:[[UserHelper sharedInstance] serviceChargeTax]];
+    [aSale addServiceCharge:[[UserHelper sharedInstance]
+                             serviceChargeRate]
+                    taxRate:[[UserHelper sharedInstance] serviceChargeTax]];
     //You can add a tip of any value you want. Notice that backend validate taxes, so their values should match the ones your merchan has defined in setup.
-    [aSale addGratuity:[NSDecimalNumber decimalNumberWithString:@"1"] taxRate:[[UserHelper sharedInstance] tipTax]];
+    [aSale addGratuity:[NSDecimalNumber decimalNumberWithString:@"1"]
+               taxRate:[[UserHelper sharedInstance] tipTax]];
     //You can add a discount for the whole basket when productId is nil, or per productId otherwise
-    [aSale addDiscount:[NSDecimalNumber decimalNumberWithString:@"6"] productId:nil];
+    [aSale addDiscount:[NSDecimalNumber decimalNumberWithString:@"6"]
+             productId:nil];
     paymentConfiguration.sale = aSale;
     paymentConfiguration.sale.cashRegisterId = cashRegister? cashRegister.internalId : nil;
     paymentConfiguration.sale.shiftId = lastShift? lastShift.internalId : @"";
     [paymentConfiguration.sale resetPayments];
     [paymentConfiguration.sale addCashPayment:paymentConfiguration.sale.totalToPay];
-    [[sdk saleManager] pay:paymentConfiguration progress:progress collectSignature:signatureRequiredRequest verifySignature:verifySignature cardApplication:cardAppSelection completion:completion];
+    [[sdk saleManager] pay:paymentConfiguration
+                  progress:progress
+          collectSignature:signatureRequiredRequest
+           verifySignature:verifySignature
+           cardApplication:cardAppSelection
+                completion:completion];
 }
 
 -(void)refundTransaction
@@ -385,12 +380,19 @@
     WDAcceptSaleItem *anItem = [aSale.items firstObject];
     
     //This is an example of partial refund: only one item is refunded
-    [saleToBeRefunded addSaleItem:anItem.unitPrice quantity:1 taxRate:anItem.taxRate itemDescription:anItem.itemDescription productId:anItem.externalProductId];
+    [saleToBeRefunded addSaleItem:anItem.unitPrice
+                         itemRate:nil
+                         quantity:1
+                          taxRate:anItem.taxRate
+                  itemDescription:anItem.itemDescription
+                        productId:anItem.externalProductId];
     
     [saleToBeRefunded addCashPayment:[saleToBeRefunded totalToPay]];
     saleResponse = nil;
     
-    [[sdk saleManager] refundSale:saleToBeRefunded message:@"Refunded in demo app for testing reasons" completion:^(WDAcceptSaleResponse *acceptSale, NSError *error)
+    [[sdk saleManager] refundSale:saleToBeRefunded
+                          message:@"Refunded in demo app for testing reasons"
+                       completion:^(WDAcceptSaleResponse *acceptSale, NSError *error)
      {
          returnedErr = error;
          saleResponse = acceptSale;

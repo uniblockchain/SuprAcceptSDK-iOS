@@ -11,15 +11,10 @@
 #import "SaleHelper.h"
 #import "UserHelper.h"
 #import "DDLog.h"
+#import "BaseTests.h"
 
-@interface ERPTestsObjC : XCTestCase <AcceptSDKDelegate>
+@interface ERPTestsObjC : BaseTestsObcj
 {
-    __block NSError *returnedErr;
-    __weak XCTestExpectation *expectation;
-    AcceptSDK *sdk;
-    SaleHelper *saleHelper;
-    UserHelper *userHelper;
-    __block WDAcceptMerchantUser *loggedUser;
     __block WDAcceptMember *member;
     __block BOOL discountsReceived;
     __block BOOL stocksReceived;
@@ -32,28 +27,6 @@
 - (void)setUp
 {
     [super setUp];
-    self.continueAfterFailure = NO;
-    discountsReceived = NO;
-    sdk = [AcceptSDK sharedInstance];
-    saleHelper = [SaleHelper sharedInstance];
-    userHelper = [UserHelper sharedInstance];
-    expectation = [self expectationWithDescription:@"Setup"];
-    [sdk setupWithEnvironment:AcceptEnvironmentPublicTest username:KUSERNAME password:KPASSWORD completion:^(WDAcceptMerchantUser * _Nullable currentUser, WDAcceptMerchantCashier * _Nullable cashier, NSError * _Nullable error) {
-        [sdk addDelegate:self];
-        [sdk setDevMode:YES]; //Setting dev mode as enabled will write logs in your app's document folder and fill the console log with debug messages - do not forget to disable it
-                              //before releasing your app to the public!!
-        [AcceptSDK ddSetLogLevel:DDLogLevelInfo];
-        [expectation fulfill];
-    }];
-    
-    [self waitForExpectationsWithTimeout:25 handler:nil];
-    
-    XCTAssert(true,@"Setup success");
-}
-
-- (void)tearDown
-{
-    [super tearDown];
 }
 
 /*
@@ -144,7 +117,11 @@
     };
     
     //You can optimize the search in your app UI by choosing what parameter you want to choose between member id, member surname and member firstname
-    [[sdk customerManager] memberInformation:nil surname:nil firstName:searchString exactMatch:NO completion:completion];
+    [[sdk customerManager] memberInformation:nil
+                                     surname:nil
+                                   firstName:searchString
+                                  exactMatch:NO
+                                  completion:completion];
 }
 
 -(void)fetchDiscountPrices
@@ -158,7 +135,11 @@
     
     NSArray *productIDs = [NSArray arrayWithObjects:@"productA", @"productB", nil];
     
-    [[sdk inventoryManager] productPriceForMember:member.memberId externalIDs:productIDs currency:@"EUR" grossPrice:YES completion:completion];
+    [[sdk inventoryManager] productPriceForMember:member.memberId
+                                      externalIDs:productIDs
+                                         currency:@"EUR"
+                                       grossPrice:YES
+                                       completion:completion];
 }
 
 //Alternatively you can ask stock for a series of products in a single shop, instead of a single product in all shops as above.
@@ -175,7 +156,8 @@
     
     WDAcceptProductCatalogueProduct *aProduct = [WDAcceptProductCatalogueProduct new];
     aProduct.externalId = @"product external (SAP) ID";
-    [[sdk inventoryManager] productStockInAllShops:aProduct completion:completion];
+    [[sdk inventoryManager] productStockInAllShops:aProduct
+                                        completion:completion];
 }
 
 @end

@@ -10,13 +10,11 @@
 #import <libextobjc/EXTScope.h>
 #import "UserHelper.h"
 #import "DDLog.h"
+#import "BaseTests.h"
 
-@interface StatsTestsObjC : XCTestCase <AcceptSDKDelegate>
+@interface StatsTestsObjC : BaseTestsObcj
 {
-    __block NSError *returnedErr;
-    __weak XCTestExpectation *expectation;
-    AcceptSDK *sdk;
-    WDAcceptMerchantUser *loggedUser;
+
 }
 
 @end
@@ -26,26 +24,7 @@
 - (void)setUp
 {
     [super setUp];
-    self.continueAfterFailure = NO;
-    sdk = [AcceptSDK sharedInstance];
-    expectation = [self expectationWithDescription:@"Setup"];
-    [sdk setupWithEnvironment:AcceptEnvironmentPublicTest username:KUSERNAME password:KPASSWORD completion:^(WDAcceptMerchantUser * _Nullable currentUser, WDAcceptMerchantCashier * _Nullable cashier, NSError * _Nullable error) {
-        [sdk addDelegate:self];
-        [sdk setDevMode:YES]; //Setting dev mode as enabled will write logs in your app's document folder and fill the console log with debug messages - Do not forget to disable it before releasing your app to the public!!
-        [AcceptSDK ddSetLogLevel:DDLogLevelInfo];
-        [expectation fulfill];
-    }];
-    
-    [self waitForExpectationsWithTimeout:25 handler:nil];
-    
-    XCTAssert(true,@"Setup success");
 }
-
-- (void)tearDown
-{
-    [super tearDown];
-}
-
 
 -(void)testTransactionsStatistics
 {
@@ -65,18 +44,6 @@
     expectation = [self expectationWithDescription:@"Requesting Stats"];
     [self getSaleStats];
     [self waitForExpectationsWithTimeout:100 handler:nil];
-}
-
--(void)loginAndGetUserData
-{
-    MerchantDetailCompletion completion = ^(WDAcceptMerchantUser *merchantUser, NSError *err)
-    {
-        loggedUser = merchantUser;
-        returnedErr = err;
-        [expectation fulfill];
-    };
-    loggedUser = nil;
-    [[sdk userManager] currentUser:completion];
 }
 
 -(void)getSaleStats
