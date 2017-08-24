@@ -1,0 +1,10 @@
+framework module Accept {
+  umbrella header "Accept.h"
+
+  export *
+  module * { export * }
+}
+
+module Accept.Swift {
+    header "Accept-Swift.h"
+}
