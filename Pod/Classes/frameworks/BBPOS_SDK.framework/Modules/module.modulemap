@@ -1,6 +1,0 @@
-framework module BBPOS_SDK {
-  umbrella header "BBPOS_SDK.h"
-
-  export *
-  module * { export * }
-}
