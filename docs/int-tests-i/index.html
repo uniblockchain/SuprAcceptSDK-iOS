@@ -1,0 +1,1621 @@
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="shortcut icon" href="../assets/favicon.png">
+      
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.6.4">
+    
+    
+      
+        <title>iOS Integration Tests - SUPR Accept SDK</title>
+      
+    
+    
+      <script src="../assets/javascripts/modernizr-1df76c4e58.js"></script>
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application-e2807e330f.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-f78e5cb881.palette.css">
+      
+    
+    
+      
+        
+        
+        
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    
+      <link rel="stylesheet" href="../stylesheets/minimal-acceptsdk.css">
+    
+    
+  </head>
+  
+  
+  
+  
+    <body data-md-color-primary="indigo" data-md-color-accent="red">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="drawer">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
+    <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <a href=".." title="SUPR Accept SDK" class="md-logo md-header-nav__button">
+            <img src="../images/logo.svg" width="24" height="24">
+          </a>
+        
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <span class="md-flex__ellipsis md-header-nav__title">
+          
+            
+              
+                <span class="md-header-nav__parent">
+                  Setup
+                </span>
+              
+                <span class="md-header-nav__parent">
+                  Set up on iOS
+                </span>
+              
+            
+            iOS Integration Tests
+          
+        </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
+          
+<div class="md-search" data-md-component="search">
+  <label class="md-search__overlay" for="search"></label>
+  <div class="md-search__inner">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" accesskey="s" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <label class="md-icon md-search__icon" for="search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">close</button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta" data-md-lang-result-none="No matching documents" data-md-lang-result-one="1 matching document" data-md-lang-result-other="# matching documents">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <div class="md-header-nav__source">
+          
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="drawer">
+    
+      <i class="md-logo md-nav__button">
+        <img src="../images/logo.svg">
+      </i>
+    
+    SUPR Accept SDK
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Welcome" class="md-nav__link">
+      Welcome
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Start
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Start
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../start/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../basics/" title="The Basics" class="md-nav__link">
+      The Basics
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../using/" title="Using this Documentation" class="md-nav__link">
+      Using this Documentation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../mpos-architecture/" title="The mPOS Architecture" class="md-nav__link">
+      The mPOS Architecture
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../sdk-architecture/" title="The SDK Architecture" class="md-nav__link">
+      The SDK Architecture
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Setup
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Setup
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1" type="checkbox" id="nav-3-1">
+    
+    <label class="md-nav__link" for="nav-3-1">
+      Set up on Android
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-1">
+        Set up on Android
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-setup-android-gradle/" title="Automated Setup with Jitpack" class="md-nav__link">
+      Automated Setup with Jitpack
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-setup-android-manual/" title="Set up Manually" class="md-nav__link">
+      Set up Manually
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-tests-a/" title="Android Integration Tests" class="md-nav__link">
+      Android Integration Tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-initialization-android/" title="Android SDK Initialization" class="md-nav__link">
+      Android SDK Initialization
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-ov-a/" title="Android SDK Design Principles" class="md-nav__link">
+      Android SDK Design Principles
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-2" type="checkbox" id="nav-3-2" checked>
+    
+    <label class="md-nav__link" for="nav-3-2">
+      Set up on iOS
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-2">
+        Set up on iOS
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-setup-ios-cocoa/" title="Automated Setup with Cocoapods" class="md-nav__link">
+      Automated Setup with Cocoapods
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-setup-ios-manual/" title="Set up Manually" class="md-nav__link">
+      Set up Manually
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        iOS Integration Tests
+      </label>
+    
+    <a href="./" title="iOS Integration Tests" class="md-nav__link md-nav__link--active">
+      iOS Integration Tests
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cashtests" title="CashTests" class="md-nav__link">
+    CashTests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cataloguetests" title="CatalogueTests" class="md-nav__link">
+    CatalogueTests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datecsprintertest" title="DatecsPrinterTest" class="md-nav__link">
+    DatecsPrinterTest
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#erp-tests" title="ERP Tests" class="md-nav__link">
+    ERP Tests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#salestests" title="SalesTests" class="md-nav__link">
+    SalesTests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#socketscannertests" title="SocketScannerTests" class="md-nav__link">
+    SocketScannerTests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spiretests" title="SpireTests" class="md-nav__link">
+    SpireTests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stariotests" title="StarIOTests" class="md-nav__link">
+    StarIOTests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#statstests" title="StatsTests" class="md-nav__link">
+    StatsTests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usertests" title="UserTests" class="md-nav__link">
+    UserTests
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-initialization-ios/" title="iOS SDK Initialization" class="md-nav__link">
+      iOS SDK Initialization
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Integrate
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Integrate
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-1" type="checkbox" id="nav-4-1">
+    
+    <label class="md-nav__link" for="nav-4-1">
+      Sales Manager
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-1">
+        Sales Manager
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-sale-overview/" title="Sales Manager Overview" class="md-nav__link">
+      Sales Manager Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-salerequest-cash/" title="Sale Request - Cash" class="md-nav__link">
+      Sale Request - Cash
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-salerequest-card/" title="Sales Request - Card" class="md-nav__link">
+      Sales Request - Card
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-payment/" title="Payment" class="md-nav__link">
+      Payment
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-complete/" title="A Complete Sale" class="md-nav__link">
+      A Complete Sale
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-salereturns/" title="Sale Return" class="md-nav__link">
+      Sale Return
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-salereversals/" title="Sale Reversal" class="md-nav__link">
+      Sale Reversal
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-saleshistory/" title="Sales History" class="md-nav__link">
+      Sales History
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-salesstatistics/" title="Sales Statistics" class="md-nav__link">
+      Sales Statistics
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-2" type="checkbox" id="nav-4-2">
+    
+    <label class="md-nav__link" for="nav-4-2">
+      Cash Manager
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-2">
+        Cash Manager
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-cash-overview/" title="Cash Manager Overview" class="md-nav__link">
+      Cash Manager Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-cash-register/" title="Cash Registers" class="md-nav__link">
+      Cash Registers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-cash-shift-open/" title="Open Shift" class="md-nav__link">
+      Open Shift
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-cash-shift-close/" title="Close Shift" class="md-nav__link">
+      Close Shift
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-cash-payinout/" title="Pay In/Out" class="md-nav__link">
+      Pay In/Out
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-cash-shift-activity/" title="Shift Activity" class="md-nav__link">
+      Shift Activity
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-cash-shift-report/" title="Shift Report" class="md-nav__link">
+      Shift Report
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-cash-cashiers/" title="Cashiers" class="md-nav__link">
+      Cashiers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-cash-cashiers-pin/" title="Cashiers With PIN" class="md-nav__link">
+      Cashiers With PIN
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-3" type="checkbox" id="nav-4-3">
+    
+    <label class="md-nav__link" for="nav-4-3">
+      Inventory Manager
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-3">
+        Inventory Manager
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-inventory-overview/" title="Inventory Manager Overview" class="md-nav__link">
+      Inventory Manager Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-maint-prod-catalogues/" title="Maintain Product Catalogues" class="md-nav__link">
+      Maintain Product Catalogues
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-maint-prod-categories/" title="Maintain Product Categories" class="md-nav__link">
+      Maintain Product Categories
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-maint-product/" title="Maintain Products" class="md-nav__link">
+      Maintain Products
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-prod-changes/" title="Product Changes" class="md-nav__link">
+      Product Changes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-prod-changes-images/" title="Product Images Changes" class="md-nav__link">
+      Product Images Changes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-product-stocks-erp/" title="Product Stocks (ERP)" class="md-nav__link">
+      Product Stocks (ERP)
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-product-prices-erp/" title="Product Prices (ERP)" class="md-nav__link">
+      Product Prices (ERP)
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-4" type="checkbox" id="nav-4-4">
+    
+    <label class="md-nav__link" for="nav-4-4">
+      Terminal Manager
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-4">
+        Terminal Manager
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-terminal-overview/" title="Terminal Manager Overview" class="md-nav__link">
+      Terminal Manager Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-terminal-discovery/" title="Terminal Discovery" class="md-nav__link">
+      Terminal Discovery
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-terminal-update/" title="Update Firmware" class="md-nav__link">
+      Update Firmware
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-terminal-avail/" title="Check Available Updates" class="md-nav__link">
+      Check Available Updates
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-5" type="checkbox" id="nav-4-5">
+    
+    <label class="md-nav__link" for="nav-4-5">
+      Cash Drawer Manager
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-5">
+        Cash Drawer Manager
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-cashdrawer-overview/" title="Cash Drawer Overview" class="md-nav__link">
+      Cash Drawer Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-cashdrawer-discovery/" title="Cash Drawer Discovery" class="md-nav__link">
+      Cash Drawer Discovery
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-cashdrawer-open/" title="Open Cash Drawer" class="md-nav__link">
+      Open Cash Drawer
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-cashdrawer-connect/" title="Check Connection Status" class="md-nav__link">
+      Check Connection Status
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-6" type="checkbox" id="nav-4-6">
+    
+    <label class="md-nav__link" for="nav-4-6">
+      Printer Manager
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-6">
+        Printer Manager
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-printer-overview/" title="Printer Manager Overview" class="md-nav__link">
+      Printer Manager Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-printer-discovery/" title="Printer Discovery" class="md-nav__link">
+      Printer Discovery
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-print/" title="Print Receipt" class="md-nav__link">
+      Print Receipt
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-print-receipt/" title="Print Receipt (UIImage)" class="md-nav__link">
+      Print Receipt (UIImage)
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-print-paperstatus/" title="Check Paper Status" class="md-nav__link">
+      Check Paper Status
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-7" type="checkbox" id="nav-4-7">
+    
+    <label class="md-nav__link" for="nav-4-7">
+      Scanner Manager
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-7">
+        Scanner Manager
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-scanner-overview/" title="Scanner Manager Overview" class="md-nav__link">
+      Scanner Manager Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-scanner-discovery/" title="Scanner Discovery" class="md-nav__link">
+      Scanner Discovery
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-customermanager/" title="Customer Manager (ERP)" class="md-nav__link">
+      Customer Manager (ERP)
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../int-usermanager/" title="User Manager" class="md-nav__link">
+      User Manager
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      References
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        References
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../androidref/" title="Reference - Android SDK" class="md-nav__link">
+      Reference - Android SDK
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../iosref/" title="Reference - iOS SDK" class="md-nav__link">
+      Reference - iOS SDK
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../glossary/" title="Glossary" class="md-nav__link">
+      Glossary
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cashtests" title="CashTests" class="md-nav__link">
+    CashTests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cataloguetests" title="CatalogueTests" class="md-nav__link">
+    CatalogueTests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datecsprintertest" title="DatecsPrinterTest" class="md-nav__link">
+    DatecsPrinterTest
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#erp-tests" title="ERP Tests" class="md-nav__link">
+    ERP Tests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#salestests" title="SalesTests" class="md-nav__link">
+    SalesTests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#socketscannertests" title="SocketScannerTests" class="md-nav__link">
+    SocketScannerTests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spiretests" title="SpireTests" class="md-nav__link">
+    SpireTests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stariotests" title="StarIOTests" class="md-nav__link">
+    StarIOTests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#statstests" title="StatsTests" class="md-nav__link">
+    StatsTests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usertests" title="UserTests" class="md-nav__link">
+    UserTests
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="ios-integration-tests">iOS Integration Tests</h1>
+<p>A variety of integration tests are provided with the SDK, in both Objective-C and Swift. They are stored in the <code class="codehilite">Example</code> folder below your project folder. </p>
+<p>These tests useful for testing your hardware and back-end connection as well as familiarizing yourself with typical application code that uses the SDK. </p>
+<p>Each Test file has detailed comments that walk you through the code. Each Test is described briefly below. </p>
+<h2 id="cashtests">CashTests</h2>
+<p>Demonstrates a complete usage of the Cash Management feature including how to:</p>
+<ul>
+<li>login and request user data</li>
+<li>check for available cash registers and get one</li>
+<li>deal with various shift-related activities, such as open and close</li>
+<li>pay in and pay out</li>
+</ul>
+<p>The code also demonstrates how to process: </p>
+<ul>
+<li>a complete cash sale with a basket full of items</li>
+<li>a refund of a sale</li>
+</ul>
+<h2 id="cataloguetests">CatalogueTests</h2>
+<p>Illustrates how to request:</p>
+<ul>
+<li>product catalogues</li>
+<li>product categories</li>
+<li>products</li>
+<li>product images</li>
+</ul>
+<p>This data can then be used to display a product catalogue within your payment acceptance app, including images of each product.</p>
+<h2 id="datecsprintertest">DatecsPrinterTest</h2>
+<p>Enables you to test a Datecs printer, including:</p>
+<ul>
+<li>get a sale</li>
+<li>detect a printer</li>
+<li>print a receipt</li>
+</ul>
+<p>The Datecs printer only works with the AcceptReceipt object. The StarIO printer works with:</p>
+<ul>
+<li>PDF</li>
+<li>UIImage</li>
+</ul>
+<h2 id="erp-tests">ERP Tests</h2>
+<p>This test helps you validate queries directed at an SAP back-end ERP. For more information about using an ERP as part of your back-end, consult <a href="../mpos-architecture/">Using an ERP</a>. </p>
+<p>Before using this test, you must:</p>
+<ul>
+<li>have ERP enabled in your back-end</li>
+<li>ensure that you have actual data, such as product catalogue, members, products and so forth in your ERP</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Members is another term for Customers in some ERP systems.</p>
+</div>
+<p>The code demonstrates how to:</p>
+<ul>
+<li>search for members</li>
+<li>request discount prices for specific members</li>
+<li>request stock levels for specific products</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Stock level refers to the quantity of products in inventory. </p>
+</div>
+<p>See <a href="../int-product-stocks-erp">Product Stocks (ERP)</a> for more information about retrieving and using product stock levels from your ERP system. </p>
+<h2 id="salestests">SalesTests</h2>
+<p>Provides a basic test of a sale, including:</p>
+<ul>
+<li>login and request user data</li>
+<li>request a sale from the current user</li>
+<li>save the sale response so it can be used by other tests, such as the Printer tests</li>
+<li>query the sale</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you dive in and start reading the code, note that objects are named with a prefix of <code class="codehilite">WDAccept</code>. <code class="codehilite">WD</code> is short for Wirecard. So to read the object name, ignore this prefix. For example, <code class="codehilite">WDAcceptSalesQuery</code> is the Sales Query object. <code class="codehilite">WDAcceptMerchantUser</code> is the Merchant User object. </p>
+</div>
+<h2 id="socketscannertests">SocketScannerTests</h2>
+<p>The SDK supports the SocketMobile Series 7 scanner. This Test allows you to test it, including:</p>
+<ul>
+<li>discover paired scanners</li>
+<li>listen for activity on the paired scanner</li>
+<li>process a scanned barcode</li>
+<li>handle battery level changes</li>
+</ul>
+<p>To use this test, a <code class="codehilite">barcode-example.png</code> image file is provided in the <code class="codehilite">AcceptDemo</code> folder, as shown:</p>
+<p><img alt="" src="../assets/barcode-example.png" /></p>
+<p>Scan this barcode when running this test to validate that your scanner is functioning properly.</p>
+<h2 id="spiretests">SpireTests</h2>
+<p>The SDK supports the Spire PosMate card reader terminal. This test allows you to validate that it functions properly withe SDK. To use this test, you must: </p>
+<ul>
+<li>have an actual iOS device because device simulators do not work for this test</li>
+<li>have a Spire terminal paired to your iOS device through your iOS device settings</li>
+</ul>
+<p>Once your hardware is ready, you can use the code to:</p>
+<ul>
+<li>discover paired iOS device</li>
+<li>check for updates for the device</li>
+<li>handle firmware updates</li>
+<li>process a card sale</li>
+<li>refund a sale</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The refund code is particularly useful if you are using an actual credit card to test because you will want to refund any purchases you make on a real card. </p>
+</div>
+<p>The code also demonstrates how to add a tip and a discount. And there is additional code to help you with Cash Management if you have this feature enabled in the back-end.</p>
+<h2 id="stariotests">StarIOTests</h2>
+<p>The SDK supports a variety of StarIO devices. This test helps you test them. Specifically, the code:</p>
+<ul>
+<li>detects paired devices</li>
+<li>opens the cash drawer</li>
+<li>prints a receipt</li>
+<li>scans a barcode</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The StarMicronics device does not have a barcode scanner. </p>
+</div>
+<h2 id="statstests">StatsTests</h2>
+<p>A simple implementation lets you test the statistics retrieval features of the SDK, including querying for:</p>
+<ul>
+<li>minimum, maximum and average sale amounts</li>
+<li>turnover</li>
+<li>transaction counts</li>
+</ul>
+<p>See the <a href="../int-salesstatistics/">Sales Statistics</a> chapter for complete information. </p>
+<h2 id="usertests">UserTests</h2>
+<p>Provides a variety of tests for user and credential management (i.e., username/password), including:</p>
+<ul>
+<li>get credentials for a user</li>
+<li>remind a user of their username</li>
+<li>handle a request by a user to reset their password</li>
+<li>allow the user to change their password</li>
+</ul>
+<p>This functionality is part of the User Manager component which is described in more detail in the <a href="../int-usermanager/">User Manager component chapter</a>. </p>
+                
+                  
+                
+              
+              
+                
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../int-setup-ios-manual/" title="Set up Manually" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Set up Manually
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../int-initialization-ios/" title="iOS SDK Initialization" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                iOS SDK Initialization
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="http://www.mkdocs.org" title="MkDocs">MkDocs</a>
+        and
+        <a href="http://squidfunk.github.io/mkdocs-material/" title="Material for MkDocs">
+          Material for MkDocs</a>
+      </div>
+      
+        
+  <div class="md-footer-social">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+      <a href="https://github.com/squidfunk" class="md-footer-social__link fa fa-github"></a>
+    
+      <a href="https://twitter.com/squidfunk" class="md-footer-social__link fa fa-twitter"></a>
+    
+      <a href="https://de.linkedin.com/in/martin-donath-20a95039" class="md-footer-social__link fa fa-linkedin"></a>
+    
+  </div>
+
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application-06a3e72efd.js"></script>
+      <script>app.initialize({url:{base:".."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>
