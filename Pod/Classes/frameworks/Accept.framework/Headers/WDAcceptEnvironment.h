@@ -36,6 +36,7 @@ typedef NS_ENUM(NSUInteger, AcceptEnvironmentType) {
 
 /**
  *  @class WDAcceptEnvironmentConfiguration
+ *  @brief Wirecard Accept Environment configuration 
  *  @discussion Accept Environment to be used for ReST services \n
  *  AcceptEnvironmentPublicTest to be used for Integration Tests and Development \n
  *  AcceptEnvironmentTypePROD to be used for Production application

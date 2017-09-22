@@ -1,16 +1,16 @@
 Pod::Spec.new do |s|
   s.name             = "SUPRAcceptSDK"
-  s.version          = "2.0.0"
-  s.summary          = "Wirecard Payment Platform SDK - credit card payments, Chip and PIN, Magstripe, Alipay"
+  s.version          = "2.1.0"
+  s.summary          = "Wirecard Point of Sale SDK - Accept Card, Cash, Alipay, Giftcard payments"
   s.description      = <<-DESC
-                       The library extends the Point of Sale to modern mobile environment. 
+                       The library extends the Point of Sale and alternative payment methods to modern mobile environment. 
                        Major Credit and Debit Card payment processing (Master, Visa, American Express, RuPay) and alternative Payment method support (Alipay)
                        
                        Fully integrated with licensed Wirecard Payment infrastructure.
                        
                        Offering additional business support such as:
                        * Sale Statistics
-                       * Cash Management
+                       * Cashier Management
                        * SAP byDesign integration
                        * Inventory Management
                        
@@ -33,9 +33,9 @@ Pod::Spec.new do |s|
                        * SocketMobile Series 7
 						
                        DESC
-  s.homepage         = "https://github.com/WirecardMobileServices/SuprAcceptSDK-iOS"
+  s.homepage         = "https://wirecardmobileservices.github.io/SuprAcceptSDK-Developer/"
   s.license          = 'MIT'
-  s.authors           = { "Radoslav Danko" => "radoslav.danko@wirecard.com","Francisco Fortes" => "francisco.fortes@wirecard.com","Marek Timko" => "marek.timko@wirecard.com"}
+  s.authors           = 'Radoslav Danko', 'Francisco Fortes', 'Marek Timko'
   s.source           = { :git => "https://github.com/WirecardMobileServices/SuprAcceptSDK-iOS.git", :tag => s.version.to_s }
   s.platform     = :ios, '9.0'
   s.requires_arc = true
@@ -51,7 +51,7 @@ Pod::Spec.new do |s|
     ss.dependency 'Lockbox' 
 	ss.dependency 'libextobjc/EXTScope', '~> 0.4'    
 	ss.dependency 'BerTlv'
-	ss.dependency 'CocoaLumberjack', '~> 3.0'    
+	ss.dependency 'CocoaLumberjack'    
   end  
    
 

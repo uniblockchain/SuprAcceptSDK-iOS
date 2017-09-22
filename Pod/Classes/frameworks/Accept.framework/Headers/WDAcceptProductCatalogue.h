@@ -15,11 +15,13 @@
 NS_ASSUME_NONNULL_BEGIN
 /**
  *  @class WDAcceptProductCatalogueCore
- *  @discussion  Product Catalogue core object
+ *  @brief  Product Catalogue core object
  **/
-@interface WDAcceptProductCatalogueCore : NSObject <NSCoding>
-@property (nullable, nonatomic, retain) NSString *productCatalogueId;
-@property (nullable, nonatomic, retain) NSNumber *version;
+@interface WDAcceptProductCatalogueCore : WDAcceptObject <NSCoding>
+@property (nullable, nonatomic, strong) NSString *productCatalogueId;
+@property (nullable, nonatomic, strong) NSString *name;
+@property (nullable, nonatomic, strong) NSDecimalNumber *discount;
+@property (nullable, nonatomic, strong) NSNumber *version;
 @end
 
 /**
@@ -27,6 +29,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  @discussion  Product Catalogue object
  **/
 @interface WDAcceptProductCatalogue : WDAcceptProductCatalogueCore
+
+@property (nullable, nonatomic, strong) NSString *merchantId;
+@property (nullable, nonatomic, strong) NSString *optionalDescription;
+@property (nullable, nonatomic, strong) NSDate *upsertDate;
+
 /**
  *  @brief Create Product Catalogue
  *  @param merchantId Merchant ID for under which to create the product catalogue
@@ -38,17 +45,25 @@ NS_ASSUME_NONNULL_BEGIN
                              name:(NSString *)name
                       description:(NSString *)description;
 
-@property (nullable,nonatomic, retain) NSString *merchantId;
-@property (nullable,nonatomic, retain) NSString *productCatalogueName;
-@property (nullable,nonatomic, retain) NSString *productCatalogueDescription;
-@property (nullable,nonatomic, retain) NSDate *upsertDate;
+/**
+ *  @brief Create Product Catalogue
+ *  @param merchantId Merchant ID for under which to create the product catalogue
+ *  @param name Product Catalogue name
+ *  @param description Product Catalogue description
+ *  @param discount Product Catalogue discount
+ *  @return new Product Catalogue
+ **/
+-(instancetype)initWithMerchantId:(NSString *)merchantId
+                             name:(NSString *)name
+                      description:(nullable NSString *)description
+                         discount:(nullable NSDecimalNumber *)discount;
 @end
 
 /**
  *  @class WDAcceptProductCatalogueCategory
- *  @discussion  Product Catalogue Category object
+ *  @brief  Product Catalogue Category object
  **/
-@interface WDAcceptProductCatalogueCategory : NSObject <NSCoding>
+@interface WDAcceptProductCatalogueCategory : WDAcceptProductCatalogueCore
 /**
  *  @brief Create Product Category
  *  @param parentId Parent Category ID under which to create the new category - will become root category if nil specified
@@ -57,31 +72,42 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return new Product Category
  **/
 -(instancetype)initWithParentCategoryId:(nullable NSString *)parentId
-                             name:(NSString *)name
-                      displayOrder:(NSNumber *)displayOrder;
+                                   name:(NSString *)name
+                           displayOrder:(NSNumber *)displayOrder;
 
-@property (nullable, nonatomic, retain) NSString *categoryId;
-@property (nullable, nonatomic, retain) NSString *parentCategoryId;
-@property (nullable, nonatomic, retain) NSString *categoryName;
-@property (nullable, nonatomic, retain) NSNumber *displayOrder;
-@property (nullable, nonatomic, retain) NSNumber *version;
-@property (nullable, nonatomic, retain) NSArray <WDAcceptProductCatalogueCategory *> *subcategories;
+/**
+ *  @brief Create Product Category
+ *  @param parentId Parent Category ID under which to create the new category - will become root category if nil specified
+ *  @param name Product Category name
+ *  @param discount discount Category discount to be applied on all subcategories and products
+ *  @param displayOrder ordering sequence of the category - used when displaying the categories
+ *  @return new Product Category
+ **/
+-(instancetype)initWithParentCategoryId:(nullable NSString *)parentId
+                                   name:(NSString *)name
+                               discount:(nullable NSDecimalNumber *)discount
+                           displayOrder:(NSNumber *)displayOrder;
+
+@property (nullable, nonatomic, strong) NSString *categoryId;
+@property (nullable, nonatomic, strong) NSString *parentCategoryId;
+@property (nullable, nonatomic, strong) NSNumber *displayOrder;
+@property (nullable, nonatomic, strong) NSArray <WDAcceptProductCatalogueCategory *> *subcategories;
 @end
 
 /**
  *  @class WDAcceptBarCodeType
- *  @discussion  Bar Code type
+ *  @brief  Bar Code type
  **/
-@interface WDAcceptBarCodeType : NSObject <NSCoding>
-@property (nonatomic, retain) NSString *barCodeTypeId;
-@property (nonatomic, retain) NSString *barCodeTypeName;
+@interface WDAcceptBarCodeType : WDAcceptObject <NSCoding>
+@property (nonatomic, strong) NSString *barCodeTypeId;
+@property (nonatomic, strong) NSString *barCodeTypeName;
 @end
 
 /**
  *  @class WDAcceptProductCatalogueProduct
- *  @discussion Product details
+ *  @brief Product details
  **/
-@interface WDAcceptProductCatalogueProduct: NSObject <NSCoding>
+@interface WDAcceptProductCatalogueProduct: WDAcceptObject <NSCoding>
 /**
  *  @brief Create Product
  *  @param name Product Name
@@ -121,59 +147,59 @@ NS_ASSUME_NONNULL_BEGIN
                  productCategories:(NSArray <WDAcceptProductCatalogueCategory*> *)productCategories
                         externalId:(NSString*)externalId;
 
-@property (nullable, nonatomic, retain) WDAcceptBarCodeType *barCodeType;
-@property (nullable, nonatomic, retain) NSString *barCodeValue;
-@property (nullable, nonatomic, retain) NSString *externalId;
-@property (nullable, nonatomic, retain) NSString *imageId;
-@property (nullable, nonatomic, retain) NSString *productId;
-@property (nullable, nonatomic, retain) NSString *productName;
-@property (nullable, nonatomic, retain) NSArray <WDAcceptProductCatalogueCategory*> *productCategories;
-@property (nonatomic, retain) NSArray <WDAcceptUnitPrice*> *productUnitPrices;
-@property (nonatomic, retain) WDAcceptTaxCategory *taxCategory;
-@property (nonatomic, retain) NSNumber *version;
+@property (nullable, nonatomic, strong) WDAcceptBarCodeType *barCodeType;
+@property (nullable, nonatomic, strong) NSString *barCodeValue;
+@property (nullable, nonatomic, strong) NSString *externalId;
+@property (nullable, nonatomic, strong) NSString *imageId;
+@property (nullable, nonatomic, strong) NSString *productId;
+@property (nullable, nonatomic, strong) NSString *productName;
+@property (nullable, nonatomic, strong) NSArray <WDAcceptProductCatalogueCategory*> *productCategories;
+@property (nonatomic, strong) NSArray <WDAcceptUnitPrice*> *productUnitPrices;
+@property (nonatomic, strong) WDAcceptTaxCategory *taxCategory;
+@property (nonatomic, strong) NSNumber *version;
 @end
 
 /**
  *  @class WDAcceptProductAvailability
- *  @discussion Product availability
+ *  @brief Product availability
  **/
-@interface WDAcceptProductAvailability: NSObject <NSCoding>
-@property (nonatomic, retain) NSString *externalProductId;
-@property (nonatomic, retain) NSNumber *stockQuantity;
+@interface WDAcceptProductAvailability: WDAcceptObject <NSCoding>
+@property (nonatomic, strong) NSString *externalProductId;
+@property (nonatomic, strong) NSNumber *stockQuantity;
 @end
 
 /**
  *  @class WDAcceptProductStock
- *  @discussion Product stocks
+ *  @brief Product stocks
  **/
-@interface WDAcceptProductStock: NSObject <NSCoding>
-@property (nonatomic, retain) NSArray <WDAcceptProductAvailability*>* productsAvailability;
-@property (nonatomic, retain) NSString *siteId;
-@property (nonatomic, retain) WDAcceptAddress *address;
+@interface WDAcceptProductStock: WDAcceptObject <NSCoding>
+@property (nonatomic, strong) NSArray <WDAcceptProductAvailability*>* productsAvailability;
+@property (nonatomic, strong) NSString *siteId;
+@property (nonatomic, strong) WDAcceptAddress *address;
 @end
 
 /**
  *  @class WDAcceptProductCatalogueDiscount
- *  @discussion Product Catalogue discount - flat discount
+ *  @brief Product Catalogue discount - flat discount
  **/
-@interface WDAcceptProductCatalogueDiscount: NSObject <NSCoding>
-@property (nullable,nonatomic, retain) NSNumber *flatDiscount;
+@interface WDAcceptProductCatalogueDiscount: WDAcceptObject <NSCoding>
+@property (nullable,nonatomic, strong) NSNumber *flatDiscount;
 @end
 
 /**
  *  @class WDAcceptProductPrice
- *  @discussion ERP product price information
+ *  @brief ERP product price information
  **/
-@interface WDAcceptProductPrice : WDAcceptObject<NSCoding>
+@interface WDAcceptProductPrice : WDAcceptObject <NSCoding>
 /**
  */
-@property (nullable, nonatomic, retain) NSString *currencyCode;
+@property (nullable, nonatomic, strong) NSString *currencyCode;
 /**
  */
-@property (nullable, nonatomic, retain) NSString *externalProductId;
+@property (nullable, nonatomic, strong) NSString *externalProductId;
 /**
  */
-@property (nullable, nonatomic, retain) NSDecimalNumber *unitPrice;
+@property (nullable, nonatomic, strong) NSDecimalNumber *unitPrice;
 
 @end
 

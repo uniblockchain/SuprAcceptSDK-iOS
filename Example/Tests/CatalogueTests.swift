@@ -182,9 +182,11 @@ class CatalogueTestsSwift: BaseTestsSwift
                 }
                 else
                 {
-                    self?.loadContentForProducts(products: result!,
-                                                 catalogueId: catalogueId,
-                                                 categoryId: category.categoryId!)
+                    if let result = result {
+                        self?.loadContentForProducts(products: result,
+                                                     catalogueId: catalogueId,
+                                                     categoryId: category.categoryId!)
+                    }
                 }
                 self?.serviceGroup.leave()
             }

@@ -7,7 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-
+/**
+ *  @class WDSSessionManagerCredentials
+ *  @brief Session credentials
+ **/
 @interface WDSSessionManagerCredentials : NSObject
 +(nonnull WDSSessionManagerCredentials *)sharedInstance;
 @property (nonatomic, strong)  NSString *_Nullable username;

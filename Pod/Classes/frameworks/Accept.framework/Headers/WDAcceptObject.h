@@ -10,6 +10,7 @@
 
 /**
  *  @class WDAcceptObject
+ *  @brief Accept custom object
  *  @discussion Accept Generic Object - supports runtime object [property/values] description
  **/
 @interface WDAcceptObject : NSObject

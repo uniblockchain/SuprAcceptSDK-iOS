@@ -33,7 +33,7 @@ Debit and credit cards are standard
 * Reversal
 * Refund   
 
-##mPOS backend - Switch
+## mPOS backend - Switch
 Switch system is mobile Cashier backend sale system for merchants, which provides the following base features:
 
 * Management of Partners, Merchants, Users, Cashiers, Cash registers, mPOS Terminals and Merchant's Product catalogues
@@ -46,9 +46,9 @@ Switch system is mobile Cashier backend sale system for merchants, which provide
 * Possibility to communicate with HSM module for data decryption and reencryption
 * Terminals supported: Spire SPm2, Spire Posmate, bbpos Chipper, IDTECH UnimagPro, Miura (HSM is needed)
 
-Find more information about [Switch mPOS backend](./docs/SWITCH-Overview.pdf)
+Find more information about Switch in the [Switch Fact Sheet](./docs/Fact-Sheet-SUPR_Accept.pdf) and [Switch mPOS backend overview](./docs/SWITCH-Overview.pdf)
 
-##Whitelabel solution
+## Whitelabel solution
 Wirecard Technologies is using the SuprAcceptSDK in their Whitelabel application which is fully integrated professional mPOS solution. The **Whitelabel** app is **VISA and Mastercard certified** and utilises the Wirecard infrastructure for card payment processing.
 
 [<img src="https://raw.githubusercontent.com/WirecardMobileServices/SuprAcceptSDK-iOS/master/docs/sdkarchv09.png" alt="Whitelabel architecture" width=400 height=422>](./docs/sdkarchv09.png "Whitelabel Architecture")
@@ -57,7 +57,7 @@ Wirecard Technologies is using the SuprAcceptSDK in their Whitelabel application
 
 There are two ways how to install the SDK.
 
-1. Clone from GitHub and integrate the framework as per the information available at the [Developer Portal](https://github.com/WirecardMobileServices/SuprAcceptSDK-Developer "Developer Portal")
+1. Clone from GitHub and integrate the framework as per the information available at the [Developer Portal](https://wirecardmobileservices.github.io/SuprAcceptSDK-Developer/int-setup-ios-cocoa/ "Developer Portal")
 2. SUPRAcceptSDK is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 

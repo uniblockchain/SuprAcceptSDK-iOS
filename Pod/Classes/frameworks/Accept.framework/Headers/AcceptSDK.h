@@ -20,8 +20,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- * @protocol AcceptSDKDelegate <NSObject>
- * @discussion Implement it if you would like to receive HTTP errors from web services
+  @brief Implement it if you would like to receive HTTP errors from web services
  */
 @protocol AcceptSDKDelegate <NSObject>
 
@@ -33,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  * @class AcceptSDK
- * @brief "accept by Wirecard" SDK
+ * @brief Wirecard Payment Acceptance SDK
  *
  * @discussion Enables your solution to Accept a wide range of Payment Methods (Cash, Card, Alipay, Coupon) and offers advanced functionality to support your business
  * 
@@ -70,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setupWithEnvironment:(AcceptEnvironment )environment
                     username:(NSString * _Nullable)username
                     password:(NSString * _Nullable)password
-                  completion:(CurrentUserCompletion)completion;
+                  completion:(CurrentUserCompletion _Nullable)completion;
 
 /**
  *  @brief Alternative constructor for acceptSDK - target custom instance (local installation) of Switch backend
@@ -85,7 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setupWithCustomURL:(NSString *)url
                   username:(NSString *)username
                   password:(NSString *)password
-                completion:(CurrentUserCompletion)completion;
+                completion:(CurrentUserCompletion _Nullable)completion;
 
 /**
  *  @brief Setting "developer mode" as enabled shows more debug info, and also generates a text file in your app's document folder with details about the transaction (EMV data, etc). Any payment-critical content in this text files is encrypted, but it will show as plain text privacy-critical content, as cardholder name. You should never set this as TRUE in your official releases.

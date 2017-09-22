@@ -121,7 +121,8 @@ typedef NS_ENUM(NSInteger, AcceptSDKError ) {
 
 
 /**
- *  @class WDAError error helper
+ *  @class WDAError
+ *  @brief Accept Error object
  *  @discussion Error helper methods
  **/
 @interface WDAError : NSObject

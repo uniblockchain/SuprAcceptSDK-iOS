@@ -99,7 +99,7 @@
 -(void)loadContentForCatalogue:(WDAcceptProductCatalogue*)catalogue
 {
      @weakify(self);
-    NSLog(@"Loading content for catalogue named: %@", catalogue.productCatalogueName);
+    NSLog(@"Loading content for catalogue named: %@", catalogue.name);
     ProductCatalogueCategoryCompletion completionCatalogue = ^(NSArray <WDAcceptProductCatalogueCategory *>* result, NSError* err)
     {
         @strongify(self);
@@ -191,7 +191,7 @@
 -(void)loadContentForCategory:(WDAcceptProductCatalogueCategory*)category inCatalogueId:(NSString*)catalogueId andVersion:(NSDecimalNumber*)dbVersion
 {
      @weakify(self);
-    NSLog(@"Loading content for category named: %@", category.categoryName);
+    NSLog(@"Loading content for category named: %@", category.name);
     __block NSString *catalogueIdCopy = [catalogueId copy];
     __block NSString *categoryId = [category categoryId];
     

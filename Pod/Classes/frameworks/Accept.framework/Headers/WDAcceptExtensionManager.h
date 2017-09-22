@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  @class WDAcceptExtensionManager
- *  @brief Extension Management (terminals | printers | scanners)
+ *  @brief Extension Manager (terminals | printers | scanners)
  */
 @interface WDAcceptExtensionManager : NSObject
 @property(nonatomic, readonly) BOOL isDevMode;
@@ -78,6 +78,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/**
+ *  @class WDAcceptUpdateableExtensionManager
+ *  @brief Extension Manager - updateable devices
+ */
 @interface WDAcceptUpdateableExtensionManager : WDAcceptExtensionManager
 /**
  *  @brief Update terminals for a vendor. Chip compatible terminals receive config files from backend
@@ -100,6 +104,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/**
+ *  @class WDAcceptTerminalManager
+ *  @brief Terminal Manager
+ */
 @interface WDAcceptTerminalManager : WDAcceptUpdateableExtensionManager 
 
 /**
@@ -108,10 +116,18 @@ NS_ASSUME_NONNULL_BEGIN
  **/
 -(void) availableUpdates:(TerminalUpdatesCompletion)completion;
 
+/**
+ *  @brief Clean the info about previous updates on all terminals. Function useful only in case the naming between terminal updates is not consistent during development. Not needed in production.
+ **/
+- (void)resetTerminalsCache;
 @end
 
 #pragma mark - Print manager
 
+/**
+ *  @class WDAcceptPrinterManager
+ *  @brief Printer Manager
+ */
 @interface WDAcceptPrinterManager : WDAcceptExtensionManager
 
 /**
@@ -141,6 +157,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Scanner manager
 
+/**
+ *  @class WDAcceptScannerManager
+ *  @brief Scanner Manager
+ */
 @interface WDAcceptScannerManager : WDAcceptExtensionManager
 
 /**
@@ -158,6 +178,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/**
+ *  @class WDAcceptCashDrawerManager
+ *  @brief Cash Drawer Manager
+ */
 @interface WDAcceptCashDrawerManager : WDAcceptExtensionManager
 
 /**

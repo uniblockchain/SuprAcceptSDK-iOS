@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  @class WDAcceptCard
- *  @discussion Card Data supplied by terminal
+ *  @brief Card Data supplied by terminal
  **/
 @interface WDAcceptCard : NSObject
 @property (nullable, nonatomic, strong) NSString *cardBrand;

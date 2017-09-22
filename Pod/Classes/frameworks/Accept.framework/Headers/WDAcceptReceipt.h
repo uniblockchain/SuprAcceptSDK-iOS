@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+@class WDAcceptReceiptPaymentItem;
+@class WDAcceptReceiptTaxSummary;
 
 /**
  *  @class WDAcceptReceiptAlipayDetails
@@ -186,6 +188,12 @@
 @property (nullable,nonatomic,strong) NSArray *paymentItems;
 /**
  */
+@property (nullable,nonatomic,strong) NSArray<WDAcceptReceiptPaymentItem *> *paymentItemsData;
+/**
+ */
+@property (nullable,nonatomic,strong) NSArray<WDAcceptReceiptTaxSummary *> *taxSummaryItems;
+/**
+ */
 @property (nullable,nonatomic,strong) NSString *taxSummary;
 /**
  */
@@ -296,6 +304,18 @@
 /**
  */
 @property (nullable,nonatomic,strong) NSString *localisedPaymentTypeHeader;
+/**
+ */
+@property (nullable,nonatomic,strong) NSString *localisedTaxHeader;
+/**
+ */
+@property (nullable,nonatomic,strong) NSString *localisedNetHeader;
+/**
+ */
+@property (nullable,nonatomic,strong) NSString *localisedGrossHeader;
+/**
+ */
+@property (nullable,nonatomic,strong) NSString *localisedTaxAmountHeader;
 /**
  */
 @property (nullable,nonatomic,strong) NSString *paymentType;
@@ -500,4 +520,74 @@
 /**
  */
 @property (nullable,nonatomic,strong) NSString *localisedEnds;
+
+@end
+
+/**
+ *  @class WDAcceptReceiptTaxSummary
+ *  @brief Data of receipt tax summary item
+ **/
+@interface WDAcceptReceiptTaxSummary : NSObject
+/**
+ */
+@property (nonatomic, strong) NSDecimalNumber * _Nonnull netto;
+/**
+ */
+@property (nonatomic, strong) NSDecimalNumber * _Nonnull gross;
+/**
+ */
+@property (nonatomic, strong) NSDecimalNumber * _Nonnull taxAmount;
+/**
+ */
+@property (nonatomic, strong) NSString * _Nonnull taxRate;
+/**
+ */
+@property (nonatomic, strong) NSString * _Nullable currency;
+
+- (instancetype _Nonnull)initWithNetto:(NSDecimalNumber * _Nonnull)netto
+                                 gross:(NSDecimalNumber * _Nonnull)gross
+                             taxAmount:(NSDecimalNumber * _Nonnull)taxAmount
+                               taxRate:(NSString * _Nonnull)taxRate
+                              currency:(NSString * _Nullable)currency;
+@end
+
+/**
+ *  @class WDAcceptReceiptPaymentItem
+ *  @brief Data of receipt payment list item
+ */
+@interface WDAcceptReceiptPaymentItem : NSObject
+/**
+ */
+@property (nonatomic, strong) NSDecimalNumber * _Nonnull unitPrice;
+/**
+ */
+@property (nonatomic, strong) NSDecimalNumber * _Nonnull totalPrice;
+/**
+ */
+@property (nonatomic, strong) NSDecimalNumber * _Nonnull discountAmount;
+/**
+ */
+@property (nonatomic) NSInteger quantity;
+/**
+ */
+@property (nonatomic, strong) NSString * _Nonnull itemDescription;
+/**
+ */
+@property (nonatomic, strong) NSString * _Nonnull taxRate;
+/**
+ */
+@property (nonatomic, strong) NSString * _Nullable currency;
+/**
+ */
+@property (nonatomic, strong) NSString * _Nullable discountRate;
+
+- (instancetype _Nonnull)initWithUnitPrice:(NSDecimalNumber * _Nonnull)unitPrice
+                                totalPrice:(NSDecimalNumber * _Nonnull)totalPrice
+                             discountAmount:(NSDecimalNumber * _Nullable)discountAmount
+                                  quantity:(NSInteger)quantity
+                               description:(NSString * _Nonnull)description
+                                   taxRate:(NSString * _Nonnull)taxRate
+                              discountRate:(NSString * _Nullable)discountRate
+                                  currency:(NSString * _Nullable)currency;
+
 @end

@@ -18,6 +18,7 @@
 
 /**
  *  @class WDAcceptReceiptData
+ *  @brief Receipt Data
  *  @discussion Complete Receipt Data - to be used to construct a receipt
  **/
 @interface WDAcceptReceiptData : NSObject

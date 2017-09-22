@@ -14,7 +14,11 @@
  **/
 @interface WDAcceptPaymentRequestCash : WDAcceptPayment
 /// Default NSObject init is unavailable
--(nonnull instancetype)init __attribute__((unavailable("use initWithAmount")));
+-(nonnull instancetype)init __attribute__((unavailable("use initWithAmount:transactionType:")));
++(nonnull instancetype)new __attribute__((unavailable("use initWithAmount:transactionType:")));
+-(nonnull instancetype)initWithAmount:(nonnull NSDecimalNumber *)amount
+                        paymentMethod:(AcceptPaymentMethod)paymentMethod
+                      transactionType:(AcceptTransactionType)transactionType __attribute__((unavailable("use initWithAmount:transactionType:")));
 -(nullable instancetype)initWithCoder:(nonnull NSCoder *)decoder NS_DESIGNATED_INITIALIZER;
 -(nullable instancetype)initWithAmount:(NSDecimalNumber * __nonnull)amount
                        transactionType:(AcceptTransactionType)transactionType NS_DESIGNATED_INITIALIZER;

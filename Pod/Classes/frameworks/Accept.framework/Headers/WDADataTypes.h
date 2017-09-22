@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  @typedef AcceptUpdateSeverity
- *  @discussion Enumerator of severities for a update to be applied to a terminal
+ *  @brief Enumerator of severities for a update to be applied to a terminal
  **/
 typedef NS_ENUM(NSInteger, AcceptUpdateSeverity ) {
     /// Mandatory firmware update to be applied asap (Miura) "A"
@@ -57,7 +57,7 @@ typedef NS_ENUM(NSInteger, AcceptUpdateSeverity ) {
 
 /**
  *  @typedef WDAExtensionTypeUUID
- *  @discussion Enumerator of supported terminal extensions
+ *  @brief Enumerator of supported terminal extensions
  **/
 typedef NS_ENUM(NSInteger, WDAExtensionTypeUUID ) {
         WDAExtensionNoneUUID = -1,
@@ -79,7 +79,7 @@ typedef NS_ENUM(NSInteger, WDAExtensionTypeUUID ) {
 
 /**
  *  @typedef AcceptStateUpdate
- *  @discussion Enumerator of statuses for informing the flow status or asking feedback to the user, received in the progress block of Pay function.
+ *  @brief Enumerator of statuses for informing the flow status or asking feedback to the user, received in the progress block of Pay function.
  **/
 typedef NS_ENUM(NSInteger, AcceptStateUpdate ) {
     AcceptStateConfigurationProgressTerminalNotReady = -1,
@@ -121,7 +121,7 @@ typedef NS_ENUM(NSInteger, AcceptStateUpdate ) {
 
 /**
  *  @typedef AcceptTaxationType
- *  @discussion Enumerator with the taxation types.
+ *  @brief Enumerator with the taxation types.
  **/
 typedef NS_ENUM(NSInteger, AcceptTaxationType ) {
     AcceptTaxationTypeGross = 0,
@@ -130,7 +130,7 @@ typedef NS_ENUM(NSInteger, AcceptTaxationType ) {
 
 /**
  *  @typedef AcceptCashierPinValidationResult
- *  @discussion Enumerator with the Pin validation results.
+ *  @brief Enumerator with the Pin validation results.
  **/
 typedef NS_ENUM(NSInteger, AcceptCashierPinValidationResult ) {
     AcceptCashierPinValidationResultInvalid,
@@ -141,7 +141,7 @@ typedef NS_ENUM(NSInteger, AcceptCashierPinValidationResult ) {
 
 /**
  *  @typedef AcceptSaleCompletionOperation
- *  @discussion Enumerator with the Sale completion operation types.
+ *  @brief Enumerator with the Sale completion operation types.
  **/
 typedef NS_ENUM(NSInteger, AcceptSaleCompletionOperation ) {
     AcceptSaleCompletionOperationConfirm,
@@ -150,7 +150,7 @@ typedef NS_ENUM(NSInteger, AcceptSaleCompletionOperation ) {
 
 /**
  *  @typedef AcceptReversalReason
- *  @discussion Enumerator with the reversal reasons
+ *  @brief Enumerator with the reversal reasons
  **/
 typedef NS_ENUM(NSInteger, AcceptReversalReason)
 {   AcceptReversalReasonUndefined = -1,
@@ -168,7 +168,7 @@ typedef NS_ENUM(NSInteger, AcceptReversalReason)
 
 /**
  *  @typedef AcceptExtensionConnectionStatus
- *  @discussion The terminal connection status enumerator
+ *  @brief The terminal connection status enumerator
  **/
 typedef NS_ENUM(NSInteger, AcceptExtensionConnectionStatus){
     AcceptExtensionConnectionStatusDisconnected,
@@ -178,7 +178,7 @@ typedef NS_ENUM(NSInteger, AcceptExtensionConnectionStatus){
 
 /**
  *  @typedef AcceptPrinterStateUpdate
- *  @discussion Enumerator with the statuses of the printing flow, received in progress block of print.
+ *  @brief Enumerator with the statuses of the printing flow, received in progress block of print.
  **/
 typedef NS_ENUM(NSInteger, AcceptPrinterStateUpdate ) {
     AcceptPrinterStateInitialize = 0,
@@ -190,7 +190,7 @@ typedef NS_ENUM(NSInteger, AcceptPrinterStateUpdate ) {
 
 /**
  *  @typedef AcceptPrinterPaperStatus
- *  @discussion Enumerator with the status of the paper amount.
+ *  @brief Enumerator with the status of the paper amount.
  **/
 typedef NS_ENUM(NSInteger, AcceptPrinterPaperStatus ) {
     AcceptPrinterStatusUnknown = 0,
@@ -202,7 +202,7 @@ typedef NS_ENUM(NSInteger, AcceptPrinterPaperStatus ) {
 
 /**
  *  @typedef AcceptUpdateConfigurationProgressUpdate
- *  @discussion Enumerator with the progress during the terminal config file update
+ *  @brief Enumerator with the progress during the terminal config file update
  **/
 typedef NS_ENUM(NSInteger, AcceptUpdateConfigurationProgressUpdate) {
     AcceptUpdateConfigurationProgressTerminalNotReady = -1,
@@ -215,7 +215,7 @@ typedef NS_ENUM(NSInteger, AcceptUpdateConfigurationProgressUpdate) {
 
 /**
  *  @typedef AcceptUpdateConfigurationStatus
- *  @discussion Enumerator with the status during the terminal config file update
+ *  @brief Enumerator with the status during the terminal config file update
  **/
 typedef NS_ENUM(NSInteger, AcceptUpdateConfigurationStatus) {
     AcceptUpdateConfigurationStatusTerminalDoesNotSupportUpdates,
@@ -227,7 +227,7 @@ typedef NS_ENUM(NSInteger, AcceptUpdateConfigurationStatus) {
 
 /**
  *  @typedef AcceptSignatureVerificationResult
- *  @discussion Enumerator with the result of the merchant verification
+ *  @brief Enumerator with the result of the merchant verification
  **/
 typedef NS_ENUM(NSInteger, AcceptSignatureVerificationResult)
 {
@@ -238,7 +238,7 @@ typedef NS_ENUM(NSInteger, AcceptSignatureVerificationResult)
 
 /**
  *  @typedef AcceptTerminalUpdateType
- *  @discussion Enumerator of terminal update types
+ *  @brief Enumerator of terminal update types
  **/
 typedef NS_ENUM(NSInteger, AcceptTerminalUpdateType ) {
     AcceptTerminalUpdateTypeConfiguration,
@@ -249,7 +249,7 @@ typedef NS_ENUM(NSInteger, AcceptTerminalUpdateType ) {
 
 /**
  *  @typedef AcceptTerminalUpdateTypeMask
- *  @discussion These constants are mask bits for specifying the terminal update type
+ *  @brief These constants are mask bits for specifying the terminal update type
  **/
 typedef enum AcceptTerminalUpdateTypeMask : NSUInteger {
     AcceptTerminalUpdateTypeMaskConfiguration = (1 << AcceptTerminalUpdateTypeConfiguration),
@@ -262,7 +262,7 @@ typedef enum AcceptTerminalUpdateTypeMask : NSUInteger {
 
 /**
  *  @typedef AcceptResultStatus
- *  @discussion Enumerator with common response statuses
+ *  @brief Enumerator with common response statuses
  **/
 typedef NS_ENUM(NSInteger, AcceptResultStatus)
 {
@@ -280,7 +280,7 @@ typedef NS_ENUM(NSInteger, AcceptResultStatus)
 
 /**
  *  @typedef AcceptExtensionBatteryStatus
- *  @discussion Enumerator with the battery status.
+ *  @brief Enumerator with the battery status.
  **/
 typedef NS_ENUM(NSInteger, AcceptExtensionBatteryStatus ) {
     AcceptExtensionBatteryStatusCharging = -3,
@@ -290,7 +290,7 @@ typedef NS_ENUM(NSInteger, AcceptExtensionBatteryStatus ) {
 
 /** 
  * @typedef AcceptQuerySort
- *  @discussion Enumerator with the order by for sort.
+ *  @brief Enumerator with the order by for sort.
  */
 typedef NS_ENUM(NSUInteger, AcceptQuerySort) {
     /**
@@ -304,7 +304,7 @@ typedef NS_ENUM(NSUInteger, AcceptQuerySort) {
 
 /** 
  * @typedef AcceptSaleQueryOrderBy
- *  @discussion Enumerator with order by for transaction queries
+ *  @brief Enumerator with order by for transaction queries
  */
 typedef  NS_ENUM(NSUInteger,AcceptSaleQueryOrderBy) {
     /**
@@ -320,7 +320,7 @@ typedef  NS_ENUM(NSUInteger,AcceptSaleQueryOrderBy) {
 
 /**
  * @typedef AcceptShiftQueryOrderBy
- *  @discussion Enumerator with order by for Shift queries
+ *  @brief Enumerator with order by for Shift queries
  */
 typedef  NS_ENUM(NSUInteger,AcceptShiftQueryOrderBy) {
     AcceptShiftQueryOrderByOpenTime=0,
@@ -330,7 +330,7 @@ typedef  NS_ENUM(NSUInteger,AcceptShiftQueryOrderBy) {
 
 /**
  *  @typedef AcceptStatisticPeriod
- *  @discussion Enumerator with the Statistic reporting Period
+ *  @brief Enumerator with the Statistic reporting Period
  **/
 typedef NS_ENUM(NSUInteger, AcceptStatisticPeriod){
     AcceptStatisticPeriodUndefined,
@@ -343,7 +343,7 @@ typedef NS_ENUM(NSUInteger, AcceptStatisticPeriod){
 
 /**
  *  @typedef AcceptStatisticGroupBy
- *  @discussion Enumerator with the Statistic Grouping criteria
+ *  @brief Enumerator with the Statistic Grouping criteria
  **/
 typedef NS_ENUM(NSUInteger, AcceptStatisticGroupBy){
     AcceptStatisticGroupByUndefined,
@@ -354,7 +354,7 @@ typedef NS_ENUM(NSUInteger, AcceptStatisticGroupBy){
 
 /**
  *  @typedef AcceptStatisticStatuses
- *  @discussion Enumerator with the Statistic Grouping criteria
+ *  @brief Enumerator with the Statistic Grouping criteria
  **/
 typedef NS_ENUM(NSUInteger, AcceptStatisticStatus)
 {
@@ -366,19 +366,20 @@ typedef NS_ENUM(NSUInteger, AcceptStatisticStatus)
 
 /**
  *  @typedef AcceptPrintFormat
- *  @discussion Enumerator with the Accept Print format
+ *  @brief Enumerator with the Accept Print format
  **/
 typedef NS_ENUM(NSUInteger, AcceptPrintFormat)
 {
     AcceptPrintFormatHTML,
     AcceptPrintFormatPDF,
     AcceptPrintFormatUIImage,
-    AcceptPrintFormatDatecs
+    AcceptPrintFormatDatecs,
+    AcceptPrintFormatWisepad
 };
 
 /**
  *  @typedef AcceptPrintDpi
- *  @discussion Enumerator with the Accept Print DPI
+ *  @brief Enumerator with the Accept Print DPI
  **/
 typedef NS_ENUM(NSUInteger, AcceptPrintDpi)
 {
@@ -389,7 +390,7 @@ typedef NS_ENUM(NSUInteger, AcceptPrintDpi)
 
 /**
  *  @typedef AcceptSaleType
- *  @discussion Enumerator with the Sale types.
+ *  @brief Enumerator with the Sale types.
  **/
 typedef NS_ENUM(NSInteger, AcceptSaleType ) {
     AcceptSaleTypePurchase,
@@ -399,7 +400,7 @@ typedef NS_ENUM(NSInteger, AcceptSaleType ) {
 
 /**
  *  @typedef AcceptSaleState
- *  @discussion Sale Status enumeration
+ *  @brief Sale Status enumeration
  **/
 typedef NS_ENUM(NSUInteger, AcceptSaleState) {
     AcceptSaleStateUnknown=0,
@@ -415,7 +416,7 @@ typedef NS_ENUM(NSUInteger, AcceptSaleState) {
 
 /**
  *  @typedef AcceptBarcodeSymbology
- *  @discussion Barcode symbologies (standards) enumeration
+ *  @brief Barcode symbologies (standards) enumeration
  **/
 typedef NS_ENUM(NSUInteger, AcceptBarcodeSymbology) {
     AcceptBarcodeSymbologyUnknown = 0,
@@ -435,41 +436,41 @@ typedef NS_ENUM(NSUInteger, AcceptBarcodeSymbology) {
 
 /**
  *  @typedef SignatureCollectedResponse
- *  @discussion Callback to return collected signature back to the payment process
+ *  @brief Callback to return collected signature back to the payment process
  *  @param collectedSignature signature image
  **/
 typedef void (^SignatureCollectedResponse)(UIImage* _Nullable collectedSignature, NSError* _Nullable error);
 
 /**
  *  @typedef PaymentCardApplicationSelectionResponse
- *  @discussion Callback to return collected signature back to the payment process
+ *  @brief Callback to return collected signature back to the payment process
  *  @param selectedApplication index of the selected card application
  **/
 typedef void(^PaymentCardApplicationSelectionResponse)(NSUInteger selectedApplication);
 
 /**
  *  @typedef SaleQueryResponse
- *  @discussion Callback to return sales
+ *  @brief Callback to return sales
  *  @param sales sales response block
  **/
 typedef void(^SaleQueryResponse)(NSArray <WDAcceptSaleResponse *>* _Nullable sales, NSError* _Nullable error);
 
 /**
  *  @typedef DeviceConnectionStatusCompletion
- *  @discussion The callback to report the device connections status
+ *  @brief The callback to report the device connections status
  *  @param connectionStatus the connection status
  **/
 typedef void (^DeviceConnectionStatusCompletion)(AcceptExtensionConnectionStatus connectionStatus);
 
 /**
  *  @typedef BatteryLevelCallback
- *  @discussion The callback to report the battery level
+ *  @brief The callback to report the battery level
  **/
 typedef void (^BatteryLevelCallback)(NSInteger);
 
 /**
  *  @typedef ExtensionCommandCompletion
- *  @discussion The callback to report the extension command status
+ *  @brief The callback to report the extension command status
  *  @param commandCompletionStatus the extension command SUCCESS
  *  @param error the extension command error
  **/
@@ -477,7 +478,7 @@ typedef void (^ExtensionCommandCompletion)(BOOL commandCompletionStatus,  NSErro
 
 /**
  *  @typedef ZReportCompletion
- *  @discussion Callback to return created Z-Report
+ *  @brief Callback to return created Z-Report
  *  @param report created report
  *  @param error error when creating report
  **/
@@ -485,17 +486,17 @@ typedef void(^ZReportCompletion)(id _Nullable report, NSError* _Nullable error);
 
 /**
  *  @typedef ReceiptCompletion
- *  @discussion Callback to return created receipt
- *  @param receipt created receipt
+ *  @brief Callback to return created receipt
+ *  @param receipts array of created receipts - in the case of WDAcceptReceipt printing of All receipts (e.g. Original + Refunds) there can be multiple of receipts to be printed
  *  @param error error when creating receipt
  **/
-typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error);
+typedef void(^ReceiptCompletion)(NSArray* _Nullable receipts, NSError* _Nullable error);
 
 
 #pragma mark - Classes
 /**
  *  @class WDAcceptVendor
- *  @discussion Vendor information
+ *  @brief Vendor information
  **/
 @interface WDAcceptVendor : WDAcceptObject <NSCoding, NSCopying>
 /**
@@ -510,7 +511,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 @end
 /**
  *  @class WDAcceptTerminal
- *  @discussion Terminal information
+ *  @brief Terminal information
  **/
 @interface WDAcceptTerminal : WDAcceptObject <NSCoding, NSCopying>
 /**     
@@ -540,7 +541,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptPaymentConfig
- *  @discussion Payment configuration class. Content required to execute the payment flow
+ *  @brief Payment configuration class. Content required to execute the payment flow
  **/
 @interface WDAcceptPaymentConfig : NSObject
 /**
@@ -558,7 +559,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptSignatureRequest
- *  @discussion Used by extension to notify the Payment Flow that the Signature needs to be collected.
+ *  @brief Used by extension to notify the Payment Flow that the Signature needs to be collected.
  *              Extension supplies card holder information to be displayed if necessary
  **/
 @interface WDAcceptSignatureRequest: NSObject
@@ -592,7 +593,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptAppSelectionRequest
- *  @discussion Used by the extension to notify the Payment Flow that the ICC application selection is to be performed by the client app
+ *  @brief Used by the extension to notify the Payment Flow that the ICC application selection is to be performed by the client app
  *
  **/
 @interface WDAcceptAppSelectionRequest: NSObject
@@ -608,7 +609,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptPrinterConfig
- *  @discussion Printer configuration class. Receipt Content or Receipt Image required to execute the printing flow
+ *  @brief Printer configuration class. Receipt Content or Receipt Image required to execute the printing flow
  **/
 @interface WDAcceptPrinterConfig : NSObject
 /**
@@ -627,7 +628,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptProductImage
- *  @discussion Product Image information
+ *  @brief Product Image information
  **/
 @interface WDAcceptProductImage : NSObject
 /**
@@ -642,34 +643,8 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 @end
 
 /**
- *  @class WDAcceptReceiptTaxSummary
- *  @discussion Receipt Item Tax Summary data
- **/
-@interface WDAcceptReceiptTaxSummary : NSObject
-/**
- */
-@property (nonatomic, strong) NSDecimalNumber  * _Nonnull totalNetto;
-/**
- */
-@property (nonatomic, strong) NSDecimalNumber  * _Nonnull totalQuantity;
-/**
- */
-@property (nonatomic, strong) NSDecimalNumber  * _Nonnull totalGross;
-/**
- */
-@property (nonatomic, strong) NSDecimalNumber  * _Nonnull taxRate;
-/**
- */
-@property (nonatomic, strong) NSDecimalNumber  * _Nonnull totalTaxAmount;
-/**
- */
-@property (nonatomic, strong) NSString  * _Nullable itemDescription;
-@end
-
-
-/**
  *  @class WDAcceptSaleItem
- *  @discussion  Payment item info
+ *  @brief  Payment item info
  **/
 //@interface AcceptSaleItem : NSObject
 ///**
@@ -697,7 +672,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptSaleStatistics
- *  @discussion  Transaction Statistics
+ *  @brief  Transaction Statistics
  **/
 @interface WDAcceptSaleStatistics : NSObject
 /**
@@ -733,7 +708,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptRemindUsername
- *  @discussion  Remind username object to be used with credential management API
+ *  @brief  Remind username object to be used with credential management API
  **/
 @interface WDAcceptRemindUsername : NSObject
 /**
@@ -752,7 +727,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptRequestPasswordReset
- *  @discussion  Request Reset Password object to be used with credential management API
+ *  @brief  Request Reset Password object to be used with credential management API
  **/
 @interface WDAcceptRequestPasswordReset : NSObject
 /**
@@ -770,8 +745,8 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 @end
 
 /**
- *  @class WDAcceptRequestPasswordReset
- *  @discussion  Change Password object to be used with credential management API
+ *  @class WDAcceptChangePassword
+ *  @brief  Change Password object to be used with credential management API
  **/
 @interface WDAcceptChangePassword : NSObject
 /**
@@ -792,7 +767,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptQuery
- *  @discussion  Generic Query attributes
+ *  @brief  Generic Query attributes
  **/
 @interface WDAcceptQuery : NSObject
 /**
@@ -810,8 +785,8 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 @end
 
 /**
- *  @class WDAcceptPaymentsQuery
- *  @discussion Transaction query class used in payment searches
+ *  @class WDAcceptSalesQuery
+ *  @brief Transaction query class used in payment searches
  **/
 @interface WDAcceptSalesQuery : WDAcceptQuery
 /**
@@ -881,7 +856,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptStatisticsQuery
- *  @discussion Transaction query class used in payment searches
+ *  @brief Transaction query class used in payment searches
  **/
 @interface WDAcceptStatisticsQuery : NSObject
 /**
@@ -922,7 +897,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptProductsQuery
- *  @discussion Products query class used in product searches
+ *  @brief Products query class used in product searches
  **/
 @interface WDAcceptProductsQuery : WDAcceptQuery
 /**
@@ -1009,7 +984,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptTerminalHardwareInformation
- *  @discussion Terminal Hardware information - firmware version, configuration version, serial number
+ *  @brief Terminal Hardware information - firmware version, configuration version, serial number
  **/
 @interface WDAcceptTerminalHardwareInformation : WDAcceptObject <NSCoding>
 /**
@@ -1032,7 +1007,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptResult
- *  @discussion  Result object for credential management API
+ *  @brief  Result object for credential management API
  **/
 @interface WDAcceptResult : NSObject
 @property (nullable, nonatomic, retain) NSString *detail;
@@ -1043,7 +1018,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptPasswordPolicyResult
- *  @discussion  Result object for password policy
+ *  @brief  Result object for password policy
  **/
 @interface WDAcceptPasswordPolicyResult : NSObject
 @property (nullable, nonatomic, retain) NSNumber *expirationPeriod;
@@ -1059,7 +1034,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptCurrencyCore
- *  @discussion  Currency core object
+ *  @brief  Currency core object
  **/
 @interface WDAcceptCurrencyCore : WDAcceptObject <NSCoding>
 /**
@@ -1073,7 +1048,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptCurrency
- *  @discussion  Currency object
+ *  @brief  Currency object
  **/
 @interface WDAcceptCurrency : WDAcceptCurrencyCore
 @property (nullable, nonatomic, strong) NSNumber *minorUnit;
@@ -1083,7 +1058,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptCountry
- *  @discussion  Country object
+ *  @brief  Country object
  **/
 @interface WDAcceptCountry : WDAcceptObject <NSCoding>
 
@@ -1095,7 +1070,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptAddress
- *  @discussion  Address object
+ *  @brief  Address object
  **/
 @interface WDAcceptAddress : WDAcceptObject <NSCoding>
 @property (nullable, nonatomic, strong) NSString *city;
@@ -1110,7 +1085,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptShop
- *  @discussion  Shop object
+ *  @brief  Shop object
  **/
 @interface WDAcceptShop : WDAcceptObject <NSCoding>
 @property (nullable, nonatomic, strong) NSString *internalId;
@@ -1121,7 +1096,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptTaxRate
- *  @discussion  Tax rate object
+ *  @brief  Tax rate object
  **/
 @interface WDAcceptTaxRate : WDAcceptObject<NSCoding>
 @property (nullable, nonatomic, strong) NSDate *validFrom;
@@ -1130,7 +1105,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptTaxCategory
- *  @discussion  Tax category object
+ *  @brief  Tax category object
  **/
 @interface WDAcceptTaxCategory : WDAcceptObject<NSCoding>
 @property (nullable, nonatomic, retain) NSString *taxCategoryId;
@@ -1142,7 +1117,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptPartner
- *  @discussion  Partner category object
+ *  @brief  Partner category object
  **/
 @interface WDAcceptPartner : WDAcceptObject <NSCoding>
 @property (nullable, nonatomic, retain) NSString *partnerId;
@@ -1152,7 +1127,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptMerchant
- *  @discussion  Merchant object
+ *  @brief  Merchant object
  **/
 @interface WDAcceptMerchant : WDAcceptObject <NSCoding>
 @property (nullable, nonatomic, strong) NSNumber *defaultNetTaxation;
@@ -1186,7 +1161,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptMerchantUser
- *  @discussion  Merchant user object
+ *  @brief  Merchant user object
  **/
 @interface WDAcceptMerchantUser : WDAcceptObject<NSCoding>
 @property (nullable, nonatomic, strong) NSDate *accountExpirationReference;
@@ -1207,7 +1182,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptShiftReportCategoryItem
- *  @discussion Item of a category received in the Cash Shift Report
+ *  @brief Item of a category received in the Cash Shift Report
  **/
 @interface WDAcceptShiftReportCategoryItem : WDAcceptObject<NSCoding>
 ///**
@@ -1232,7 +1207,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptShiftReportCategory
- *  @discussion Category received in the Cash Shift Report
+ *  @brief Category received in the Cash Shift Report
  **/
 @interface WDAcceptShiftReportCategory : WDAcceptObject<NSCoding>
 ///**
@@ -1251,7 +1226,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptShiftReport
- *  @discussion Report for a Cash Shift
+ *  @brief Report for a Cash Shift
  **/
 @interface WDAcceptShiftReport : WDAcceptObject<NSCoding>
 ///**
@@ -1273,7 +1248,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptMerchantCashier
- *  @discussion Merchant Cashier object
+ *  @brief Merchant Cashier object
  **/
 @interface WDAcceptMerchantCashier : WDAcceptObject<NSCoding>
 /// Switch Cashier ID
@@ -1306,8 +1281,8 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 @end
 
 /**
- *  @class WDAcceptCashRegister
- *  @discussion Cash Register object - Cash/Drawer Management
+ *  @class WDAcceptCashShift
+ *  @brief Cash Register object - Cash/Drawer Management
  **/
 @interface WDAcceptCashShift : WDAcceptObject<NSCoding>
 ///**
@@ -1328,6 +1303,9 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 ///**
 // */
 @property (nullable, nonatomic, retain) NSString *openingNote;
+///**
+// */
+@property (nullable, nonatomic, retain) NSString *closingNote;
 ///**
 // */
 @property (nullable, nonatomic, retain) NSString *shiftStatus;
@@ -1371,8 +1349,8 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 @end
 
 /**
- *  @class WDAcceptCashRegister
- *  @discussion Cash Register object - Cash/Drawer Management
+ *  @class WDAcceptCashActivity
+ *  @brief Cash Register object - Cash/Drawer Management
  **/
 @interface WDAcceptCashActivity : WDAcceptObject<NSCoding>
 ///**
@@ -1404,7 +1382,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptCashDrawerType
- *  @discussion Cash Drawer Type
+ *  @brief Cash Drawer Type
  **/
 @interface WDAcceptCashDrawerType : WDAcceptObject<NSCoding>
 /**
@@ -1423,7 +1401,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptCashRegister
- *  @discussion Cash Register object - Cash/Drawer Management
+ *  @brief Cash Register object - Cash/Drawer Management
  **/
 @interface WDAcceptCashRegister : WDAcceptObject<NSCoding>
 /**
@@ -1470,7 +1448,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptUnitPrice
- *  @discussion  Unit Price object
+ *  @brief  Unit Price object
  **/
 @interface WDAcceptUnitPrice : NSObject
 /**
@@ -1487,7 +1465,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptProductCatalogue
- *  @discussion  Product Catalogue object
+ *  @brief  Product Catalogue object
  **/
 //@interface WDAcceptProductCatalogue : NSObject
 //@property (nullable, nonatomic, retain) NSString *productCatalogueId;
@@ -1500,7 +1478,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptTerminalCapabilities
- *  @discussion  Terminal Capabilities template
+ *  @brief  Terminal Capabilities template
  **/
 @interface WDAcceptTerminalCapabilities : NSObject
 @property (nullable, nonatomic, retain) NSString *terminalCapabilitiesId;
@@ -1513,7 +1491,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptICCApplication
- *  @discussion  ICC Application template
+ *  @brief  ICC Application template
  **/
 @interface WDAcceptICCApplication : NSObject
 @property (nullable, nonatomic, retain) NSString *iccApplicationId;
@@ -1524,8 +1502,8 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 @end
 
 /**
- *  @class WDAcceptICCApplication
- *  @discussion  AID template
+ *  @class WDAcceptAID
+ *  @brief  AID template
  **/
 @interface WDAcceptAID : NSObject
 @property (nullable, nonatomic, retain) NSString *aid;
@@ -1547,7 +1525,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptAIDConfiguration
- *  @discussion  AID Configuration
+ *  @brief  AID Configuration
  **/
 @interface WDAcceptAIDConfiguration : NSObject
 @property (nullable, nonatomic, retain) NSString *aidConfigurationId;
@@ -1558,7 +1536,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptNetwork
- *  @discussion  Issuer Network detail
+ *  @brief  Issuer Network detail
  **/
 @interface WDAcceptNetwork : NSObject
 @property (nullable, nonatomic, retain) NSString *networkId;
@@ -1567,7 +1545,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptTerminalProfile
- *  @discussion  Terminal Profile
+ *  @brief  Terminal Profile
  **/
 @interface WDAcceptTerminalProfile : NSObject
 @property (nullable, nonatomic, retain) NSString *terminalProfileId;
@@ -1579,8 +1557,8 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 @end
 
 /**
- *  @class WDAcceptAIDConfiguration
- *  @discussion Terminal AID Configuration
+ *  @class WDAcceptTerminalAIDConfiguration
+ *  @brief Terminal AID Configuration
  **/
 @interface WDAcceptTerminalAIDConfiguration : NSObject
 @property (nullable, nonatomic, retain) NSString *merchantName;
@@ -1599,7 +1577,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptShiftQuery
- *  @discussion  Query the shifts
+ *  @brief  Query the shifts
  **/
 @interface WDAcceptShiftQuery : WDAcceptQuery
 /**
@@ -1619,7 +1597,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptExtendedProcessingInfo
- *  @discussion Extented processing info class. Content needed for some Chip transactions with online PIN verification and/or CVM methods
+ *  @brief Extented processing info class. Content needed for some Chip transactions with online PIN verification and/or CVM methods
  **/
 @interface WDAcceptExtendedProcessingInfo : NSObject
 /**
@@ -1662,7 +1640,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptEncryptionParameters
- *  @discussion Encryption parameters
+ *  @brief Encryption parameters
  **/
 @interface WDAcceptEncryptionParameters : NSObject
 /**
@@ -1687,7 +1665,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptTerminalRKIRequest
- *  @discussion Terminal Remote Key Injection values
+ *  @brief Terminal Remote Key Injection values
  **/
 @interface WDAcceptTerminalRKIRequest : WDAcceptObject
 /**
@@ -1716,7 +1694,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptTerminalRKI
- *  @discussion Terminal Remote Key Injection values
+ *  @brief Terminal Remote Key Injection values
  **/
 @interface WDAcceptTerminalRKI : WDAcceptObject
 /**
@@ -1744,8 +1722,8 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 @end
 
 /**
- *  @class WDAcceptMembers
- *  @discussion ERP Members information
+ *  @class WDAcceptMember
+ *  @brief ERP Members information
  **/
 @interface WDAcceptMember : WDAcceptObject<NSCoding>
 /**
@@ -1773,7 +1751,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptTerminalUpdate
- *  @discussion Update information for the terminal
+ *  @brief Update information for the terminal
  **/
 @interface WDAcceptTerminalUpdate : WDAcceptObject<NSCoding>
 ///
@@ -1794,7 +1772,7 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 
 /**
  *  @class WDAcceptTerminalUpdates
- *  @discussion Set of updates information for the terminal APPLICATION + CONFIGURATION + FIRMWARE
+ *  @brief Set of updates information for the terminal APPLICATION + CONFIGURATION + FIRMWARE
  **/
 @interface WDAcceptTerminalUpdates : WDAcceptObject<NSCoding>
 
@@ -1807,14 +1785,14 @@ typedef void(^ReceiptCompletion)(id _Nullable receipt, NSError* _Nullable error)
 #pragma mark - Request Callbacks
 /**
  *  @typedef PaymentProgress
- *  @discussion Callback to be executed upon payment process stage change
+ *  @brief Callback to be executed upon payment process stage change
  *  @param paymentProgress Coded payment progress
  **/
 typedef void (^PaymentProgress)(AcceptStateUpdate paymentProgress);
 
 /**
  *  @typedef PaymentSignature
- *  @discussion Used by the extension to notify the Payment Flow to require the collection of customer's signature
+ *  @brief Used by the extension to notify the Payment Flow to require the collection of customer's signature
  *  @param signatureRequest Details of the signature request (card holder details as supplied by extension)
  *  @see WDAcceptSignatureRequest
  **/
@@ -1822,7 +1800,7 @@ typedef void (^PaymentSignature)(WDAcceptSignatureRequest * _Nullable signatureR
 
 /**
  *  @typedef PaymentCardApplicationSelection
- *  @discussion Used by extension to notify the Payment Flow to ask for the Card application selection
+ *  @brief Used by extension to notify the Payment Flow to ask for the Card application selection
  *  @param appSelectionRequest  WDAcceptAppSelectionRequest to be sent to the client application
  *  @see WDAcceptAppSelectionRequest
  **/
@@ -1830,87 +1808,87 @@ typedef void (^PaymentCardApplicationSelectionRequest)(WDAcceptAppSelectionReque
 
 /**
  *  @typedef PrintCompletion
- *  @discussion Callback to be executed in the case the printing is complete
+ *  @brief Callback to be executed in the case the printing is complete
  **/
 typedef void (^PrintCompletion)(BOOL printStatusOK, NSError* _Nullable printError);
 
 /**
  *  @typedef PrinterStateUpdate
- *  @discussion Callback to be executed upon print process stage change
+ *  @brief Callback to be executed upon print process stage change
  **/
 typedef void (^PrinterStateUpdate)(AcceptPrinterStateUpdate printProgress);
 
 /**
  *  @typedef DeviceDiscoveryCompletion
- *  @discussion Callback to be executed upon completion of device discovery
+ *  @brief Callback to be executed upon completion of device discovery
  *  @param devices of AcceptTerminal
  **/
 typedef void (^DeviceDiscoveryCompletion)(NSArray <WDAcceptTerminal *>* _Nullable devices, NSError* _Nullable devicesError);
 /**
  *  @typedef VendorDiscoveryCompletion
- *  @discussion Callback to be executed upon completion of vendor discovery
+ *  @brief Callback to be executed upon completion of vendor discovery
  *  @param vendors of WDAcceptVendor
  **/
 typedef void (^VendorDiscoveryCompletion)(NSArray <WDAcceptVendor *> * _Nullable vendors);
 /**
  *  @typedef WDAcceptUpdateConfigurationProgress
- *  @discussion Callback to be executed at each progress update of the terminal configuration update process
+ *  @brief Callback to be executed at each progress update of the terminal configuration update process
  *  @param configurationUpdate progress status
  **/
 typedef void (^UpdateConfigurationProgress)(AcceptUpdateConfigurationProgressUpdate configurationUpdate);
 
 /**
  *  @typedef UpdateTerminalCompletion
- *  @discussion Callback to be executed at the end of the terminal configuration update process
+ *  @brief Callback to be executed at the end of the terminal configuration update process
  *  @param updateStatus terminal update result
  **/
 typedef void (^UpdateTerminalCompletion)(AcceptUpdateConfigurationStatus updateStatus, NSError* _Nullable updateError);
 
 /**
  *  @typedef TerminalUpdatesCompletion
- *  @discussion Callback to be executed at the end of the available terminal updates process
+ *  @brief Callback to be executed at the end of the available terminal updates process
  *  @param availableUpdates the details of the available updates (Configuration, Terminal Application, Firmware)
  **/
 typedef void (^TerminalUpdatesCompletion)(WDAcceptTerminalUpdates *_Nullable availableUpdates, NSError* _Nullable availableUpdatesError);
 
 /**
  *  @typedef SignatureVerificationResultCallback
- *  @discussion The callback to pass to startPay function with the result of Customer signature verification
+ *  @brief The callback to pass to startPay function with the result of Customer signature verification
  *  @param signatureVerifitacionResult the result of the Merchant veryfying the customer signature
  **/
 typedef void (^SignatureVerificationResult)(AcceptSignatureVerificationResult signatureVerifitacionResult);
 
 /**
  *  @typedef SignatureRequest
- *  @discussion Callback to be executed if the signature is required during the payment process
+ *  @brief Callback to be executed if the signature is required during the payment process
  *  @param signatureRequest signature request block
  **/
 typedef void (^SignatureRequiredRequest)(WDAcceptSignatureRequest* _Nonnull signatureRequest);
 
 /**
  *  @typedef SignatureVerificationRequest
- *  @discussion The callback to pass to startPay function with the result of Customer signature verification
+ *  @brief The callback to pass to startPay function with the result of Customer signature verification
  *  @param signatureVerificationResult the result of the Merchant veryfying the customer signature // if returned as nil from the sdk then Merchant accepts/rejects signature on the terminal and not within the app
  **/
 typedef void (^SignatureVerificationRequest)(SignatureVerificationResult _Nullable signatureVerificationResult, NSError* _Nullable signatureVerificationError);
 
 /**
  *  @typedef MerchantDetailCompletion
- *  @discussion The callback upon the merchant detail method completion
+ *  @brief The callback upon the merchant detail method completion
  *  @param merchantUser the result of the login method - available if correct user credentials used
  **/
 typedef void(^MerchantDetailCompletion)(WDAcceptMerchantUser * _Nullable merchantUser, NSError * _Nullable merchantUserError);
 
 /**
  *  @typedef MerchantCashierCompletion
- *  @discussion The callback upon the merchant cashier method completion
+ *  @brief The callback upon the merchant cashier method completion
  *  @param merchantCashiers the result of the getMerchantCashiers method - available if correctly logged in
  **/
 typedef void(^MerchantCashierCompletion)( NSArray <WDAcceptMerchantCashier *>* _Nullable merchantCashiers, NSError * _Nullable merchantCashiersError);
 
 /**
  *  @typedef CurrentUserCompletion
- *  @discussion The callback upon the current user method completion
+ *  @brief The callback upon the current user method completion
  *  @param currentUser Current user - as per credentials used when initializing the SDK
  *  @param cashier Cashier record if exists for the Current user
  *  @error Error from the current user process
@@ -1919,28 +1897,28 @@ typedef void(^CurrentUserCompletion)( WDAcceptMerchantUser * _Nullable currentUs
 
 /**
  *  @typedef MerchantCashierPinValidationCompletion
- *  @discussion The callback upon the merchant cashier PIN validation method completion
+ *  @brief The callback upon the merchant cashier PIN validation method completion
  *  @param pinValidationResult shows the result of the PIN validation
  **/
 typedef void(^MerchantCashierPinValidationCompletion)( AcceptCashierPinValidationResult pinValidationResult, NSError * _Nullable merchantCashierValidationError);
 
 /**
  *  @typedef CashRegisterCompletion
- *  @discussion The callback upon the merchant cashier method completion
+ *  @brief The callback upon the merchant cashier method completion
  *  @param cashRegisters the result of the getMerchantCashiers method - available if correctly logged in
  **/
 typedef void(^CashRegisterCompletion)( NSArray <WDAcceptCashRegister *>* _Nullable cashRegisters, NSError * _Nullable cashRegistersError);
 
 /**
  *  @typedef CashRegisterShiftCompletion
- *  @discussion The callback upon the merchant cashier method completion
+ *  @brief The callback upon the merchant cashier method completion
  *  @param cashShifts the result of the getMerchantCashiers method - available if correctly logged in
  **/
 typedef void(^CashRegisterShiftCompletion)( NSArray <WDAcceptCashShift *>* _Nullable cashShifts, NSError * _Nullable cashShiftsError);
 
 /**
  *  @typedef CashRegisterShiftCompletion
- *  @discussion The callback upon the merchant cashier method completion
+ *  @brief The callback upon the merchant cashier method completion
  *  @param cashShifts shifts for this merchant
  *  @param cashShiftsError error obtaining shifts
  **/
@@ -1948,7 +1926,7 @@ typedef void(^CashRegisterShiftDetailsCompletion)( WDAcceptCashShift * _Nullable
 
 /**
  *  @typedef CashRegisterActivityCompletion
- *  @discussion The callback upon the cash register activity completion
+ *  @brief The callback upon the cash register activity completion
  *  @param cashActivities cash activities of this cashier
  *  @param cashActivitiesError  error obtaining the cash activities
  **/
@@ -1956,7 +1934,7 @@ typedef void(^CashRegisterActivityCompletion)( NSArray <WDAcceptCashActivity *>*
 
 /**
  *  @typedef SaleCompletion
- *  @discussion Callback to be executed at the end of the payment process
+ *  @brief Callback to be executed at the end of the payment process
  *  @param saleResponse transaction object
  *  @param saleResponseError if encountered during the paymnet process
  **/
@@ -1964,21 +1942,21 @@ typedef void (^SaleCompletion)(WDAcceptSaleResponse* _Nullable saleResponse, NSE
 
 /**
  *  @typedef SendReceiptCompletion
- *  @discussion Callback to be executed at the end of the send receipt process
+ *  @brief Callback to be executed at the end of the send receipt process
  *  @param recepients recepient email addresses
  **/
 typedef void (^SendReceiptCompletion)(NSArray <NSString*>* _Nullable recepients, NSError* _Nullable error);
 
 /**
  *  @typedef CredentialManagementCompletion
- *  @discussion Callback to be executed at the end of the credential management action
+ *  @brief Callback to be executed at the end of the credential management action
  *  @param result the credential management result
  **/
 typedef void (^CredentialManagementCompletion)(WDAcceptResult * _Nullable result, NSError* _Nullable error);
 
 /**
  *  @typedef PasswordPolicyCompletion
- *  @discussion Callback to be executed at the end of the credential management action
+ *  @brief Callback to be executed at the end of the credential management action
  *  @param policy the password policy result object
  *  @param error if encountered during the process
  **/
@@ -1986,56 +1964,56 @@ typedef void (^PasswordPolicyCompletion)(WDAcceptPasswordPolicyResult * _Nullabl
 
 /**
  *  @typedef SaleStatisticsCompletion
- *  @discussion Callback to be executed at the end of the get transaction statistics
+ *  @brief Callback to be executed at the end of the get transaction statistics
  *  @param statistics array of transaction statistics objects
  **/
 typedef void (^SaleStatisticsCompletion)(NSArray  <WDAcceptSaleStatistics *>* _Nullable statistics, NSError* _Nullable error);
 
 /**
  *  @typedef SaleUpdateCompletion
- *  @discussion Callback to be executed at the end of the transaction update process
+ *  @brief Callback to be executed at the end of the transaction update process
  *  @param sale updated sale
  **/
 typedef void (^SaleUpdateCompletion)(WDAcceptSaleResponse* _Nullable sale, NSError* _Nullable error);
 
 /**
  *  @typedef ProductCatalogueCompletion
- *  @discussion Callback to be executed at the end of the product catalogue maintenance or query process
+ *  @brief Callback to be executed at the end of the product catalogue maintenance or query process
  *  @param productCatalogues available product catalogues
  **/
 typedef void (^ProductCatalogueCompletion)(NSArray <WDAcceptProductCatalogue *>*_Nullable productCatalogues, NSError* _Nullable error);
 
 /**
  *  @typedef ProductCatalogueCategoryCompletion
- *  @discussion Callback to be executed at the end of the product catalogue category maintenance or query process
+ *  @brief Callback to be executed at the end of the product catalogue category maintenance or query process
  *  @param productCategories product categories
  **/
 typedef void (^ProductCatalogueCategoryCompletion)(NSArray <WDAcceptProductCatalogueCategory *>*_Nullable productCategories, NSError* _Nullable error);
 
 /**
  *  @typedef ProductCatalogueProductCompletion
- *  @discussion Callback to be executed at the end of the product catalogue maintenance or query process
+ *  @brief Callback to be executed at the end of the product catalogue maintenance or query process
  *  @param products Products
  **/
 typedef void (^ProductCatalogueProductCompletion)(NSArray <WDAcceptProductCatalogueProduct *>*_Nullable products, NSError* _Nullable error);
 
 /**
  *  @typedef ProductStockCompletion
- *  @discussion Callback to be executed at the end of the product stock query process
+ *  @brief Callback to be executed at the end of the product stock query process
  *  @param stocks Stock availability
  **/
 typedef void (^ProductStocksCompletion)(NSArray <WDAcceptProductStock *>*_Nullable stocks, NSError* _Nullable error);
 
 /**
  *  @typedef MembersCompletion
- *  @discussion Callback to be executed at the end of the members  query process
+ *  @brief Callback to be executed at the end of the members  query process
  *  @param members Members list
  **/
 typedef void (^MembersCompletion)(NSArray <WDAcceptMember *>*_Nullable members, NSError* _Nullable error);
 
 /**
  *  @typedef ProductCatalogueProductChangeCompletion
- *  @discussion Callback to be executed at the end of the product catalogue maintenance or query process
+ *  @brief Callback to be executed at the end of the product catalogue maintenance or query process
  *  @param updatedProducts updated products
  *  @param deletedProducts of strings with the ids of the products that were removed
  **/
@@ -2043,21 +2021,21 @@ typedef void (^ProductCatalogueProductChangeCompletion)(NSArray <WDAcceptProduct
 
 /**
  *  @typedef ProductCatalogueImageCompletion
- *  @discussion Callback to get the image of a catalogue product
+ *  @brief Callback to get the image of a catalogue product
  *  @param productsImage  producs image
  **/
 typedef void (^ProductCatalogueImageCompletion)(NSArray <WDAcceptProductImage *>*_Nullable productsImage, NSError* _Nullable error);
 
 /**
  *  @typedef ProductPricesCompletion
- *  @discussion Callback to be executed at the end of the member's products prices query process
+ *  @brief Callback to be executed at the end of the member's products prices query process
  *  @param productPrices Products prices list
  **/
 typedef void (^ProductPricesCompletion)(NSArray <WDAcceptProductPrice *>*_Nullable productPrices, NSError* _Nullable error);
 
 /**
  *  @typedef WDAcceptTerminalRKICompletion
- *  @discussion Callback after the terminal RKI were retrieved from backend
+ *  @brief Callback after the terminal RKI were retrieved from backend
  *  @param terminalRKI  terminal RKI details
  **/
 typedef void(^WDAcceptTerminalRKICompletion)(WDAcceptTerminalRKI * _Nullable terminalRKI, NSError * _Nullable error);
@@ -2065,7 +2043,7 @@ typedef void(^WDAcceptTerminalRKICompletion)(WDAcceptTerminalRKI * _Nullable ter
 
 #pragma mark - Helper Functions
 /**
- *  @discussion Get the  Transaction State  from Accept Transaction State code
+ *  @brief Get the  Transaction State  from Accept Transaction State code
  *  @param acceptState Accept Transaction Status code
  *  @return  Transaction State as string
  **/
@@ -2082,19 +2060,19 @@ NSDictionary *  WDATransactionTypes();
 NSDictionary *  WDAPaymentMethods();
 
 /**
- *  @discussion Get the Accept Extensions as dictionary of code and names
+ *  @brief Get the Accept Extensions as dictionary of code and names
  *  @return Accept Extensions dictionary
  **/
 NSDictionary * WDAcceptExtensionNames();
 
 /**
- *  @discussion Get the Accept Extension name from Vendor UUID
+ *  @brief Get the Accept Extension name from Vendor UUID
  *  @return Accept Extension name
  **/
 NSString * WDAcceptExtensionNameFromAcceptVendorUUID(WDAExtensionTypeUUID vendorUUID);
 
 /**
- *  @discussion Get the Accept Vendor UUID from Extension name
+ *  @brief Get the Accept Vendor UUID from Extension name
  *  @return Accept vendor UUID
  **/
 WDAExtensionTypeUUID WDAcceptVendorUUIDFromAcceptExtensionName(NSString *extensionName);
@@ -2118,7 +2096,7 @@ NSDictionary *  WDASaleStatuses();
  **/
 AcceptSaleState WDAcceptSaleStatusFromSaleStatus(NSString *saleStatus);
 /**
- *  @discussion Get the Sale Status from Accept Sale Status code
+ *  @brief Get the Sale Status from Accept Sale Status code
  *  @param saleStatus Accept Sale Status code
  *  @return Sale State as string
  **/

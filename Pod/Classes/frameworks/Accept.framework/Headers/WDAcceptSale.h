@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - AcceptSaleSummaryItem
 /**
  *  @class WDAcceptSaleSummaryItem
- *  @discussion Tax Summary item
+ *  @brief Tax Summary item
  **/
 @interface WDAcceptSaleSummaryItem : NSObject
 /**
@@ -223,16 +223,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Default NSObject init is unavailable
 -( instancetype)init __attribute__((unavailable("use initWithUniqueId")));
-
+///
 - ( instancetype)initWithCoder:(NSCoder *)coder;
 
 /**
  *  @brief Create new Sale
  *  @param uniqueId Unique identifier of this sale as understood by your backend system - one can use WDAcceptUtils.uniqueID to generate one
+ *  This parameter is also conveyed to Payment Gateways [PE (FunctionID), EE(order_number)]
  *  @param location sale location (the gps location of the terminal at the time of payment)
+ *  @param inclusiveTaxes prices are tax inclusive
  *  @param currency sale currency
- *  @param gratuityTaxRate tax rate of the gratuity items
  *  @param note sale description
+ *  This parameter is also conveyed to Payment Gateways [PE (Usage), EE(descriptor)]
+ *  @param gratuityTaxRate tax rate of the gratuity items
  **/
 -(nullable instancetype)initWithUniqueId:(NSString * _Nullable)uniqueId
                        location:(CLLocation* _Nullable)location
@@ -243,9 +246,14 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  @brief Create new Sale where no Items to be added later
  *  @param uniqueId Unique identifier of this sale as understood by your backend system - one can use WDAcceptUtils.uniqueID to generate one
+ *  This parameter is also conveyed to Payment Gateways [PE (FunctionID), EE(order_number)]
  *  @param location sale location (the gps location of the terminal at the time of payment)
+ *  @param inclusiveTaxes prices are tax inclusive
+ *  @param saleAmount The total Sale amount
  *  @param currency sale currency
  *  @param note sale description
+ *  This parameter is also conveyed to Payment Gateways [PE (Usage), EE(descriptor)]
+ *  @param gratuityTaxRate tax rate of the gratuity items
  **/
 -(nullable instancetype)initWithUniqueId:(NSString * _Nullable)uniqueId
                                 location:(CLLocation* _Nullable)location
@@ -254,6 +262,7 @@ NS_ASSUME_NONNULL_BEGIN
                                 currency:(NSString * )currency
                                     note:(NSString * _Nullable)note
                          gratuityTaxRate:(NSDecimalNumber * _Nullable) gratuityTaxRate  NS_DESIGNATED_INITIALIZER;
+
 /**
  *  @brief set Amount and tax rate - no items to be added later
  *  @param saleAmount Amount

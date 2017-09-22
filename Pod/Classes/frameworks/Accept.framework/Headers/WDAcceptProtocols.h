@@ -10,9 +10,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- * @brief WDAcceptManagerDelegate
- *  @brief Device Manager Delegation
- **/
+  @brief Device Manager Delegation
+ */
 @protocol WDAcceptManagerDelegate <NSObject>
 @optional
 
@@ -33,9 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /**
- * @brief WDAcceptPrinting
- *  @brief Print Manager Delegation
- **/
+  @brief Print Manager Delegation
+ */
 @protocol WDAcceptPrinting <WDAcceptManagerDelegate>
 @optional
 
@@ -49,19 +47,18 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /**
- * @brief WDAcceptScanning
- *  @brief Scanner Manager Delegation
- **/
+  @brief Scanner Manager Delegation
+ */
 @protocol WDAcceptScanning <WDAcceptManagerDelegate>
 @optional
 
 /**
  *  @brief Called when printer's paper status change is detected
  *  @param device Device description.
- *  @param dataReceived Data received from the scanner
+ *  @param barcodeReceived Data received from the scanner
  *  @param symbology Scanned barcode data symbology
  */
-- (void)device:(WDAcceptTerminal*)device dataReceived:(NSString *)dataReceived symbology:(AcceptBarcodeSymbology)symbology;
+- (void)device:(WDAcceptTerminal*)device barcodeReceived:(NSString *)barcodeReceived symbology:(AcceptBarcodeSymbology)symbology;
 
 @end
 

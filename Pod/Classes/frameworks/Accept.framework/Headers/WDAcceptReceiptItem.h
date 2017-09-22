@@ -10,7 +10,7 @@
 
 /**
  *  @class WDAcceptReceiptItem
- *  @discussion Receipt Item data
+ *  @brief Receipt Item data
  **/
 @interface WDAcceptReceiptItem : NSObject
 /// Default NSObject init is unavailable
