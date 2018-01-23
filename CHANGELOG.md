@@ -1,6 +1,28 @@
 # Change Log
 All notable changes to acceptSDK will be documented in this file.
 
+## [2.2.2] - 2018-01-23 
+### Added
+- UI Component - initial phone design
+- UI Component - eClear demo application
+- Item Discounts functionality
+
+### Changed
+- Using delegation in Sale Manager instead of closures
+- SPm2 BT background communication
+
+### Fixed
+- Discount, Grauity calculations
+
+## [2.2.0] - 2017-12-06 
+### Added
+- WeChat payment method
+- Sale Manager uses delegation instead of closures
+- Item Discounts functionality
+
+### Fixed
+- Product Catalogue maintenance
+
 ## [2.1.0] - 2017-09-22 
 ### Added
 - Product Catalogue maintenance updates

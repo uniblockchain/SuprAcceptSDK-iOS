@@ -53,8 +53,8 @@ class SocketScannerTestsSwift: BaseTestsSwift, WDAcceptManagerDelegate
     func removeSpecialCharsFromString(text: String) -> String
     {
         let okayChars : Set<Character> =
-            Set("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ1234567890+-*=(),.:!_".characters)
-        return String(text.characters.filter {okayChars.contains($0) })
+            Set("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ1234567890+-*=(),.:!_")
+        return String(text.filter {okayChars.contains($0) })
     }
     
     func device(_ device: WDAcceptTerminal, connectionStatusDidChange status:AcceptExtensionConnectionStatus)
@@ -62,14 +62,11 @@ class SocketScannerTestsSwift: BaseTestsSwift, WDAcceptManagerDelegate
         print("Connection status changed \(status)")
     }
     
-    func device(_ device: WDAcceptTerminal, dataReceived: Data) //Data received through barcode scanner
+    func device(_ device: WDAcceptTerminal, barcodeReceived: String?, symbology: AcceptBarcodeSymbology) //Data received through barcode scanner
     {
-        //It is a good practice to remove control characters as scanners have the bad tendency to add garbage at the end
-        if let dataReceivedAsText = String.init(data: dataReceived,
-                                                encoding: String.Encoding.utf8)
+        if let dataReceivedAsText = barcodeReceived
         {
-            let barcodeAsText = self.removeSpecialCharsFromString(text: dataReceivedAsText)
-            print("Barcode read with value as string: \(barcodeAsText)")
+            print("Barcode read with value as string: \(dataReceivedAsText)")
         }
         self.expectation.fulfill()
     }

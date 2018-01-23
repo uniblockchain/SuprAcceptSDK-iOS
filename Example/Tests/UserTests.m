@@ -95,7 +95,6 @@
     return;
     
 #endif
-    
     expectation = [self expectationWithDescription:@"testChangePassword"];
     
     //End of credential management process

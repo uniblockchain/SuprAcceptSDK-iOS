@@ -100,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSString * externalId;
 /**
  */
-@property (nullable, nonatomic, strong, readonly) NSArray <WDAcceptSaleItem *>* items;
+@property (nullable, nonatomic, strong, readonly) NSArray <WDAcceptSaleItemCore *>* items;
 /**
  */
 @property (nullable, nonatomic, strong, readonly) NSString * note;
@@ -127,7 +127,7 @@ NS_ASSUME_NONNULL_BEGIN
 - ( instancetype)init NS_DESIGNATED_INITIALIZER;
 /**
  */
--(NSDecimalNumber*)totalCountOfQuantityItems;
+-(NSDecimalNumber*)totalSaleItemsQuantity;
 /**
  */
 -(NSArray *)payments;
@@ -189,6 +189,8 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)setUpdatedLocation:(CLLocation*)newLocation;
 /// Plain Rounding for this Sale - taking in consideration the Currency - number of decimal places
 -(NSDecimalNumberHandler *)roundModePlain;
+-(NSDecimalNumberHandler *)roundModeDown;
+//-(NSDecimalNumberHandler *)roundModeBankers;
 @end
 
 #pragma mark - AcceptSaleRequest
@@ -220,7 +222,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  */
 @property (nonatomic,strong) NSNumber *validateCashReturn;
-
+/// Default NSObject new is unavailable
++( instancetype)new __attribute__((unavailable("use initWithUniqueId")));
 /// Default NSObject init is unavailable
 -( instancetype)init __attribute__((unavailable("use initWithUniqueId")));
 ///
@@ -271,17 +274,29 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)setSaleAmount:(NSDecimalNumber *)saleAmount
                 note:(nullable NSString *)note;
 
-// FIXME: do we need to provide unitPriceModified here also ???
 /**
  *  @brief Add sale item to the sale
  *  @param unitPrice Unit price
- *  @param itemRate Item's discount in percentage
- *  @param taxRate tax rate of the sale item
+ *  @param taxRate tax rate of the sale item (percentage e.g. tax rate of 10% = 10.0)
  *  @param itemDescription sale item description
  *  @param productId Sale item (a product) has a unique identifier in the inventory
  **/
 -(void)addSaleItem:(NSDecimalNumber *)unitPrice
-          itemRate:(nullable NSDecimalNumber *)itemRate
+          quantity:(NSInteger)quantity
+           taxRate:(NSDecimalNumber *)taxRate
+   itemDescription:(nullable NSString *)itemDescription
+         productId:(NSString * __nullable)productId;
+
+/**
+ *  @brief Add sale item to the sale
+ *  @param unitPrice Unit price
+ *  @param discountRate Item's Discount  (percentage e.g. discount rate of 5% = 5.0)
+ *  @param taxRate tax rate of the sale item (percentage e.g. tax rate of 10% = 10.0)
+ *  @param itemDescription sale item description
+ *  @param productId Sale item (a product) has a unique identifier in the inventory
+ **/
+-(void)addSaleItem:(NSDecimalNumber *)unitPrice
+      discountRate:(NSDecimalNumber *)discountRate
           quantity:(NSInteger)quantity
            taxRate:(NSDecimalNumber *)taxRate
    itemDescription:(nullable NSString *)itemDescription
@@ -290,15 +305,15 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  @brief Add coupon to the sale - Customer buys coupon - to be added to the basket
  *  @param unitPrice Unit price of the sale coupon
- *  @param productId Coupon has a unique identifier in the inventory
+ *  @param couponId Coupon has a unique identifier in the inventory
  **/
 -(void)addCoupon:(NSDecimalNumber *)unitPrice
-       productId:(NSString * __nullable)productId;
+       couponId:(NSString * __nullable)couponId;
 
 /**
  *  @brief Add gratuity to the sale
- *  @param unitPrice Unit price of the sale coupon
- *  @param taxRate tax rate of the gratuity
+ *  @param unitPrice Gratuity amount
+ *  @param taxRate tax rate of the gratuity (percentage e.g. tax rate of 10% = 10.0)
  **/
 -(void)addGratuity:(NSDecimalNumber *)unitPrice
            taxRate:(NSDecimalNumber *)taxRate;
@@ -306,7 +321,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  @brief Add discount to the sale - applied to the total gross price as discount percentage
 
- *  @param discountRate Discount percentage e.g. 5% discount = 5.0
+ *  @param discountRate Flat Discount (e.g. 5.0 for 5%)
  *  @param productId Discount has a unique identifier in the inventory
  **/
 -(void)addDiscount:(NSDecimalNumber *)discountRate
@@ -314,8 +329,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  @brief Add service charge to the sale - applied to the total netto price
- *  @param serviceChargeRate service charge rate e.g. 2.75% SC = 2.75
- *  @param taxRate tax rate of the service charge e.g. 7% tax on SC = 7.0
+ *  @param serviceChargeRate service charge rate (percentage e.g. service charge of 2.75% = 2.75)
+ *  @param taxRate tax rate of the service charge (percentage e.g. tax rate of 10% = 10.0)
  **/
 -(void)addServiceCharge:(NSDecimalNumber *)serviceChargeRate
                 taxRate:(NSDecimalNumber *)taxRate;
@@ -348,6 +363,14 @@ NS_ASSUME_NONNULL_BEGIN
  **/
 -(void)addAlipayPayment:(NSDecimalNumber * __nonnull)amount
                  consumerId:(NSString *__nonnull)consumerId;
+
+/**
+ *  @brief Add WeChat payment to the sale
+ *  @param amount Alipay amount
+ *  @param consumerId Alipay consumer id
+ **/
+-(void)addWeChatPayment:(NSDecimalNumber * __nonnull)amount
+             consumerId:(NSString *__nonnull)consumerId;
 
 /**
  *  @brief Remove the specified item formthe items list - Sale recalculation will be performed automatically
@@ -393,12 +416,14 @@ NS_ASSUME_NONNULL_BEGIN
  * @brief Remove service charge item from sale
  */
 -(void)removeServiceCharge;
-
 /**
  * @brief Remove gratuity/tip item from sale
  */
 -(void)removeGratuity;
-
+/**
+ * @brief Remove flat discount item from sale
+ */
+-(void)removeFlatDiscount;
 /**
  * @brief Remove card payment from sale
  */
@@ -474,9 +499,21 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, readonly) NSArray <WDAcceptSaleResponse *>* returns;
 /**
- * @brief After the Sale was processed by backend and Card Payment was requested
+ * @brief After the SaWDAcceptPaymentDetailCardle was processed by backend and Card Payment was requested
  */
 -(WDAcceptPaymentDetailCard *)processedCardPayment;
+/**
+ * @brief After the Sale was processed by backend and Cash Payment was requested
+ */
+-(WDAcceptPaymentDetail *)processedCashPayment;
+/**
+ * @brief After the Sale was processed by backend and Alipay Payment was requested
+ */
+-(WDAcceptPaymentDetailAlipay *)processedAlipayPayment;
+/**
+ * @brief After the Sale was processed by backend and WeChat Payment was requested
+ */
+-(WDAcceptPaymentDetailWeChat *)processedWeChatPayment;
 /**
  * @brief Merchant receipt unique id
  */
@@ -510,6 +547,26 @@ NS_ASSUME_NONNULL_BEGIN
  showReturns:(BOOL)showReturns
       format:(AcceptPrintFormat)format
          dpi:(AcceptPrintDpi)dpi
+    completion:(ReceiptCompletion)completion;
+
+/**
+ * @brief Default Design of the Sale Receipt
+ * @discussion To show your custom application name in the receipt footer: Define the Application Name to be displayed on the receipt in the application plist file as WDApplicationName <NSString>
+ *
+ * To show your custom Logo on the receipt: Supply your receipt Logo images and replace wd-merchantLogo (250x100 px) png file in the acceptResources.bundle
+ *
+ * @param forCardholder is it the Cardholder receipt ? Some receipt items are not available in Merchant copy of a receipt
+ * @param showReturns should the receipt contain all returns sub-receipts ?
+ * @param format Format of the receipt
+ * @param dpi dots per width of the receipt to be printed - not used for HTML or Datecs native format
+ * @param language to use for localization of receipt labels - check WDAcceptLocalizationManager for supportedLanguages
+ * @param completion Receipt in the requested format
+ */
+-(void)receipt:(BOOL)forCardholder
+   showReturns:(BOOL)showReturns
+        format:(AcceptPrintFormat)format
+           dpi:(AcceptPrintDpi)dpi
+      language:(NSString *)language
     completion:(ReceiptCompletion)completion;
 
 /**

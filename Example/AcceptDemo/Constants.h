@@ -14,7 +14,7 @@
 #define KSERVICE_CHARGE_ENABLED 1
 #define KGRATUITY_ENABLED 1
 #define KUSERNAME @"integrationDemo"
-#define KPASSWORD @"W1r3c4rd123!"
+#define KPASSWORD @"Wirecard1234!"
 
 
 

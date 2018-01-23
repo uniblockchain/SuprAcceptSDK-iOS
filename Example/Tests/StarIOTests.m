@@ -19,6 +19,8 @@
 {
     __block BOOL printingSuccess;
     __block BOOL openingDrawerSuccess;
+    __block BOOL openingDrawerDone;
+    __block BOOL scanningSuccess;
     WDAExtensionTypeUUID deviceModel;
 }
 
@@ -29,6 +31,10 @@
 - (void)setUp
 {
     [super setUp];
+    deviceModel = WDAMPOPExtensionUUID;
+    openingDrawerSuccess = NO;
+    openingDrawerDone = NO;
+    scanningSuccess = NO;
 }
 
 -(void)testStarMicronics
@@ -91,9 +97,12 @@
 {
     void (^completion)(BOOL, NSError*) = ^(BOOL success, NSError *error)
     {
-        openingDrawerSuccess = success && !error;
-        returnedErr = error;
-        [expectation fulfill];
+        if (!openingDrawerSuccess)
+        {
+            openingDrawerSuccess = success && !error;
+            returnedErr = error;
+            [expectation fulfill];
+        }
     };
     
     [sdk.cashDrawerManager openCashDrawer:selectedDevice completion:completion];
@@ -113,17 +122,20 @@
     };
     
     WDAcceptPrinterConfig *printerConfig = [[WDAcceptPrinterConfig alloc] initWithPrinter:selectedDevice printJobs:@[[UIImage imageNamed:@"fakereceipt"]]];
-    //Note that the printer adds border to the image and that cannot be avoided. Try to not include
-    //borders also in the picture or the image will be scaled down too much.
-    //For mPOP and StarMicronics devices, printing from image results in more flexibility and not a big impact in speed of efficiency (Only Datecs is limited due
-    //to battery usage and paper size)
+    /*
+     Note that the printer adds border to the image and that cannot be avoided. Try to not include
+     borders also in the picture or the image will be scaled down too much.
+     For mPOP and StarMicronics devices, printing from image results in more flexibility and not a big impact in speed of efficiency (Only Datecs is limited due
+     to battery usage and paper size)
     
-    //If you wish to use the Default Design receipt you can obtain the SaleResponse from
-    //A. saleManager pay:
-    //B. saleManager querySales:
-    //Here we demonstrate the use of saleManager query: to obtain a SaleResponse a use it for printing the Default Sale Receipt
-    // Query parameters such as paging, order by , sort
-    // and specific filters such as full text search, sale creation date, sale operation, sale status
+     If you wish to use the Default Design receipt you can obtain the SaleResponse from
+     A. saleManager pay:
+     B. saleManager querySales:
+     Here we demonstrate the use of saleManager query: to obtain a SaleResponse a use it for printing the Default Sale Receipt
+        Query parameters such as paging, order by , sort
+        and specific filters such as full text search, sale creation date, sale operation, sale status
+    NOTE: Star Micronics devices only accept receipts in the format UIImage
+     */
     WDAcceptSalesQuery *query = [WDAcceptSalesQuery new];
     query.page = 0;
     query.pageSize = 20;
@@ -161,12 +173,13 @@
      }];
 }
 
-- (void)device:(WDAcceptTerminal*)device dataReceived:(NSData *)dataReceived
+- (void)device:(WDAcceptTerminal*)device barcodeReceived:(NSString *)barcodeReceived symbology:(AcceptBarcodeSymbology)symbology
 {
-    //It is a good practice to remove control characters as scanners have the bad tendency to add garbage at the end most of the time.
-    NSString *barcodeAsText = [[[NSString alloc] initWithData:dataReceived encoding:NSUTF8StringEncoding] stringByRemovingControlCharacters];
-    NSLog(@"Barcode read with value as string: %@", barcodeAsText);
-    [expectation fulfill];
+    NSLog(@"Barcode read with value as string: %@", barcodeReceived);
+    if (!scanningSuccess) {
+        scanningSuccess = YES;
+        [expectation fulfill];
+    }
 }
 
 -(void)device:(WDAcceptTerminal *)device paperSatusUpdated:(AcceptPrinterPaperStatus)status
@@ -178,8 +191,9 @@
 - (void)device:(WDAcceptTerminal*)device connectionStatusDidChange:(AcceptExtensionConnectionStatus)status
 {
     NSLog(@"Connection status changed %ld", status);
-    if (status == AcceptExtensionConnectionStatusConnected)
+    if (status == AcceptExtensionConnectionStatusConnected && !openingDrawerDone)
     {
+        openingDrawerDone = YES;
         [self openCashDrawer];
     }
 }

@@ -19,7 +19,6 @@
 }
 @end
 
-
 @implementation CashTestsObcj
 
 - (void)setUp
@@ -303,45 +302,15 @@
 
 -(void)doCashPayment
 {
-    void(^progress)(AcceptStateUpdate) = ^(AcceptStateUpdate update)
-    {
-        NSLog(@"Transaction flow progress status: %ld", (long)update);
-        //You may decide to update your UI based on the status received here.
-    };
-    
-    void (^completion)(WDAcceptSaleResponse*, NSError*) = ^(WDAcceptSaleResponse *transaction, NSError *error)
-    {
-        saleResponse = transaction;
-        returnedErr = error;
-        [expectation fulfill];
-    };
-    
-    SignatureRequiredRequest signatureRequiredRequest = ^(WDAcceptSignatureRequest* signatureRequest)
-    {
-        //A signature image request is only needed for card transactions that request it. You need to declare this block always, but can leave it empty when doing pure cash transaction. Check card transaction unit tests for examples on this callback.
-    };
-    
-    SignatureVerificationRequest verifySignature = ^(SignatureVerificationResult signatureVerificationResult, NSError* signatureVerificationError)
-    {
-        //A signature image verification is only needed for card transactions that request it. You need to declare this block always, but can leave it empty when doing pure cash transaction. Check card transaction unit tests for examples on this callback.
-    };
-    
-    PaymentCardApplicationSelectionRequest cardAppSelection = ^(WDAcceptAppSelectionRequest * appSelectionRequest)
-    {
-        //A card chip's app selection is only needed for card transactions that request it. You need to declare this block always, but can leave it empty when doing pure cash transaction. Check card transaction unit tests for examples on this callback.
-    };
-    
     //We will define a dummy payment configuration as an example. Feel free to modify and add content; the sale complexity is up to you.
     WDAcceptPaymentConfig *paymentConfiguration = [WDAcceptPaymentConfig new];
     aSale = [[SaleHelper sharedInstance] newSale];
     [aSale addSaleItem:[NSDecimalNumber decimalNumberWithString:@"2.5"]
-              itemRate:nil
               quantity:5
                taxRate:[[UserHelper sharedInstance] preferredSaleItemTax]
        itemDescription:@"Red Apple"
              productId:@"dummyId1"];
     [aSale addSaleItem:[NSDecimalNumber decimalNumberWithString:@"1.34"]
-              itemRate:nil
               quantity:2
                taxRate:[[UserHelper sharedInstance] preferredSaleItemTax]
        itemDescription:@"Pineapple"
@@ -361,12 +330,7 @@
     paymentConfiguration.sale.shiftId = lastShift? lastShift.internalId : @"";
     [paymentConfiguration.sale resetPayments];
     [paymentConfiguration.sale addCashPayment:paymentConfiguration.sale.totalToPay];
-    [[sdk saleManager] pay:paymentConfiguration
-                  progress:progress
-          collectSignature:signatureRequiredRequest
-           verifySignature:verifySignature
-           cardApplication:cardAppSelection
-                completion:completion];
+    [[sdk saleManager] pay:paymentConfiguration delegate:_paymentHandler];
 }
 
 -(void)refundTransaction
@@ -377,15 +341,14 @@
     saleToBeRefunded.cashRegisterId = cashRegister? cashRegister.internalId : nil;
     saleToBeRefunded.cashierId = saleResponse.cashierId;
     saleToBeRefunded.customerId = saleResponse.customerId;
-    WDAcceptSaleItem *anItem = [aSale.items firstObject];
+    WDAcceptSaleItemCore *anItem = [aSale.items firstObject];
     
     //This is an example of partial refund: only one item is refunded
     [saleToBeRefunded addSaleItem:anItem.unitPrice
-                         itemRate:nil
                          quantity:1
                           taxRate:anItem.taxRate
                   itemDescription:anItem.itemDescription
-                        productId:anItem.externalProductId];
+                        productId: ((WDAcceptSaleItem *)([anItem isKindOfClass:[WDAcceptSaleItem class]] ? anItem : nil)).externalProductId];
     
     [saleToBeRefunded addCashPayment:[saleToBeRefunded totalToPay]];
     saleResponse = nil;

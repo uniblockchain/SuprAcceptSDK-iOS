@@ -41,10 +41,11 @@ FOUNDATION_EXPORT const unsigned char AcceptSDKVersionString[];
 #import <Accept/WDAcceptPaymentRequestCoupon.h>
 #import <Accept/WDAcceptPaymentRequestAlipay.h>
 #import <Accept/WDAcceptUserManager.h>
-#import <Accept/WDADataTypes.h>
+#import <Accept/WDAcceptProtocols.h>
 #import <Accept/WDAError.h>
 #import <Accept/WDAcceptExtensionManager.h>
 #import <Accept/WDAcceptUtils.h>
 #import <Accept/NSDate+Utils.h>
 #import <Accept/WDSSessionManagerCredentials.h>
 #import <Accept/WDAcceptConstants.h>
+#import <Accept/WDAcceptLocalizationManager.h>

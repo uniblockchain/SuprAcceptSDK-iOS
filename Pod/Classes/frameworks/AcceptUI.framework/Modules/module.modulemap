@@ -1,0 +1,11 @@
+framework module AcceptUI {
+  umbrella header "AcceptUI.h"
+
+  export *
+  module * { export * }
+}
+
+module AcceptUI.Swift {
+    header "AcceptUI-Swift.h"
+    requires objc
+}

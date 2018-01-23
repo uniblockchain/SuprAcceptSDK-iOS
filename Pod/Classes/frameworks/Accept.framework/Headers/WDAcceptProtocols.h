@@ -62,4 +62,41 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/**
+ *   @brief Sale Manager Payment Delegation
+ *   @discussion Implement Payment flow Delegate methods to receive events from Payment Flow
+ */
+@protocol WDAcceptPaymentDelegate <NSObject>
+@optional
+/**
+ * @brief Information about the payment process progress
+ * @param paymentProgress progress enumerator
+ **/
+-(void)progress:(AcceptStateUpdate) paymentProgress;
+/**
+ * @brief In case of payment which requires capturing of a customer signature and return the signature data
+ * @param signatureRequest is sent to caller and requires sending of collected signature image in sendCollectedSignature callback
+ **/
+-(void)collectSignature:(WDAcceptSignatureRequest * _Nonnull ) signatureRequest;
+/**
+ * @brief In case of payment which requires customer payment confirmation
+ * @param confirmationType designates the type of customer's confirmation Signature | WeChat password ...
+ * @param paymentConfirmationResult is provided by caller and carries the customer's confirmation Yes/No
+ **/
+-(void)confirm:(AcceptPaymentConfirmationType )confirmationType
+paymentConfirmationResult:(PaymentConfirmationResult   _Nullable )paymentConfirmationResult;
+/**
+ * @brief In case of Card payment which requires customer selection of Card application
+ * @param appSelectionRequest is sent to caller and requires sending of selected card application in selectCardApplication callback
+ **/
+-(void)cardApplication:(WDAcceptAppSelectionRequest * _Nonnull )appSelectionRequest;
+@required
+/**
+ * @brief The event sent at the end of the payment flow
+ * @param saleResponse contains the completed Sale
+ * @param saleResponseError contains the error occured during the payment flow
+ **/
+-(void)completion:(WDAcceptSaleResponse* _Nullable) saleResponse
+saleResponseError:(NSError* _Nullable) saleResponseError;
+@end
 NS_ASSUME_NONNULL_END

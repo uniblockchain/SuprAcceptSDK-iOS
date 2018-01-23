@@ -23,7 +23,7 @@ Debit and credit cards are standard
 ### Alternative payment methods
 
 * Alipay
-* E-commerce
+* WeChat
 
 ### Payment operations
 
@@ -52,6 +52,20 @@ Find more information about Switch in the [Switch Fact Sheet](./docs/Fact-Sheet-
 Wirecard Technologies is using the SuprAcceptSDK in their Whitelabel application which is fully integrated professional mPOS solution. The **Whitelabel** app is **VISA and Mastercard certified** and utilises the Wirecard infrastructure for card payment processing.
 
 [<img src="https://raw.githubusercontent.com/WirecardMobileServices/SuprAcceptSDK-iOS/master/docs/sdkarchv09.png" alt="Whitelabel architecture" width=400 height=422>](./docs/sdkarchv09.png "Whitelabel Architecture")
+
+## Payment UI
+The SDK provides minimalistic Payment UI consiting of the following screens:
+
+- Amount Entry
+- Payment Method selection
+- Signature Capture
+- Payment Process
+- Cash Register selection
+- Card application selection
+- Open/Close Shift
+- Payment QRCode scanner
+
+Please refer to eClear example application to see the implementation details.
 
 ## Installation
 

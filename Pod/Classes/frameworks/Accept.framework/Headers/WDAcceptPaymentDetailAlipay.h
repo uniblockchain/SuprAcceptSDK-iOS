@@ -6,7 +6,7 @@
 //  Copyright © 2017 Wirecard. All rights reserved.
 //
 
-#import <Accept/Accept.h>
+#import "WDAcceptPaymentDetail.h"
 
 /**
  *  @class WDAcceptPaymentDetailAlipay

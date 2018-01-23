@@ -1,0 +1,42 @@
+platform :ios, '9.0'
+use_frameworks!
+install! 'cocoapods', :deterministic_uuids => false
+
+project 'eClear.xcodeproj'
+
+def shared_dependencies
+     pod 'CorePlot', '~> 1.4'
+     pod 'ZipArchive', '~> 1.4'
+     pod 'SUPRAcceptSDK/All', :path => '../'
+     pod 'libextobjc/EXTScope', '~> 0.4'
+     pod 'libextobjc/EXTSynthesize', '~> 0.4'
+     pod 'Lockbox'
+     pod 'AFNetworking/UIKit'
+     pod 'INTULocationManager'
+     pod 'INTUAnimationEngine'
+     pod 'CocoaLumberjack/Swift', '~> 3.2.1'
+     pod 'Fabric'
+     pod 'Crashlytics'
+     pod 'PromiseKit'
+     pod 'NotificationBannerSwift', '~> 1.4.5'
+     pod 'ZXingObjC', '~> 3.2.1'
+	 pod 'TWMessageBarManager'
+end
+
+target 'eClear' do
+    shared_dependencies
+end
+
+
+post_install do |installer_representation|
+    installer_representation.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings['CONFIGURATION_BUILD_DIR'] = '$PODS_CONFIGURATION_BUILD_DIR'
+            config.build_settings['LD_RUNPATH_SEARCH_PATHS'] = ['$(FRAMEWORK_SEARCH_PATHS)']
+            if config.name != 'Release'
+                #config.build_settings['CONFIGURATION_BUILD_DIR'] = '$PODS_CONFIGURATION_BUILD_DIR'
+                config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'DEBUG_LOGS=1']
+            end
+        end
+    end
+end

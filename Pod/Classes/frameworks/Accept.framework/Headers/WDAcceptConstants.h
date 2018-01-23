@@ -9,6 +9,8 @@
 #ifndef WDAcceptConstants_h
 #define WDAcceptConstants_h
 
+extern const char kWDAcceptLanguageBundles;
+
 #define kWDDateSeparatorDash @"%@ - %@"
 #define kWDDateSeparatorParentheses @"%@ (%@)"
 #define kWDDateSeparatorBlank @"%@ %@"
@@ -34,8 +36,6 @@
 #define kWDAOSA @"AOSA:"
 #define kWDAID @"AID:"
 #define kWDTC @"TC:"
-
-#define WDLocalizedString(key)    NSLocalizedString(key, key)
 #define WDLocaleFormat(key) [[AcceptUtils sharedInstance] formatDateWithCurrentLocale:key]
 
 #endif /* WDAcceptConstants_h */

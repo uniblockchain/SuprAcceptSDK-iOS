@@ -15,14 +15,15 @@ typedef NS_ENUM(NSInteger, AcceptSDKError ) {
     AcceptSDKErrorBackendReturnedJSONDoesNotMatchMappedClass,
     AcceptSDKErrorUnauthorizedUser,
     AcceptSDKErrorUserPasswordExpired,
+    AcceptSDKErrorUserPasswordChangeRequired,
     AcceptSDKErrorUserAccessForbidden,
     AcceptSDKErrorResourceNotFound,
     AcceptSDKErrorSessionExpired,
     AcceptSDKErrorRequestTimeOut,
     AcceptSDKErrorRequestNoProperResponse,
     AcceptSDKErrorRequestParameterRequired,
-    AcceptSDKErrorRequestedResourceNotFound,
-    AcceptSDKErrorRequestFailedValidation,//10
+    AcceptSDKErrorRequestedResourceNotFound,//10
+    AcceptSDKErrorRequestFailedValidation,
     AcceptSDKErrorPlugInTimeout ,
     AcceptSDKErrorSignatureTimeout,
     AcceptSDKErrorInitialization,
@@ -31,8 +32,8 @@ typedef NS_ENUM(NSInteger, AcceptSDKError ) {
     AcceptSDKErrorBadSwipe,
     AcceptSDKErrorNotSupportedCardType,
     AcceptSDKErrorDataProcessing,
-    AcceptSDKErrorOnlineProcessing,
-    AcceptSDKErrorTransactionNotApproved,//20
+    AcceptSDKErrorOnlineProcessing,//20
+    AcceptSDKErrorTransactionNotApproved,
     AcceptSDKErrorHardwareAccessPermission,
     AcceptSDKErrorTokenExpired,
     AcceptSDKErrorConnection,
@@ -41,8 +42,8 @@ typedef NS_ENUM(NSInteger, AcceptSDKError ) {
     AcceptSDKErrorCantLoadSwiperTerminalConfiguration,
     AcceptSDKErrorTerminalDamaged,
     AcceptSDKErrorNoDUKPT,
-    AcceptSDKErrorFailedToStartEMV,
-    AcceptSDKErrorFailedToSendOfflineEMV,//30
+    AcceptSDKErrorFailedToStartEMV,//30
+    AcceptSDKErrorFailedToSendOfflineEMV,
     AcceptSDKErrorFailedToSendOnlineEMV,
     AcceptSDKErrorTerminalNotSetInMerchant,
     AcceptSDKErrorResponseLost,
@@ -51,8 +52,8 @@ typedef NS_ENUM(NSInteger, AcceptSDKError ) {
     AcceptSDKErrorTransactionFailure,
     AcceptSDKErrorBlockedCardType,
     AcceptSDKErrorFailedBluetoothConnection,
-    AcceptSDKErrorFailedPrinterBluetoothConnection,
-    AcceptSDKErrorFailedTerminalBluetoothConnection,//40
+    AcceptSDKErrorFailedPrinterBluetoothConnection,//40
+    AcceptSDKErrorFailedTerminalBluetoothConnection,
     AcceptSDKErrorFailedDrawerBluetoothConnection,
     AcceptSDKErrorFailedPistolBluetoothConnection,
     
@@ -62,8 +63,8 @@ typedef NS_ENUM(NSInteger, AcceptSDKError ) {
     AcceptSDKErrorTerminalFailedToGetICCApplicationsList,
     AcceptSDKErrorTerminalFailedToTerminateCurrentTerminalPaymentFlow,
     AcceptSDKErrorLowPowerInAudioJack,
-    AcceptSDKErrorMonoAudioEnabled,
-    AcceptSDKErrorTerminalCommandTimeOut,//50
+    AcceptSDKErrorMonoAudioEnabled,//50
+    AcceptSDKErrorTerminalCommandTimeOut,
     AcceptSDKErrorTerminalTimeOut,
     AcceptSDKErrorTerminalCancelledFileUpload,
 
@@ -73,9 +74,9 @@ typedef NS_ENUM(NSInteger, AcceptSDKError ) {
     AcceptSDKErrorExternalIdNotFound,                   // there is no user/merchant with given external id. ( HTTP 422 )
     AcceptSDKErrorChangePasswordCriteriaNotMet,                  //password change criteria not met
     AcceptSDKErrorQueryStatsTokenExpired,
-    AcceptSDKErrorForgotExternalIdNotFound,             // there is no user/merchant with given email address. ( HTTP 422 )
+    AcceptSDKErrorForgotExternalIdNotFound,    //60         // there is no user/merchant with given email address. ( HTTP 422 )
     
-    AcceptSDKErrorConfigFilesInfoTimeout,//60
+    AcceptSDKErrorConfigFilesInfoTimeout,
     AcceptSDKErrorConfigFilesZipDownload,
     AcceptSDKErrorTerminalDisconnected,
     AcceptSDKErrorConfigFilesTerminalMayNotBeSet,
@@ -84,8 +85,8 @@ typedef NS_ENUM(NSInteger, AcceptSDKError ) {
     AcceptSDKErrorConfigFilesDevelopmentFirmwareOnProductionTerminal,
     AcceptSDKErrorConfigFilesTerminalUnsupported,
     AcceptSDKErrorConfigFilesTokenExpired,
-    AcceptSDKErrorInventoryNoData,
-    AcceptSDKErrorConfigFilesTerminalFirmwareDoesNotExist,//70
+    AcceptSDKErrorInventoryNoData,//70
+    AcceptSDKErrorConfigFilesTerminalFirmwareDoesNotExist,
     AcceptSDKErrorConfigFilesReading,
     
     AcceptSDKErrorPrinterTimeout,
@@ -95,9 +96,9 @@ typedef NS_ENUM(NSInteger, AcceptSDKError ) {
     AcceptSDKErrorPrinterOperation,
     AcceptSDKErrorPrinterUnsupportedDevice,
     AcceptSDKErrorDeviceDoesNotSupportPrinting,
-    AcceptSDKErrorPrinterPaperLow,
+    AcceptSDKErrorPrinterPaperLow,//80
     
-    AcceptSDKErrorSignatureRejectedFromTerminal,//80
+    AcceptSDKErrorSignatureRejectedFromTerminal,
     AcceptSDKErrorInvalidPaymentConfiguration,
     AcceptSDKErrorInvalidAIDConfiguration,
     
@@ -109,14 +110,15 @@ typedef NS_ENUM(NSInteger, AcceptSDKError ) {
     AcceptSDKErrorExtensionClassDoesNotExist,
     AcceptSDKErrorExtensionDoesNotSupportMethod,
     AcceptSDKErrorInvalidParameter,
-    AcceptSDKErrorDeviceRooted,
+    AcceptSDKErrorDeviceRooted,// 90
     
-    AcceptSDKErrorActiveTerminalNotSet,// 90
+    AcceptSDKErrorActiveTerminalNotSet,
     AcceptSDKErrorActiveScanPistolNotSet,
     AcceptSDKErrorActivePrinterNotSet,
     AcceptSDKErrorPinLocked,
     AcceptSDKErrorPinInvalid,
-    AcceptSDKErrorGeneral
+    AcceptSDKErrorGeneral,
+    AcceptSDKErrorServerSSLCertificateExpired
 };
 
 

@@ -46,6 +46,10 @@ class SpireTestsSwift: BaseTestsSwift, WDAcceptManagerDelegate
         {
             XCTFail("Error, did not return Merchant User. Are your credentials correct? Try login into the backend through internet browser.")
         }
+        else
+        {
+            UserHelper.sharedInstance().setUser(loggedUser)
+        }
         
         //PART 2: We discover Spire terminals
         //paired to your iOS device.
@@ -138,13 +142,11 @@ class SpireTestsSwift: BaseTestsSwift, WDAcceptManagerDelegate
         }
         self.aSale = sale
         self.aSale.addSaleItem(NSDecimalNumber(value: 3.4),
-                               itemRate:nil,
                                quantity:5,
                                taxRate:UserHelper.sharedInstance().preferredSaleItemTax(),
                                itemDescription:"Red Apple",
                                productId:"Dummy ID 1")
         self.aSale.addSaleItem(NSDecimalNumber(value: 2.25),
-                               itemRate:nil,
                                quantity:3,
                                taxRate:UserHelper.sharedInstance().preferredSaleItemTax(),
                                itemDescription:"Orange",
@@ -164,58 +166,33 @@ class SpireTestsSwift: BaseTestsSwift, WDAcceptManagerDelegate
         paymentConfiguration.sale.resetPayments()
         paymentConfiguration.sale.addCardPayment(paymentConfiguration.sale.totalToPay() ?? NSDecimalNumber.init(value:0),
                                                  terminal:self.selectedDevice!)
-
-        let paymentCompletion : SaleCompletion = {[weak self](transaction : WDAcceptSaleResponse?, error : Error?) in
-            print("Payment completed")
-            self?.returnedErr = error
-            self?.saleResponse = transaction
-            self?.expectation.fulfill()
-        }
-        
-        let progressUpdate : PaymentProgress = {(update : AcceptStateUpdate) in
-            print("Progress update \(update.rawValue)")
-        }
-        
-        let signatureRequiredRequest : SignatureRequiredRequest = {(signatureRequest : WDAcceptSignatureRequest?) in
-            //You can show the cardHolderName and the card issue in your UI as you receive them in the signatureRequest instance
-            signatureRequest?.sendCollectedSignature(TestUtils.signatureImage(fromText:"Test"), nil)//In a real case scenario, you will send the signature image drawn by the client, not the dummy one used above
-        }
-        
-        let verifySignature : SignatureVerificationRequest = {(signatureVerificationResult : SignatureVerificationResult?, error : Error?) in
-            if let signatureVerificationResult = signatureVerificationResult {
-                signatureVerificationResult(.approved) //Spire devices approve signature through the terminal buttons, so this won't be called.
-            }
-        }
-
-        let cardAppSelection : PaymentCardApplicationSelectionRequest = {(appSelectionRequest : WDAcceptAppSelectionRequest?) in
-            if let appsArray = appSelectionRequest?.appsArray, appsArray.count > 0
-            {
-                appSelectionRequest?.selectCardApplication(0) //In a real case scenario, your UI will have to list the name of the applications in appsArray, and allow to select one of them (for example, through a picker). This is needed for some cards that includes more than one cad within -- some cards allows the user to select between Mastercard or Maestro, or between Visa Credit and Electron, for example.
-            }
-        }
         
         sdk.terminalManager.setActive(self.selectedDevice, completion:{[weak self]() in
-            self?.sdk.saleManager.pay(paymentConfiguration,
-                                      progress:progressUpdate,
-                                      collectSignature:signatureRequiredRequest,
-                                      verifySignature:verifySignature,
-                                      cardApplication:cardAppSelection,
-                                      completion:paymentCompletion)
+            self?.sdk.saleManager.pay(paymentConfiguration, delegate: (self?.paymentHandler)!)
         })
     }
     
     func refundTransaction()
     {
-        guard let saleToBeRefunded = self.saleResponse!.saleReturn(), let totalToPay = saleToBeRefunded.totalToPay() else
+        guard let saleToBeRefunded = self.saleResponse!.saleReturn() else
         {
-            XCTFail("Something went really wrong - refundTransaction")
+            XCTFail("Something went really wrong - refundTransaction saleReturn")
+            self.expectation.fulfill()
+            return
+        }
+        //This is an example of full refund: all items are refunded, EXCEPT SERVICE CHARGE
+        saleToBeRefunded.removeServiceCharge()
+        guard let totalToPay = saleToBeRefunded.totalToPay() else
+        {
+            XCTFail("Something went really wrong - refundTransaction totalToPay")
             self.expectation.fulfill()
             return
         }
         saleToBeRefunded.cashRegisterId = UserHelper.sharedInstance().selectedCashRegisterId()
         saleToBeRefunded.cashierId = self.aSale.cashierId
         saleToBeRefunded.customerId = self.aSale.customerId
-        //This is an example of full refund: all items are refunded
+        //This is an example of full refund: all items are refunded, EXCEPT SERVICE CHARGE
+        saleToBeRefunded.removeServiceCharge()
         //For partial refund, see CashTests example
         saleToBeRefunded.addCardPayment(totalToPay, terminal:WDAcceptTerminal.init()) //terminal is unnecessary here
         self.saleResponse = nil

@@ -103,7 +103,7 @@
     ProductCatalogueCategoryCompletion completionCatalogue = ^(NSArray <WDAcceptProductCatalogueCategory *>* result, NSError* err)
     {
         @strongify(self);
-        ProductCatalogueProductCompletion completionProductContent = ^(NSArray <WDAcceptProductCatalogueProduct *>* result, NSError* err)
+        ProductCatalogueProductCompletion completionProductContent = ^(NSArray <WDAcceptProductCatalogueProduct *>* result, NSNumber * _Nullable totalCount, NSError* err)
         {
             if (err || !successfulDownload)
             {
@@ -197,7 +197,7 @@
     
     if ([category isKindOfClass:WDAcceptProductCatalogueCategory.class])
     {
-        ProductCatalogueProductCompletion completionGetProducts = ^(NSArray <WDAcceptProductCatalogueProduct *>* result, NSError* err)
+        ProductCatalogueProductCompletion completionGetProducts = ^(NSArray <WDAcceptProductCatalogueProduct *>* result,NSNumber * _Nullable totalCount, NSError* err)
         {
             @strongify(self);
             if (err || !successfulDownload)

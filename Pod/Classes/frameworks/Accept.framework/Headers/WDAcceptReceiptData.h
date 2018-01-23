@@ -149,6 +149,9 @@
  */
 @property (nullable,nonatomic) WDAcceptReceiptAlipayDetails *alipayDetails;
 /**
+ */
+@property (nullable,nonatomic) WDAcceptReceiptWeChatDetails *wechatDetails;
+/**
  * @discussion Receipt data stringified to print out in the console
  */
 -(NSString * _Nullable)receiptDescription;

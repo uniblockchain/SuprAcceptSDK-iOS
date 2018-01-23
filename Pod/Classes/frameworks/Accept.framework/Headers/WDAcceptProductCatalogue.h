@@ -33,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong) NSString *merchantId;
 @property (nullable, nonatomic, strong) NSString *optionalDescription;
 @property (nullable, nonatomic, strong) NSDate *upsertDate;
+@property (nullable, nonatomic, strong) NSString *type;
 
 /**
  *  @brief Create Product Catalogue
@@ -147,9 +148,27 @@ NS_ASSUME_NONNULL_BEGIN
                  productCategories:(NSArray <WDAcceptProductCatalogueCategory*> *)productCategories
                         externalId:(NSString*)externalId;
 
+/**
+ *  @brief Create Product
+ *  @param name Product Name
+ *  @param unitPrices the product Unit prices
+ *  @param taxCategory Tax Category for this product
+ *  @param productCategories Categorize this product - more than one category can be assigned
+ *  @param externalId External ID - product id recognized in external system - ERP or other
+ *  @param discount discount Product discount to be applied on certain product
+ *  @return new Product
+ **/
+-(instancetype)initWithProductName:(NSString *)name
+                        unitPrices:(NSArray <WDAcceptUnitPrice*> *)unitPrices
+                       taxCategory:(WDAcceptTaxCategory*)taxCategory
+                 productCategories:(NSArray <WDAcceptProductCatalogueCategory*> *)productCategories
+                        externalId:(NSString*)externalId
+                          discount:(nullable NSDecimalNumber *)discount;
+
 @property (nullable, nonatomic, strong) WDAcceptBarCodeType *barCodeType;
 @property (nullable, nonatomic, strong) NSString *barCodeValue;
 @property (nullable, nonatomic, strong) NSString *externalId;
+@property (nullable, nonatomic, strong) NSDecimalNumber *discount;
 @property (nullable, nonatomic, strong) NSString *imageId;
 @property (nullable, nonatomic, strong) NSString *productId;
 @property (nullable, nonatomic, strong) NSString *productName;

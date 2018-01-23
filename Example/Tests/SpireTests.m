@@ -17,7 +17,6 @@
 
 @interface SpireTestsObjc : BaseTestsObcj
 {
-    __block NSArray *terminalsArray;
     __block AcceptUpdateConfigurationStatus configCompletionStatus;
 }
 
@@ -68,7 +67,7 @@
     expectation = [self expectationWithDescription:@"Discovering devices"];
     [self discoverDevices:WDAPosMateExtensionUUID];
     [self waitForExpectationsWithTimeout:300 handler:nil];
-    if (![terminalsArray firstObject] || ![[terminalsArray firstObject] isKindOfClass:[WDAcceptTerminal class]])
+    if (!selectedDevice || ![selectedDevice isKindOfClass:[WDAcceptTerminal class]])
     {
         XCTFail(@"No paired terminal found. Make sure your terminal is paired in your iOS device settings and that the terminal is in stand-by mode (ie. by switching off and then on and waiting until the screen lights off).");
     }
@@ -128,13 +127,11 @@
         NSLog(@"Terminal update progress: %ld",(long)progressUpdate);
     };
     
-    WDAcceptTerminal *terminal = [terminalsArray firstObject];
-
     //Note: You may update the firmware too using AcceptTerminalUpdateTypeFirmware
     //Note: The accept SDK will keep track of what version was previously installed, and decide if an update is required by comparing with the latest in backend.
     //This means, the first time you run this test, the configuration will be updated on the terminal. A second time will tell you "AcceptUpdateConfigurationStatusUnnecessary"
     //To force the actual update again you will have to remove the demo app from your iOS device and re-run the test.
-     [sdk.terminalManager update:terminal
+     [sdk.terminalManager update:selectedDevice
                       updateType:AcceptTerminalUpdateTypeMaskConfiguration
                         progress:progress completion:completionUpdate];
 }
@@ -144,13 +141,11 @@
     WDAcceptPaymentConfig *paymentConfiguration = [WDAcceptPaymentConfig new];
     aSale = [[SaleHelper sharedInstance] newSale];
     [aSale addSaleItem:[NSDecimalNumber decimalNumberWithString:@"2.5"]
-              itemRate:nil
               quantity:5
                taxRate:[[UserHelper sharedInstance] preferredSaleItemTax]
        itemDescription:@"Red Apple"
              productId:@"dummyId1"];
     [aSale addSaleItem:[NSDecimalNumber decimalNumberWithString:@"1.34"]
-              itemRate:nil
               quantity:2
                taxRate:[[UserHelper sharedInstance] preferredSaleItemTax]
        itemDescription:@"Pineapple"
@@ -169,54 +164,11 @@
     paymentConfiguration.sale.shiftId = [[UserHelper sharedInstance] lastShiftId];
     [paymentConfiguration.sale resetPayments];
     [paymentConfiguration.sale addCardPayment:paymentConfiguration.sale.totalToPay
-                                     terminal:terminalsArray.firstObject];
+                                     terminal:selectedDevice];
     
-    SaleCompletion paymentCompletion = ^(WDAcceptSaleResponse* transaction, NSError* error){
-        NSLog(@"Payment Completion Error:%@",error);
-        returnedErr = error;
-        saleResponse = transaction ;
-        [expectation fulfill];
-    };
-    
-    PaymentProgress progressUpdate = ^(AcceptStateUpdate stateUpdate){
-        NSLog(@"progress:%ld",(long)stateUpdate);
-    };
-    
-    SignatureRequiredRequest signatureRequiredRequest = ^(WDAcceptSignatureRequest* signatureRequest){
-        NSLog(@"Cardholder name:%@",signatureRequest.cardHolderName);
-        NSLog(@"Issuer:%@",signatureRequest.issuer);
-        signatureRequest.sendCollectedSignature([TestUtils signatureImageFromText:@"Test"],nil); //In a real case scenario, you will send the signature image drawn by the client
-    };
-    
-    SignatureVerificationRequest verifySignature = ^(SignatureVerificationResult signatureVerificationResult, NSError* signatureVerificationError)
-    {
-        if (signatureVerificationResult)
-        {
-            //In a real case scenario you will allow the merchant, through UI, to approve or decline the signature. For testing purposes we just move on.
-            signatureVerificationResult(AcceptSignatureVerificationResultApproved);
-        }
-        
-    };
-    
-    PaymentCardApplicationSelectionRequest cardAppSelection = ^(WDAcceptAppSelectionRequest * appSelectionRequest)
-    {
-        //In a real case scenario, your UI will have to list the name of the applications in appsArray, and allow to select one of them (for example, through a picker)
-        if(appSelectionRequest.appsArray.count > 0)
-        {
-            appSelectionRequest.selectCardApplication(0);
-        }
-    };
-    
-    
-    [sdk.terminalManager setActive:terminalsArray.firstObject completion:
+    [sdk.terminalManager setActive:selectedDevice completion:
     ^{
-        
-        [[sdk saleManager] pay:paymentConfiguration
-                      progress:progressUpdate
-              collectSignature:signatureRequiredRequest
-               verifySignature:verifySignature
-               cardApplication:cardAppSelection
-                    completion:paymentCompletion];
+        [[sdk saleManager] pay:paymentConfiguration delegate:_paymentHandler];
     }];
 }
 
@@ -226,9 +178,10 @@
     saleToBeRefunded.cashRegisterId = [[UserHelper sharedInstance] selectedCashRegisterId];
     saleToBeRefunded.cashierId = saleResponse.cashierId;
     saleToBeRefunded.customerId = saleResponse.customerId;
-    //This is an example of full refund: all items are refunded
-    //For partial refund, see CashTests
+    //This is an example of full refund: all items are refunded, EXCEPT SERVICE CHARGE
+    [saleToBeRefunded removeServiceCharge];
     
+     //For partial refund, see CashTests
     [saleToBeRefunded addCardPayment:[saleToBeRefunded totalToPay] terminal:[WDAcceptTerminal new]];
     
     saleResponse = nil;

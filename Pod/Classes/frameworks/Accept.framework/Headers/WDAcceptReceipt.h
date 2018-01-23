@@ -51,6 +51,39 @@
 @end
 
 /**
+ *  @class WDAcceptReceiptWeChatDetails
+ *  @brief Receipt content for WeChat payment - to be used by Datecs printer
+ **/
+@interface WDAcceptReceiptWeChatDetails : NSObject
+/**
+ */
+@property (nonnull, nonatomic, strong) NSString *partnerTransactionId;
+/**
+ */
+@property (nonnull, nonatomic, strong) NSString *wechatProviderTransactionId;
+/**
+ */
+@property (nonnull, nonatomic, strong) NSString *wechatTimeEnd;
+/**
+ */
+@property (nonnull, nonatomic, strong) NSDecimalNumber *wechatRate;
+/**
+ */
+@property (nullable,nonatomic) NSDecimalNumber * transactionAmountCny;
+/**
+ */
+@property (nonnull, nonatomic, strong) NSString *wechatDeviceInfo;
+/**
+ */
+@property (nonnull, nonatomic, strong) NSString *wechatCashFee;
+/**
+ */
+@property (nonnull, nonatomic, strong) NSString *wechatSubMchId;
+/**
+ */
+@end
+
+/**
  *  @class WDAcceptReceiptMerchant
  *  @brief Receipt Merchant Information
  **/
@@ -325,7 +358,11 @@
 /**
  */
 @property (nullable,nonatomic, strong) WDAcceptReceiptAlipayDetails *alipayDetails;
+/**
+ */
+@property (nullable,nonatomic, strong) WDAcceptReceiptWeChatDetails *wechatDetails;
 @end
+
 
 /**
  *********************************************

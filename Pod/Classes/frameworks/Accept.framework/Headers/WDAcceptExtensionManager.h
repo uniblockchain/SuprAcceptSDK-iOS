@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "WDADataTypes.h"
+//#import "WDADataTypes.h"
 #import "WDAcceptProtocols.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @brief Get the active device for communication
  *  @completion current active device (last communicated to) or first active device from the connected/active devices
  **/
--(void)activeDevice:(void (^)(WDAcceptTerminal *))completion;
+-(void)activeDevice:(void (^)(WDAcceptTerminal * _Nullable))completion;
 
 /**
  *  @brief Request the current device connection status.
@@ -74,7 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param delegate Instance used in addManagerDelegate:forTerminal:
  *  @param device Device to unsubscribe from
  */
-- (void)removeManagerDelegate:(id<WDAcceptManagerDelegate>)delegate forDevice:(nonnull WDAcceptTerminal *)device;
+- (void)removeManagerDelegate:(id<WDAcceptManagerDelegate>)delegate forDevice:(nullable WDAcceptTerminal *)device;
 
 @end
 

@@ -29,9 +29,19 @@
 /**
  *  @brief Format given number to String with defined Currency and current Locale
  *  @param currencyCode Currency code as per ISO 4217
+ *  @param showSymbol Show symbol for currency if possible
  *  @return Formatted number with currency symbol or ISO code
  **/
 +(NSString *)formatNumber:(NSDecimalNumber *)number withCurrencyCode:(NSString *)currencyCode showSymbol:(BOOL)showSymbol;
+
+/**
+ *  @brief Format given number to String with defined Currency and current Locale
+ *  @param currencyCode Currency code as per ISO 4217
+ *  @param showSymbol Show symbol for currency if possible
+ *  @param locale Use the specififed locale - if nil then currentLocale is used
+ *  @return Formatted number with currency symbol or ISO code
+ **/
++(NSString *)formatNumber:(NSDecimalNumber *)number withCurrencyCode:(NSString *)currencyCode showSymbol:(BOOL)showSymbol locale:(NSLocale *)locale;
 /**
  *  @brief Get the Decimal divider for the currency - to be used to divide amount units
  *  @param forCurrency Currency code as per ISO 4217

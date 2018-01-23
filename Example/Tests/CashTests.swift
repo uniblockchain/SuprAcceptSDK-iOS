@@ -317,37 +317,14 @@ class CashTestsSwift: BaseTestsSwift
     
     func doCashPayment()
     {
-        let progress = {(update : AcceptStateUpdate) in
-            print("Transaction flow progress status:\(update.rawValue)")
-        }
-        
-        let completion = {[weak self](transaction : WDAcceptSaleResponse?, error : Error?) in
-            self?.saleResponse = transaction
-            self?.returnedErr = error
-            self?.expectation.fulfill()
-        }
-        
-        let signatureRequiredRequest = {(signatureRequest : WDAcceptSignatureRequest?) in
-            //A signature image request is only needed for card transactions that request it. You need to declare this block always, but can leave it empty when doing pure cash transaction. Check card transaction unit tests for examples on this callback.
-        }
-        
-        let verifySignature = {(signatureVerificationResult : SignatureVerificationResult?, error : Error?) in
-            //A signature image verification is only needed for card transactions that request it. You need to declare this block always, but can leave it empty when doing pure cash transaction. Check card transaction unit tests for examples on this callback.
-        }
-        
-        let cardAppSelection = {(appSelectionRequest : WDAcceptAppSelectionRequest?) in
-            //A card chip's app selection is only needed for card transactions that request it. You need to declare this block always, but can leave it empty when doing pure cash transaction. Check card transaction unit tests for examples on this callback.
-        }
         //We will define a dummy payment configuration as an example. Feel free to modify and add content; the sale complexity is up to you.
         self.aSale = SaleHelper.sharedInstance().newSale()
         self.aSale?.addSaleItem(NSDecimalNumber.init(value:2.5),
-                                itemRate:nil,
                                 quantity: 5,
                                 taxRate: UserHelper.sharedInstance().preferredSaleItemTax(),
                                 itemDescription: "Red Apple",
                                 productId: "DummyID1")
         self.aSale?.addSaleItem(NSDecimalNumber.init(value:1.25),
-                                itemRate:nil,
                                 quantity: 3,
                                 taxRate: UserHelper.sharedInstance().preferredSaleItemTax(),
                                 itemDescription: "Golden Apple",
@@ -366,12 +343,7 @@ class CashTestsSwift: BaseTestsSwift
         paymentConfiguration.sale.shiftId = self.lastShift?.internalId ?? nil
         paymentConfiguration.sale.resetPayments()
         paymentConfiguration.sale.addCashPayment(paymentConfiguration.sale.totalToPay() ?? NSDecimalNumber.init(value:0))
-        sdk.saleManager.pay(paymentConfiguration,
-                            progress: progress,
-                            collectSignature: signatureRequiredRequest,
-                            verifySignature: verifySignature,
-                            cardApplication: cardAppSelection,
-                            completion: completion)
+        sdk.saleManager.pay(paymentConfiguration, delegate: self.paymentHandler!)
     }
     
     func refundTransaction()
@@ -392,17 +364,16 @@ class CashTestsSwift: BaseTestsSwift
         saleToBeRefunded.cashierId = saleResponse.cashierId
         saleToBeRefunded.customerId = saleResponse.customerId
         //This is an example of partial refund: only one item is refunded
-        guard let anItem : WDAcceptSaleItem = aSale?.items?.first else
+        guard let anItem : WDAcceptSaleItemCore = aSale?.items?.first else
         {
             XCTFail("Something went really wrong getting anItem")
             return;
         }
         saleToBeRefunded.addSaleItem(anItem.unitPrice,
-                                     itemRate:nil,
                                      quantity: 1,
                                      taxRate: anItem.taxRate,
                                      itemDescription: anItem.itemDescription,
-                                     productId: anItem.externalProductId)
+                                     productId: (anItem as? WDAcceptSaleItem)?.externalProductId)
         saleToBeRefunded.addCashPayment(saleToBeRefunded.totalToPay() ?? NSDecimalNumber.init(value:0))
         sdk.saleManager.refundSale(saleToBeRefunded,
                                    message: "Refunded in demo app for testing reasons",

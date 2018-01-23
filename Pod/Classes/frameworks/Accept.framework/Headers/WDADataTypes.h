@@ -16,8 +16,11 @@
 #import "WDAcceptPaymentRequestCard.h"
 #import "WDAcceptPaymentRequestCash.h"
 #import "WDAcceptPaymentRequestAlipay.h"
+#import "WDAcceptPaymentRequestWeChat.h"
 #import "WDAcceptPaymentDetailCard.h"
 #import "WDAcceptPaymentDetailCoupon.h"
+#import "WDAcceptPaymentDetailWeChat.h"
+#import "WDAcceptPaymentDetailAlipay.h"
 #import "WDAcceptPaymentDetail.h"
 #import "WDAcceptObject.h"
 //#import <Accept/Accept-Swift.h>
@@ -110,6 +113,9 @@ typedef NS_ENUM(NSInteger, AcceptStateUpdate ) {
     AcceptStateApplicationSelectionStarted,
     AcceptStateApplicationSelectionFinished,
     AcceptStateFollowInstructionsOnConsumerDevice, //on device CVM for contactless
+    AcceptStateScanInitialisation,
+    AcceptStateScanBarcode,
+    AcceptStateScanFinished,
     
     AcceptStateConfigurationProgressUpdateWillStart=1000,//the below matches with AcceptUpdateConfigurationProgressUpdate enum
     AcceptStateConfigurationProgressDownloading,
@@ -173,7 +179,8 @@ typedef NS_ENUM(NSInteger, AcceptReversalReason)
 typedef NS_ENUM(NSInteger, AcceptExtensionConnectionStatus){
     AcceptExtensionConnectionStatusDisconnected,
     AcceptExtensionConnectionStatusConnected,
-    AcceptExtensionConnectionStatusUnknown
+    AcceptExtensionConnectionStatusUnknown,
+    AcceptExtensionConnectionStatusConnecting
 };
 
 /**
@@ -235,6 +242,30 @@ typedef NS_ENUM(NSInteger, AcceptSignatureVerificationResult)
     AcceptSignatureVerificationResultApproved = 1,
     AcceptSignatureVerificationResultRejected = 2
 };
+
+
+/**
+ *  @typedef AcceptPaymentConfirmationType
+ *  @brief Enumerator with the type of the merchant payment confirmation
+ **/
+typedef NS_ENUM(NSInteger, AcceptPaymentConfirmationType)
+{
+    AcceptPaymentConfirmationTypeSignature = 0,
+    AcceptPaymentConfirmationTypeAlipayPassword = 1,
+    AcceptPaymentConfirmationTypeWeChatPassword = 2
+};
+
+/**
+ *  @typedef AcceptPaymentConfirmationResult
+ *  @brief Enumerator with the result of the merchant payment confirmation
+ **/
+typedef NS_ENUM(NSInteger, AcceptPaymentConfirmationResult)
+{
+    AcceptPaymentConfirmationResultRejected = 0,
+    AcceptPaymentConfirmationResultApproved = 1
+    
+};
+
 
 /**
  *  @typedef AcceptTerminalUpdateType
@@ -411,6 +442,9 @@ typedef NS_ENUM(NSUInteger, AcceptSaleState) {
     AcceptSaleStateCanceled,
     AcceptSaleStateFailed,
     AcceptSaleStateFailedIntervene,
+    AcceptSaleStateFailedInconsistent,
+    AcceptSaleStateCancelIncomplete,
+    AcceptSaleStateAuthorized,
     AcceptSaleStateIncomplete
 };
 
@@ -428,7 +462,11 @@ typedef NS_ENUM(NSUInteger, AcceptBarcodeSymbology) {
     AcceptBarcodeSymbologyITF,
     AcceptBarcodeSymbologyCode128,
     AcceptBarcodeSymbologyCode93,
-    AcceptBarcodeSymbologyCodabar
+    AcceptBarcodeSymbologyCodabar,
+    AcceptBarcodeSymbologyAztec,
+    AcceptBarcodeSymbologyDataMatrix,
+    AcceptBarcodeSymbologyPDF417,
+    AcceptBarcodeSymbologyQRCode
 };
 
 #pragma mark - Response Callbacks
@@ -1155,6 +1193,8 @@ typedef void(^ReceiptCompletion)(NSArray* _Nullable receipts, NSError* _Nullable
 @property (nullable, nonatomic, strong) NSNumber *flatDiscount;
 @property (nullable, nonatomic, strong) NSNumber *cashRegistersRequired;
 @property (nullable, nonatomic, strong) NSString *erpSystemType;
+/// Distinct Union of configured currencies and default currency
+-(NSArray *)availableCurrencies;
 @end
 
 
@@ -1346,6 +1386,18 @@ typedef void(^ReceiptCompletion)(NSArray* _Nullable receipts, NSError* _Nullable
 -(void)zReport:(AcceptPrintFormat)format
            dpi:(AcceptPrintDpi)dpi
     completion:(ZReportCompletion)completion;
+
+/**
+ * @brief Default Design of the Z-Report
+ * @param format Format of the report
+ * @param dpi dots per width of the receipt to be printed - not used for HTML or Datecs native format
+ * @param language to use for translating the Z-Report labels
+ * @param completion Report in the requested format
+ */
+-(void)zReport:(AcceptPrintFormat)format
+           dpi:(AcceptPrintDpi)dpi
+      language:(NSString *)language
+    completion:(ZReportCompletion)completion;
 @end
 
 /**
@@ -1450,14 +1502,14 @@ typedef void(^ReceiptCompletion)(NSArray* _Nullable receipts, NSError* _Nullable
  *  @class WDAcceptUnitPrice
  *  @brief  Unit Price object
  **/
-@interface WDAcceptUnitPrice : NSObject
+@interface WDAcceptUnitPrice : WDAcceptObject <NSCoding>
 /**
  *  @brief Unit Price
  *  @param currency Currency
  *  @param unitValue Unit Price value
  *  @return new Unit Price
  **/
--(instancetype)initWithCurrency:(NSString *)currency unitValue:(NSNumber  *)unitValue;
+-(instancetype)initWithCurrency:(WDAcceptCurrencyCore *)currency unitValue:(NSNumber  *)unitValue;
 
 @property (nonatomic, strong) WDAcceptCurrencyCore  *currency;
 @property (nonatomic, strong) NSNumber  *unitValue;
@@ -1621,6 +1673,9 @@ typedef void(^ReceiptCompletion)(NSArray* _Nullable receipts, NSError* _Nullable
 /**
  */
 @property (nonatomic) BOOL signatureCheckIsRequired;
+/**
+ */
+@property (nonatomic) NSArray *confirmationsRequired;
 /**
  */
 @property (nonatomic) NSString * _Nullable applicationCryptogram;
@@ -1854,9 +1909,16 @@ typedef void (^TerminalUpdatesCompletion)(WDAcceptTerminalUpdates *_Nullable ava
 /**
  *  @typedef SignatureVerificationResultCallback
  *  @brief The callback to pass to startPay function with the result of Customer signature verification
- *  @param signatureVerifitacionResult the result of the Merchant veryfying the customer signature
+ *  @param signatureVerificationResult the result of the Merchant veryfying the customer signature
  **/
-typedef void (^SignatureVerificationResult)(AcceptSignatureVerificationResult signatureVerifitacionResult);
+typedef void (^SignatureVerificationResult)(AcceptSignatureVerificationResult signatureVerificationResult);
+
+/**
+ *  @typedef PaymentConfirmationResult
+ *  @brief The callback to pass to startPay function with the result of Customer confirmation - either Signature confirmation or Password entry completed confirmation (In the case of WeChat)
+ *  @param paymentConfirmationResult the result of the Merchant veryfying the customer signature or confirming Password was entered by customer (WeChat customer)
+ **/
+typedef void (^PaymentConfirmationResult)(AcceptPaymentConfirmationResult paymentConfirmationResult);
 
 /**
  *  @typedef SignatureRequest
@@ -1871,6 +1933,7 @@ typedef void (^SignatureRequiredRequest)(WDAcceptSignatureRequest* _Nonnull sign
  *  @param signatureVerificationResult the result of the Merchant veryfying the customer signature // if returned as nil from the sdk then Merchant accepts/rejects signature on the terminal and not within the app
  **/
 typedef void (^SignatureVerificationRequest)(SignatureVerificationResult _Nullable signatureVerificationResult, NSError* _Nullable signatureVerificationError);
+
 
 /**
  *  @typedef MerchantDetailCompletion
@@ -1995,7 +2058,7 @@ typedef void (^ProductCatalogueCategoryCompletion)(NSArray <WDAcceptProductCatal
  *  @brief Callback to be executed at the end of the product catalogue maintenance or query process
  *  @param products Products
  **/
-typedef void (^ProductCatalogueProductCompletion)(NSArray <WDAcceptProductCatalogueProduct *>*_Nullable products, NSError* _Nullable error);
+typedef void (^ProductCatalogueProductCompletion)(NSArray <WDAcceptProductCatalogueProduct *>*_Nullable products,NSNumber * _Nullable totalCount, NSError* _Nullable error);
 
 /**
  *  @typedef ProductStockCompletion
@@ -2108,6 +2171,13 @@ NSString *const SaleStatusFromWDAcceptSaleStatus(AcceptSaleState saleStatus);
  **/
 
 NSString *const WDAPaymentMethodAndTransactionTypeFromAcceptPaymentMethodAndTransactionType(AcceptPaymentMethod paymentMethod, AcceptTransactionType transactionType);
+
+/**
+ *  @typedef BarCodeTypeCompletion
+ *  @brief Callback to be executed at the end of the barcode type maintenance or query process
+ *  @param barCodeTypes Supported BarCode types
+ **/
+typedef void (^BarCodeTypeCompletion)(NSArray <WDAcceptBarCodeType *>*_Nullable barCodeTypes, NSError* _Nullable error);
 
 NS_ASSUME_NONNULL_END
 

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "WDADataTypes.h"
 
+@protocol WDAcceptPaymentDelegate;
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -16,7 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @brief Sale Management
  */
 @interface WDAcceptSaleManager : NSObject
-
 /**
  *  @brief Start the payment process
  *  @param saleConfiguration Configuration to be used to perform this payment
@@ -33,7 +33,28 @@ NS_ASSUME_NONNULL_BEGIN
 collectSignature:(SignatureRequiredRequest )collectSignature
 verifySignature:(SignatureVerificationRequest )verifySignature
 cardApplication:(PaymentCardApplicationSelectionRequest )cardApplication
- completion:(SaleCompletion )completion;
+ completion:(SaleCompletion )completion  DEPRECATED_MSG_ATTRIBUTE("Use pay:delegate:");
+
+
+/**
+ @brief Start the payment process
+ 
+ The delegate will be able to receive the below events:
+ 
+ @b progress @@b  bearing the information about the payment process progress
+ 
+ @b collectSignature @@b  that needs to execute the option to capture a signature and return the signature data
+ 
+ @b confirm @@b  that informs that e.g. signature needs to be verified or WeChat/Alipay password to be entered by customer. This is done after the transaction has been already send to background, but the final approval depends on the merchant.
+ 
+ @b cardApplication @@b  informs that an application selection is needed with the chip card inserted.
+ 
+ @b completion @@b that will be called at the very end of payment flow. It provides an AcceptTransaction object (that may be nil if unauthorised) or a descriptive error
+ @param saleConfiguration Configuration to be used to perform this payment
+ @param delegate to receive the events from the payment flow
+ **/
+- (void)pay:(WDAcceptPaymentConfig* )saleConfiguration
+   delegate:(id<WDAcceptPaymentDelegate>)delegate;
 
 /**
  *  @brief Cancel the payment flow ONLY if the situation/terminal allows it. For Miura terminals, this function works anytime. For other terminals (ie Spire ones), it ONLY works when waiting signature input -- the call will be IGNORED by the hardware otherwise, as they are designed to accept only cancellation through keypad.
@@ -57,6 +78,14 @@ cardApplication:(PaymentCardApplicationSelectionRequest )cardApplication
  */
 -(void)querySales:(WDAcceptSalesQuery*)searchCriteria
        completion:(SaleQueryResponse)completion;
+
+/**
+ *  @brief Retrieve the specified sale
+ *  @param internalId transaction Id
+ *  @param completion TransactionsQueryResponse block executed at the end of the method -  provides Array of WDAcceptSales
+ */
+-(void)getSale:(NSString*)internalId
+    completion:(SaleQueryResponse )completion;
 
 #pragma mark - Transaction management
 

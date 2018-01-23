@@ -88,6 +88,7 @@ class DatecsPrinterTestsSwift: BaseTestsSwift, WDAcceptPrinting, WDAcceptManager
             if ((arr?.first) != nil)
             {
                 self?.receiptData = self?.saleResponse?.getAcceptReceiptData()
+                //NOTE: Datecs printers only accept receipts in the format Datecs
                 self?.saleResponse?.receipt(true,
                                             showReturns: false,
                                             format: .datecs,

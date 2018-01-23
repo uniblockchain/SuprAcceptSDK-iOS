@@ -91,7 +91,7 @@
          if (saleResponse)
          {
              receiptData = [saleResponse getAcceptReceiptData];
-             //alternatively use the Default Designed receipt for Datecs
+             //NOTE: Datecs printers only accept receipts in the format AcceptPrintFormatDatecs
              [saleResponse receipt:YES //Is the receipt for cardholder use
                        showReturns:NO //Should the receipt contain returns ?
                             format:AcceptPrintFormatDatecs //The receipt format is AcceptReceipt object for Datecs

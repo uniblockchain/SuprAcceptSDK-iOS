@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "SUPRAcceptSDK"
-  s.version          = "2.1.0"
+  s.version          = "2.2.2"
   s.summary          = "Wirecard Point of Sale SDK - Accept Card, Cash, Alipay, Giftcard payments"
   s.description      = <<-DESC
                        The library extends the Point of Sale and alternative payment methods to modern mobile environment. 
@@ -54,7 +54,12 @@ Pod::Spec.new do |s|
 	ss.dependency 'CocoaLumberjack'    
   end  
    
-
+  s.subspec 'UI' do |ss|
+    ss.vendored_frameworks  = 'Pod/Classes/frameworks/AcceptUI.framework'
+    ss.resource = ['Pod/Classes/frameworks/acceptUIResources.bundle']
+    ss.dependency     'SUPRAcceptSDK/Core'
+  end
+  
   s.subspec 'BBPOS' do |ss|
     ss.vendored_frameworks  = 'Pod/Classes/frameworks/BBPOS_SDK.framework'
     ss.dependency     'SUPRAcceptSDK/Core'    
@@ -82,6 +87,7 @@ Pod::Spec.new do |s|
   
   s.subspec 'All' do |ss|
     ss.dependency     'SUPRAcceptSDK/Core' 
+	ss.dependency     'SUPRAcceptSDK/UI'
 	ss.dependency     'SUPRAcceptSDK/BBPOS' 
 	ss.dependency     'SUPRAcceptSDK/Spire' 	
 	ss.dependency     'SUPRAcceptSDK/Datecs' 	

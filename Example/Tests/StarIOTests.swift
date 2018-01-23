@@ -14,12 +14,18 @@ class StarIOTestsSwift: BaseTestsSwift, WDAcceptScanning, WDAcceptPrinting, WDAc
 {
     var userHelper : UserHelper!
     var printingSuccess : Bool?
-    var openingDrawerSuccess : Bool?
+    var openingDrawerSuccess, openingDrawerDone  : Bool?
+    var scanningSuccess : Bool?
     var deviceModel : WDAExtensionTypeUUID!
     
     override func setUp()
     {
         super.setUp()
+        deviceModel = .WDAMPOPExtensionUUID
+        self.openingDrawerSuccess = false
+        self.openingDrawerDone = false
+        self.scanningSuccess = false
+        self.scanningSuccess = false
     }
 
     func testStarMicronics()
@@ -52,9 +58,19 @@ class StarIOTestsSwift: BaseTestsSwift, WDAcceptScanning, WDAcceptPrinting, WDAc
         expectation = self.expectation(description: "Open cash drawer")
         //Open of cash drawer is trigger in delegate method connectionStatusDidChange below, once it is connected
         self.waitForExpectations(timeout: 100, handler: nil)
-        if (openingDrawerSuccess == nil)
+        if (openingDrawerSuccess == false)
         {
             XCTFail("Device communication failed. Please make the hardware is switched on and paired to yout iOS device settings. If it was paired to other iOS device, please unpair it first.");
+        }
+        
+        //PART 4: Getting a sale
+        //--------------------------------------
+        expectation = self.expectation(description: "Getting a sale")
+        self.gettingSale()
+        self.waitForExpectations(timeout: 100, handler: nil)
+        if (saleResponse == nil)
+        {
+            XCTFail("No sale could be reached. Please run cash unit test first, for example.");
         }
         
         //PART 3: Printing receipt
@@ -62,7 +78,7 @@ class StarIOTestsSwift: BaseTestsSwift, WDAcceptScanning, WDAcceptPrinting, WDAc
         expectation = self.expectation(description: "Printing receipt")
         self.printReceipt()
         self.waitForExpectations(timeout: 100, handler: nil)
-        if (printingSuccess == nil)
+        if (printingSuccess == false)
         {
             XCTFail("Printing failed. Please make the hardware is switched on and paired to yout iOS device settings. If it was paired to other iOS device, please unpair to it first.");
         }
@@ -80,8 +96,26 @@ class StarIOTestsSwift: BaseTestsSwift, WDAcceptScanning, WDAcceptPrinting, WDAc
     {
         sdk.cashDrawerManager.openCashDrawer(self.selectedDevice!,
                                              completion: {[weak self](success : Bool?, error : Error?) in
-            self?.openingDrawerSuccess = success
+                self?.openingDrawerSuccess = success
+                self?.returnedErr = error
+                self?.expectation.fulfill()
+        })
+    }
+    
+    func gettingSale()
+    {
+        let statuses = [NSNumber].init(arrayLiteral: NSNumber.init(value: AcceptSaleState.completed.rawValue))
+        let types = [NSNumber].init(arrayLiteral:NSNumber.init(value: AcceptSaleType.purchase.rawValue))
+        let query : WDAcceptSalesQuery = WDAcceptSalesQuery.init(page: 0,
+                                                                 pageSize: 20,
+                                                                 orderBy: .createdAt,
+                                                                 order: .descending,
+                                                                 statuses: statuses,
+                                                                 saleTypes: types)
+        
+        sdk.saleManager.querySales(query, completion: {[weak self](arr : [WDAcceptSaleResponse]?, error : Error?) in
             self?.returnedErr = error
+            self?.saleResponse = arr?.first //Use the first returned sale for this example
             self?.expectation.fulfill()
         })
     }
@@ -112,53 +146,36 @@ class StarIOTestsSwift: BaseTestsSwift, WDAcceptScanning, WDAcceptPrinting, WDAc
             a) a saleManager pay:
             b) a saleManager querySales:
         Here we demonstrate the use of saleManager/saleResponse query.
+        NOTE: Star Micronics devices only accept receipts in the format UIImage
         */
 
-        let statuses = [NSNumber].init(arrayLiteral: NSNumber.init(value: AcceptSaleState.completed.rawValue))
-        let types = [NSNumber].init(arrayLiteral:NSNumber.init(value: AcceptSaleType.purchase.rawValue))
-        let query : WDAcceptSalesQuery = WDAcceptSalesQuery.init(page: 0,
-                                                                 pageSize: 20,
-                                                                 orderBy: .createdAt,
-                                                                 order: .descending,
-                                                                 statuses: statuses,
-                                                                 saleTypes: types)
-        
-        sdk.saleManager.querySales(query, completion: {[weak self](arr : [WDAcceptSaleResponse]?, error : Error?) in
-            let saleResponse : WDAcceptSaleResponse? = arr?.first //Use the first returned sale for this example
-            self?.returnedErr = error
-            if saleResponse != nil && error != nil
-            {
-                saleResponse?.receipt(true,
-                                      showReturns: false,
-                                      format: .uiImage,
-                                      dpi: .starMicronics,
-                                      completion: {(receipt : Any?, error : Error?) in
-                    //Receipt as per format specified HTML | PDF | UIImage | AcceptReceipt object
-                    if (receipt != nil)
-                    {
-                        printerConfig.printJobs = [Any].init(arrayLiteral: receipt!)
-                        self?.sdk.printerManager.print(printerConfig,
-                                                       progress: printProgress,
-                                                       completion: printCompletion)
-                    }
-                    else
-                    {
-                        self?.expectation.fulfill()
-                    }
-                })
-            }
-            else
-            {
-                self?.expectation.fulfill()
-            }
+        self.saleResponse?.receipt(true,
+                              showReturns: false,
+                              format: .uiImage,
+            dpi: .starMicronics,
+            completion: {[weak self](receipt : Any?, error : Error?) in
+                self?.returnedErr = error
+                //Receipt as per format specified HTML | PDF | UIImage | AcceptReceipt object
+                if (receipt != nil)
+                {
+                    printerConfig.printJobs = [Any].init(arrayLiteral: receipt!)
+                    self?.sdk.printerManager.print(printerConfig,
+                                                   progress: printProgress,
+                                                   completion: printCompletion)
+                }
+                else
+                {
+                    self?.expectation.fulfill()
+                }
         })
     }
     
     func device(_ device: WDAcceptTerminal, connectionStatusDidChange status:AcceptExtensionConnectionStatus)
     {
         print("Connection status changed \(status)")
-        if (status != .connected)
+        if (status == .connected && self.openingDrawerDone == false)
         {
+            self.openingDrawerDone = true
             self.openCashDrawer()
         }
     }
@@ -176,19 +193,18 @@ class StarIOTestsSwift: BaseTestsSwift, WDAcceptScanning, WDAcceptPrinting, WDAc
     func removeSpecialCharsFromString(text: String) -> String
     {
         let okayChars : Set<Character> =
-            Set("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ1234567890+-*=(),.:!_".characters)
-        return String(text.characters.filter {okayChars.contains($0) })
+            Set("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ1234567890+-*=(),.:!_")
+        return String(text.filter {okayChars.contains($0) })
     }
     
-    func device(_ device: WDAcceptTerminal, dataReceived: Data) //Data received through barcode scanner
+    func device(_ device: WDAcceptTerminal, barcodeReceived: String, symbology: AcceptBarcodeSymbology) //Data received through barcode scanner
     {
-        if let scannerBarcodeAsText = String.init(data: dataReceived, encoding: String.Encoding.utf8)
-        {
-            //It is a good practice to remove control characters as scanners have the bad tendency to add garbage at the end
-            let barcodeAsText = self.removeSpecialCharsFromString(text: scannerBarcodeAsText)
-            print("Barcode read with value as string: \(barcodeAsText)")            
+        print("Barcode read with value as string: \(barcodeReceived)")
+        
+        if self.scanningSuccess == false {
+            self.scanningSuccess = true
+            self.expectation.fulfill()
         }
-        self.expectation.fulfill()
     }
 
 }

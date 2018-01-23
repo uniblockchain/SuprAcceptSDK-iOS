@@ -90,7 +90,7 @@ class CatalogueTestsSwift: BaseTestsSwift
     {
         let completionCatalogue : ProductCatalogueCategoryCompletion = {[weak self](result : [WDAcceptProductCatalogueCategory]? , error : Error?) in
             
-            let completionProductContent : ProductCatalogueProductCompletion = {(result : [WDAcceptProductCatalogueProduct]?, error : Error?) in
+            let completionProductContent : ProductCatalogueProductCompletion = {(result : [WDAcceptProductCatalogueProduct]?, totalCount : NSNumber?, error : Error?) in
                 if  error != nil || self?.successfulDownload == false
                 {
                     self?.returnedErr = error
@@ -115,13 +115,15 @@ class CatalogueTestsSwift: BaseTestsSwift
                                                 completion: completionProductContent)
             
             //Then we request categorized products
-            for category : WDAcceptProductCatalogueCategory in result!
-            {
-                category.parentCategoryId = catalogue.productCatalogueId
-                self?.loadContentForCategory(category: category,
-                                             catalogueId:catalogue.productCatalogueId!,
-                                             dbVersion: Decimal(0))
-                //Note: you may want to keep track of versions to compare to existing data in backend and do proper upsert in your app
+            if let result = result {
+                for category : WDAcceptProductCatalogueCategory in result
+                {
+                    category.parentCategoryId = catalogue.productCatalogueId
+                    self?.loadContentForCategory(category: category,
+                                                 catalogueId:catalogue.productCatalogueId!,
+                                                 dbVersion: Decimal(0))
+                    //Note: you may want to keep track of versions to compare to existing data in backend and do proper upsert in your app
+                }
             }
             
             self?.serviceGroup.leave()
@@ -139,7 +141,7 @@ class CatalogueTestsSwift: BaseTestsSwift
             var queries : [WDAcceptProductsQuery] = []
             for product : WDAcceptProductCatalogueProduct in products
             {
-                if let productImageId : String = product.imageId, productImageId.characters.count > 0
+                if let productImageId : String = product.imageId, productImageId.count > 0
                 {
                     let query : WDAcceptProductsQuery = WDAcceptProductsQuery.init(page: 0,
                                                                                    pageSize: 100,
@@ -174,7 +176,7 @@ class CatalogueTestsSwift: BaseTestsSwift
     {
         if let category = category
         {
-            let completionGetProducts : ProductCatalogueProductCompletion = {[weak self](result : [WDAcceptProductCatalogueProduct]?, error : Error?) in
+            let completionGetProducts : ProductCatalogueProductCompletion = {[weak self](result : [WDAcceptProductCatalogueProduct]?, totalCount : NSNumber?, error : Error?) in
                 if error != nil || self?.successfulDownload == false
                 {
                     self?.returnedErr = error
@@ -198,7 +200,7 @@ class CatalogueTestsSwift: BaseTestsSwift
             for subcategory : WDAcceptProductCatalogueCategory in category.subcategories!
             {
                 //Structure is 1 catalogue including 0 to many categories including zero to many products, and one product can belong to zero or many categories
-                if category.categoryId != catalogueId && subcategory.parentCategoryId?.characters.count == 0
+                if category.categoryId != catalogueId && subcategory.parentCategoryId?.count == 0
                 {
                     subcategory.parentCategoryId = category.categoryId
                 }

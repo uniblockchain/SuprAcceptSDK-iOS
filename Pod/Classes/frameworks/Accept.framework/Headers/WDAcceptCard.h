@@ -13,16 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  @class WDAcceptCard
- *  @brief Card Data supplied by terminal
- **/
-@interface WDAcceptCard : NSObject
-@property (nullable, nonatomic, strong) NSString *cardBrand;
-@property (nullable, nonatomic, strong) NSString *posEntryMode;
-@end
-
-/**
- *  @class WDAcceptCardPOS
- *  @discussion Card data to be used in the payment processing through Wirecard payment infrastructure
+ *  @discussion Card data supplied by terminal, to be used in the payment processing through Wirecard payment infrastructure
  @code POS Entry Mode:
  □ PAN Entry Mode (Position 1-2 )
  01 Manual Entry
@@ -40,7 +31,13 @@ NS_ASSUME_NONNULL_BEGIN
  3 EMV & PIN Entry capability
  4 EMV capability
   **/
-@interface WDAcceptCardPOS : WDAcceptCard
+
+@interface WDAcceptCard : NSObject
+
+@property (nullable, nonatomic, strong) NSString *cardBrand;
+
+@property (nullable, nonatomic, strong) NSString *posEntryMode;
+
 @property (nullable, nonatomic, strong) NSString *signatureImg;
 /**
  * Issuer obtained from EMV data or from PAN
@@ -61,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @class WDAcceptCardEmvDUKPT
  *  @discussion Card Data supplied by extension reading the ICC supporting decryption on the Switch side using HSM
  **/
-@interface WDAcceptCardEmvDUKPT : WDAcceptCardPOS
+@interface WDAcceptCardEmvDUKPT : WDAcceptCard
 @property (nonnull, nonatomic, readonly) NSString *emvData;
 /**
  * @brief Create Card data with the card details obtained from the card IC - DUKPT
@@ -103,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @class WDAcceptCardMagstripeDUKPT
  *  @discussion Card Data supplied by extension reading the Magstripe supporting decryption on the PaymentEngine side
  **/
-@interface WDAcceptCardMagstripeDUKPT : WDAcceptCardPOS
+@interface WDAcceptCardMagstripeDUKPT : WDAcceptCard
 @property (nonnull, nonatomic, readonly)    NSString *track2Data;
 @property (nonnull, nonatomic, readonly)    NSString *ksn;
 @property (nullable, nonatomic,readonly)    NSString *pinData;
@@ -134,7 +131,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @class WDAcceptCardPassThroughDUKPT
  *  @discussion Card Data supplied by extension supporting decryption on the PaymentEngine side
  **/
-@interface WDAcceptCardPassThroughDUKPT : WDAcceptCardPOS
+@interface WDAcceptCardPassThroughDUKPT : WDAcceptCard
 @property (nonnull, nonatomic, readonly)    NSString *track2Data;
 @property (nonnull, nonatomic, readonly)    NSString *pan;
 @property (nonnull, nonatomic, readonly)    WDAcceptEncryptionParameters *dataEncryptionParams;

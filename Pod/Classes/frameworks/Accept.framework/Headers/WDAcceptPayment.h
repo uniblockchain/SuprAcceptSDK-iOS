@@ -15,8 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSInteger, AcceptPaymentMethod ){
     AcceptPaymentMethodCash, //Default
     AcceptPaymentMethodCard,
-    AcceptPaymentMethodCoupon,
     AcceptPaymentMethodAlipay,
+    AcceptPaymentMethodWeChat,
+    AcceptPaymentMethodCoupon,
     AcceptPaymentMethodUnknown
     
 };
@@ -71,7 +72,8 @@ typedef NS_ENUM(NSUInteger, AcceptPaymentState) {
     AcceptPaymentStateDeclined,
     AcceptPaymentStateRejected,
     AcceptPaymentStateFailed,
-    AcceptPaymentStateFailedMin
+    AcceptPaymentStateFailedMin,
+    AcceptPaymentStateUnconfirmed
 };
 
 /**

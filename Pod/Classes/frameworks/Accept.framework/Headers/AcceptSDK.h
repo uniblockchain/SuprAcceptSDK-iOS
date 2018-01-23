@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "WDADataTypes.h"
+
 #import "WDAcceptEnvironment.h"
 #import "WDAError.h"
 #import "WDAcceptExtensionManager.h"
@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @class AcceptSDK
  * @brief Wirecard Payment Acceptance SDK
  *
- * @discussion Enables your solution to Accept a wide range of Payment Methods (Cash, Card, Alipay, Coupon) and offers advanced functionality to support your business
+ * @discussion Enables your solution to Accept a wide range of Payment Methods (Cash, Card, Alipay, WeChat, Coupon) and offers advanced functionality to support your business
  * 
  * @b Sale @b Management  - WDAcceptSaleManager - Sales, Payments, Refunds, Sales history, Sale Statistics, Receipts
  *

@@ -10,6 +10,9 @@
 #import "UserHelper.h"
 #import "DDLog.h"
 
+@interface PaymentHandler : NSObject<WDAcceptPaymentDelegate>
+@end
+
 @interface BaseTestsObcj : XCTestCase <AcceptSDKDelegate>
 {
     __block NSError *returnedErr;
@@ -24,7 +27,7 @@
     __block WDAcceptSaleResponse *saleResponse;
     __block AcceptResultStatus resultStatus;
     __block WDAcceptTerminal *selectedDevice;
-
+    __block PaymentHandler *_paymentHandler;
 }
 
 -(void)loginAndGetUserData;

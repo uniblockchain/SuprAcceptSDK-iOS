@@ -16,9 +16,6 @@
 #import "BaseTests.h"
 
 @interface SocketScannerTestsObjC : BaseTestsObcj <WDAcceptScanning>
-{
-    __block NSArray *scannersArray;
-}
 
 @end
 
@@ -50,7 +47,7 @@
     expectation = [self expectationWithDescription:@"Discovering devices"];
     [self discoverDevices:WDASocketExtensionUUID];
     [self waitForExpectationsWithTimeout:100 handler:nil];
-    if (![scannersArray firstObject] || ![[scannersArray firstObject] isKindOfClass:[WDAcceptTerminal class]])
+    if (!selectedDevice)
     {
         XCTFail(@"No paired scanner found. Make sure your terminal is paired in your iOS device settings and that the scanner is in stand-by mode (ie. by switching off and then on). For pairing you need to scan the pairing barcode in your Socket Scanner printed instructions");
     }
@@ -65,17 +62,15 @@
 
 -(void)setDelegateAndActiveScanner
 {
-    [sdk.scannerManager addScannerManagerDelegate:self forScanner:scannersArray.firstObject];
+    [sdk.scannerManager addScannerManagerDelegate:self forScanner:selectedDevice];
     
     //When something is scanned, it will trigger the function below, dataReceived. So please, scan a barcode to pass the test.
     //You have a barcode in this demo, a file image under the name barcode_example
 }
 
-- (void)device:(WDAcceptTerminal*)device dataReceived:(NSData *)dataReceived
+- (void)device:(WDAcceptTerminal*)device barcodeReceived:(NSString *)barcodeReceived symbology:(AcceptBarcodeSymbology)symbology
 {
-    //It is a good practice to remove control characters as scanners have the bad tendency to add garbage at the end most of the time.
-    NSString *barcodeAsText = [[[NSString alloc] initWithData:dataReceived encoding:NSUTF8StringEncoding] stringByRemovingControlCharacters];
-    NSLog(@"Barcode read with value as string: %@", barcodeAsText);
+    NSLog(@"Barcode read with value as string: %@", barcodeReceived);
     [expectation fulfill];
 }
 

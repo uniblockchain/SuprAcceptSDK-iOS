@@ -190,5 +190,12 @@ NS_ASSUME_NONNULL_BEGIN
                    currency:(NSString *)currency
                  grossPrice:(BOOL)grossPrice
                      completion:(ProductPricesCompletion)completion;
+
+/**
+ *  @brief Get supported BarCode types for the merchant.
+ *  @param completion Block that will return the array of BarCode types.
+ **/
+-(void)barCodeTypes:(nonnull BarCodeTypeCompletion)completion;
+
 @end
 NS_ASSUME_NONNULL_END
