@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "SUPRAcceptSDK"
-  s.version          = "2.2.2"
+  s.version          = "2.2.3"
   s.summary          = "Wirecard Point of Sale SDK - Accept Card, Cash, Alipay, Giftcard payments"
   s.description      = <<-DESC
                        The library extends the Point of Sale and alternative payment methods to modern mobile environment. 
@@ -52,6 +52,7 @@ Pod::Spec.new do |s|
 	ss.dependency 'libextobjc/EXTScope', '~> 0.4'    
 	ss.dependency 'BerTlv'
 	ss.dependency 'CocoaLumberjack'    
+	ss.xcconfig = { 'ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES' => 'YES' }
   end  
    
   s.subspec 'UI' do |ss|

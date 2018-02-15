@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to acceptSDK will be documented in this file.
 
+## [2.2.3] - 2018-02-15 
+### Fixed
+- Language Change for default receipt
+- AMEX payment flow
+- Spire extension memory management
+- Environment setup - *AFNetworking SSLPinning issue
+- EMV parser
+
 ## [2.2.2] - 2018-01-23 
 ### Added
 - UI Component - initial phone design

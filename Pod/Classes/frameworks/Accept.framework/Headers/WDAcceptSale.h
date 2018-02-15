@@ -592,7 +592,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @brief get the Internal sale types  as dictionary
  *  @return Dictionary of mapping internal Switch sale type to external Accept sale type
  **/
-NSDictionary *  WDASaleTypes();
+NSDictionary *  WDASaleTypes(void);
 
 /**
  *  @discussion Get the Internal Switch Sale type from the external sale type

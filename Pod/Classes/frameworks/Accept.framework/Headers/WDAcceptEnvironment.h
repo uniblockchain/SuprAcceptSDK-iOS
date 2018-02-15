@@ -69,6 +69,6 @@ AcceptEnvironment AcceptEnvironmentFromUrl(NSString *url);
 /**
  *  @brief Get list of supported Accept Environments as array of WDAcceptEnvironmentConfiguration
  **/
-NSArray <WDAcceptEnvironmentConfiguration *>* AcceptEnvironments();
+NSArray <WDAcceptEnvironmentConfiguration *>* AcceptEnvironments(void);
 
 NS_ASSUME_NONNULL_END

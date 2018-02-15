@@ -110,7 +110,7 @@ typedef NS_ENUM(NSInteger, AcceptSDKError ) {
     AcceptSDKErrorExtensionClassDoesNotExist,
     AcceptSDKErrorExtensionDoesNotSupportMethod,
     AcceptSDKErrorInvalidParameter,
-    AcceptSDKErrorDeviceRooted,// 90
+    AcceptSDKErrorDeviceRooted,// 91
     
     AcceptSDKErrorActiveTerminalNotSet,
     AcceptSDKErrorActiveScanPistolNotSet,
@@ -118,7 +118,10 @@ typedef NS_ENUM(NSInteger, AcceptSDKError ) {
     AcceptSDKErrorPinLocked,
     AcceptSDKErrorPinInvalid,
     AcceptSDKErrorGeneral,
-    AcceptSDKErrorServerSSLCertificateExpired
+    AcceptSDKErrorServerSSLCertificateExpired,
+    AcceptSDKErrorFailedTerminalBluetoothConnectionNotInPayment,
+    
+    AcceptSDKErrorMissingMerchant //This happens when a System Admin, Partner or any role without merchant tries to log in
 };
 
 

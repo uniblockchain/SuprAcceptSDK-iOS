@@ -16,7 +16,7 @@
 @dynamic language;
 
 - (NSString *)language {
-    return @"en";
+    return @"de";
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {

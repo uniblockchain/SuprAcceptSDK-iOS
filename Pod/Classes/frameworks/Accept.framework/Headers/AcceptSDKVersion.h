@@ -1,3 +1,3 @@
 #import <Foundation/Foundation.h>
 
-NSDictionary * AcceptSDKGetVersions();
+NSDictionary * AcceptSDKGetVersions(void);

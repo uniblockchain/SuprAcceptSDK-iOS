@@ -58,7 +58,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>WDApplicationName</key>
-	<string>eClear</string>
 </dict>
 </plist>

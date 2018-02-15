@@ -1532,7 +1532,7 @@ typedef void(^ReceiptCompletion)(NSArray* _Nullable receipts, NSError* _Nullable
  *  @class WDAcceptTerminalCapabilities
  *  @brief  Terminal Capabilities template
  **/
-@interface WDAcceptTerminalCapabilities : NSObject
+@interface WDAcceptTerminalCapabilities : WDAcceptObject
 @property (nullable, nonatomic, retain) NSString *terminalCapabilitiesId;
 @property (nullable, nonatomic, retain) NSString *name;
 @property (nullable, nonatomic, retain) NSString *emvTerminalType;
@@ -1545,7 +1545,7 @@ typedef void(^ReceiptCompletion)(NSArray* _Nullable receipts, NSError* _Nullable
  *  @class WDAcceptICCApplication
  *  @brief  ICC Application template
  **/
-@interface WDAcceptICCApplication : NSObject
+@interface WDAcceptICCApplication : WDAcceptObject
 @property (nullable, nonatomic, retain) NSString *iccApplicationId;
 @property (nullable, nonatomic, retain) NSString *aid;
 @property (nullable, nonatomic, retain) NSString *version;
@@ -1557,7 +1557,7 @@ typedef void(^ReceiptCompletion)(NSArray* _Nullable receipts, NSError* _Nullable
  *  @class WDAcceptAID
  *  @brief  AID template
  **/
-@interface WDAcceptAID : NSObject
+@interface WDAcceptAID : WDAcceptObject
 @property (nullable, nonatomic, retain) NSString *aid;
 @property (nullable, nonatomic, retain) NSString *ddol;
 @property (nullable, nonatomic, retain) NSString *targetPercentage;
@@ -1579,7 +1579,7 @@ typedef void(^ReceiptCompletion)(NSArray* _Nullable receipts, NSError* _Nullable
  *  @class WDAcceptAIDConfiguration
  *  @brief  AID Configuration
  **/
-@interface WDAcceptAIDConfiguration : NSObject
+@interface WDAcceptAIDConfiguration : WDAcceptObject
 @property (nullable, nonatomic, retain) NSString *aidConfigurationId;
 @property (nullable, nonatomic, retain) NSString *name;
 @property (nullable, nonatomic, retain) WDAcceptICCApplication *chipApplication;
@@ -1590,7 +1590,7 @@ typedef void(^ReceiptCompletion)(NSArray* _Nullable receipts, NSError* _Nullable
  *  @class WDAcceptNetwork
  *  @brief  Issuer Network detail
  **/
-@interface WDAcceptNetwork : NSObject
+@interface WDAcceptNetwork : WDAcceptObject
 @property (nullable, nonatomic, retain) NSString *networkId;
 @property (nullable, nonatomic, retain) NSString *networkIssuerName;
 @end
@@ -1599,7 +1599,7 @@ typedef void(^ReceiptCompletion)(NSArray* _Nullable receipts, NSError* _Nullable
  *  @class WDAcceptTerminalProfile
  *  @brief  Terminal Profile
  **/
-@interface WDAcceptTerminalProfile : NSObject
+@interface WDAcceptTerminalProfile : WDAcceptObject
 @property (nullable, nonatomic, retain) NSString *terminalProfileId;
 @property (nullable, nonatomic, retain) NSString *tid;
 @property (nullable, nonatomic, retain) NSString *mid;
@@ -1612,7 +1612,7 @@ typedef void(^ReceiptCompletion)(NSArray* _Nullable receipts, NSError* _Nullable
  *  @class WDAcceptTerminalAIDConfiguration
  *  @brief Terminal AID Configuration
  **/
-@interface WDAcceptTerminalAIDConfiguration : NSObject
+@interface WDAcceptTerminalAIDConfiguration : WDAcceptObject
 @property (nullable, nonatomic, retain) NSString *merchantName;
 @property (nullable, nonatomic, retain) NSNumber *mcc;
 @property (nullable, nonatomic, retain) NSString *terminalCountryCode;
@@ -2115,18 +2115,18 @@ NSString *const _Nullable PaymentStateFromAcceptState(AcceptPaymentState acceptS
 /**
  *  @brief get the Switch transaction types as dictionary
  **/
-NSDictionary *  WDATransactionTypes();
+NSDictionary *  WDATransactionTypes(void);
 
 /**
  *  @brief get the Switch payment methods as dictionary
  **/
-NSDictionary *  WDAPaymentMethods();
+NSDictionary *  WDAPaymentMethods(void);
 
 /**
  *  @brief Get the Accept Extensions as dictionary of code and names
  *  @return Accept Extensions dictionary
  **/
-NSDictionary * WDAcceptExtensionNames();
+NSDictionary * WDAcceptExtensionNames(void);
 
 /**
  *  @brief Get the Accept Extension name from Vendor UUID
@@ -2144,13 +2144,13 @@ WDAExtensionTypeUUID WDAcceptVendorUUIDFromAcceptExtensionName(NSString *extensi
  *  @brief get the Internal transaction statuses as dictionary
  *  @return Dictionary of mapping internal Switch Payment statuses to external Accept Payment statuses
  **/
-NSDictionary *  WDAPaymentStatuses();
+NSDictionary *  WDAPaymentStatuses(void);
 
 /**
  *  @brief get the Internal sale statuses as dictionary
  *  @return Dictionary of mapping internal Switch Sale statuses to external Accept sale statuses
  **/
-NSDictionary *  WDASaleStatuses();
+NSDictionary *  WDASaleStatuses(void);
 
 
 /**

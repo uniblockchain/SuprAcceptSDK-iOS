@@ -191,8 +191,8 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-eClear/Pods-eClear-resources.sh",
-				"${PODS_ROOT}/../../Pod/Classes/frameworks/acceptResources.bundle",
-				"${PODS_ROOT}/../../Pod/Classes/frameworks/acceptUIResources.bundle",
+				"${PODS_ROOT}/../../SUPRAcceptSDK/Pod/Classes/frameworks/acceptResources.bundle",
+				"${PODS_ROOT}/../../SUPRAcceptSDK/Pod/Classes/frameworks/acceptUIResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -222,13 +222,13 @@
 				"${BUILT_PRODUCTS_DIR}/NotificationBannerSwift/NotificationBannerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Overcoat/Overcoat.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
-				"${PODS_ROOT}/../../Pod/Classes/frameworks/BBPOS_SDK.framework",
-				"${PODS_ROOT}/../../Pod/Classes/frameworks/Accept.framework",
-				"${PODS_ROOT}/../../Pod/Classes/frameworks/Datecs_SDK.framework",
-				"${PODS_ROOT}/../../Pod/Classes/frameworks/Socket_SDK.framework",
-				"${PODS_ROOT}/../../Pod/Classes/frameworks/Spire_SDK.framework",
-				"${PODS_ROOT}/../../Pod/Classes/frameworks/Stario_SDK.framework",
-				"${PODS_ROOT}/../../Pod/Classes/frameworks/AcceptUI.framework",
+				"${PODS_ROOT}/../../SUPRAcceptSDK/Pod/Classes/frameworks/BBPOS_SDK.framework",
+				"${PODS_ROOT}/../../SUPRAcceptSDK/Pod/Classes/frameworks/Accept.framework",
+				"${PODS_ROOT}/../../SUPRAcceptSDK/Pod/Classes/frameworks/Datecs_SDK.framework",
+				"${PODS_ROOT}/../../SUPRAcceptSDK/Pod/Classes/frameworks/Socket_SDK.framework",
+				"${PODS_ROOT}/../../SUPRAcceptSDK/Pod/Classes/frameworks/Spire_SDK.framework",
+				"${PODS_ROOT}/../../SUPRAcceptSDK/Pod/Classes/frameworks/Stario_SDK.framework",
+				"${PODS_ROOT}/../../SUPRAcceptSDK/Pod/Classes/frameworks/AcceptUI.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/TWMessageBarManager/TWMessageBarManager.framework",
 				"${BUILT_PRODUCTS_DIR}/ZXingObjC/ZXingObjC.framework",
