@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "SUPRAcceptSDK"
-  s.version          = "2.2.3"
+  s.version          = "2.2.3.1"
   s.summary          = "Wirecard Point of Sale SDK - Accept Card, Cash, Alipay, Giftcard payments"
   s.description      = <<-DESC
                        The library extends the Point of Sale and alternative payment methods to modern mobile environment. 
@@ -39,6 +39,8 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/WirecardMobileServices/SuprAcceptSDK-iOS.git", :tag => s.version.to_s }
   s.platform     = :ios, '9.0'
   s.requires_arc = true
+  s.deprecated = true
+  s.deprecated_in_favor_of = 'WDePOS'
   s.libraries = 'stdc++.6', 'z.1', 'xml2'
   s.frameworks    = 'Foundation', 'SystemConfiguration', 'MediaPlayer', 'AVFoundation', 'AudioToolbox', 'CoreAudio', 'ExternalAccessory'
   s.default_subspec = 'Core'

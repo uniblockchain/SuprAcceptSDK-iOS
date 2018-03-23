@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to acceptSDK will be documented in this file.
 
+## [2.2.3.1] - 2018-03-23
+**DEPRECATED** in favour of **Wirecard ePOS SDK** : https://github.com/WirecardMobileServices/Wirecard-ePOS-iOS
+
+
 ## [2.2.3] - 2018-02-15 
 ### Fixed
 - Language Change for default receipt
